@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Builder
 @Getter
@@ -16,4 +17,5 @@ public class PatientDTO {
     private final String firstName;
     private final String lastName;
     private final LocalDate birthday;
+    private final List<Long> visitIds;
 }

@@ -17,6 +17,7 @@ public class Visit {
     @Column(nullable = false)
     private Long id;
     LocalDateTime appointment;
+    int duration;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DOCTOR_ID")
     Doctor doctor;
