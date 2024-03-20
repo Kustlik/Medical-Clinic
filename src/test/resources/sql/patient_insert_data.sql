@@ -1,0 +1,2 @@
+insert into patient (ID, EMAIL, ID_CARD_NO, FIRST_NAME, LAST_NAME, PASSWORD, BIRTHDAY) values (default, 'boczek@gmail.com', '54321', 'Jerzy', 'Bolek', 'haslo123', '1980-02-02')
+insert into patient (ID, EMAIL, ID_CARD_NO, FIRST_NAME, LAST_NAME, PASSWORD, BIRTHDAY) values (default, 'karkow@gmail.com', '12345abc', 'Karol', 'Wojczyk', 'piesek123', '1990-06-12')

@@ -1,0 +1,3 @@
+delete from doctor_medical_facility
+delete from MEDICAL_FACILITY
+ALTER TABLE MEDICAL_FACILITY ALTER COLUMN ID RESTART WITH 1

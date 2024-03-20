@@ -1,0 +1,1 @@
+delete from DOCTOR_MEDICAL_FACILITY

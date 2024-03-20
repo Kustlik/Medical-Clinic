@@ -1,0 +1,2 @@
+insert into doctor (ID, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD, SPECIALISATION) values (default, 'jankowski@gmail.com', 'Arek', 'Nowacki', 'doctor123', 'Ortopeda')
+insert into doctor (ID, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD, SPECIALISATION) values (default, 'baczynski@gmail.com', 'Damian', 'Borczek', 'trudnehaslo1', 'Chiropraktyk')

@@ -1,0 +1,2 @@
+insert into MEDICAL_FACILITY (ID, BUILDING_NUMBER, CITY, NAME, STREET, ZIP_CODE) values (default, '23', 'Łódź', 'MediSun', 'Piotrkowska', '23-542')
+insert into MEDICAL_FACILITY (ID, BUILDING_NUMBER, CITY, NAME, STREET, ZIP_CODE) values (default, '74', 'Warszawa', 'HospiDeli', 'Młyńska', '73-325')
