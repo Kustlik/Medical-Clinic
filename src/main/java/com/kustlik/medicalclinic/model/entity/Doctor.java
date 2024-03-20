@@ -32,6 +32,8 @@ public class Doctor {
             inverseJoinColumns = @JoinColumn(name = "MEDICAL_FACILITY_ID")
     )
     private List<MedicalFacility> medicalFacilities;
+    @OneToMany
+    private List<Visit> visits;
 
     public boolean validateDoctor(){
         return Stream.of(email, firstName, lastName, password, specialisation)

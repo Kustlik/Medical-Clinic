@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -12,7 +13,6 @@ import java.util.stream.Stream;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
 public class Patient{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +26,8 @@ public class Patient{
     private String lastName;
     private String password;
     private LocalDate birthday;
+    @OneToMany
+    private List<Visit> visits;
 
     public void update(Patient newPatientData){
         this.email = newPatientData.getEmail();
@@ -49,10 +51,8 @@ public class Patient{
     public boolean equals(Object o) {
         if (this == o) return true;
 
-        if (!(o instanceof Patient))
+        if (!(o instanceof Patient other))
             return false;
-
-        Patient other = (Patient) o;
 
         return id != null &&
                 id.equals(other.getId());
