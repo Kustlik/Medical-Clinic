@@ -97,7 +97,7 @@ public class PatientMapperTest {
                 .birthday(LocalDate.of(2000, 1, 1))
                 .build();
         //When
-        var result = patientMapper.toPatientEdit(patientDTO);
+        var result = patientMapper.toPatient(patientDTO);
 
         //Then
         Assertions.assertInstanceOf(Patient.class, result);
@@ -119,7 +119,7 @@ public class PatientMapperTest {
                 .password("password123")
                 .build();
         //When
-        var result = patientMapper.toPatientPasswordEdit(patientDTO);
+        var result = patientMapper.toPatient(patientDTO);
 
         //Then
         Assertions.assertInstanceOf(Patient.class, result);

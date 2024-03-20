@@ -2,8 +2,12 @@ package com.kustlik.medicalclinic.controller;
 
 import com.kustlik.medicalclinic.model.dto.doctor.DoctorCreationDTO;
 import com.kustlik.medicalclinic.model.dto.doctor.DoctorDTO;
+import com.kustlik.medicalclinic.model.dto.visit.VisitCreationDTO;
+import com.kustlik.medicalclinic.model.dto.visit.VisitDTO;
 import com.kustlik.medicalclinic.model.entity.Doctor;
+import com.kustlik.medicalclinic.model.entity.Visit;
 import com.kustlik.medicalclinic.model.mapper.DoctorMapper;
+import com.kustlik.medicalclinic.model.mapper.VisitMapper;
 import com.kustlik.medicalclinic.service.DoctorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +22,7 @@ import java.util.stream.Collectors;
 public class DoctorController {
     private final DoctorService doctorService;
     private final DoctorMapper doctorMapper;
+    private final VisitMapper visitMapper;
 
     @GetMapping
     public List<DoctorDTO> getDoctors(){
@@ -45,5 +50,13 @@ public class DoctorController {
     public DoctorDTO createDoctorAssignment(@RequestBody Long medicalFacilityID, @PathVariable("doctorId") Long doctorID){
         Doctor doctor = doctorService.assignDoctorToMedicalFacility(doctorID, medicalFacilityID);
         return doctorMapper.toDto(doctor);
+    }
+
+    @PostMapping("/{doctorId}/visit")
+    @ResponseStatus(HttpStatus.CREATED)
+    public VisitDTO createVisit(@RequestBody VisitCreationDTO visitDTO, @PathVariable("doctorId") Long doctorID){
+        Visit visit = doctorService.createVisit(
+                visitMapper.toVisit(visitDTO), doctorID);
+        return visitMapper.toDto(visit);
     }
 }

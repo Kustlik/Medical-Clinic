@@ -18,8 +18,8 @@ public interface PatientMapper {
     @Mapping(source = "visits", target = "visitIds", qualifiedByName = "visitListToIdList")
     PatientDTO toDto(Patient patient);
     Patient toPatient(PatientCreationDTO patientDTO);
-    Patient toPatientEdit(PatientDTO patientDTO);
-    Patient toPatientPasswordEdit(PatientPasswordDTO patientDTO);
+    Patient toPatient(PatientDTO patientDTO);
+    Patient toPatient(PatientPasswordDTO patientDTO);
 
     @Named("visitListToIdList")
     static List<Long> visitListToIdList(List<Visit> visits){

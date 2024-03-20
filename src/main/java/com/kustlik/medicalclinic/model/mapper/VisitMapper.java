@@ -1,6 +1,7 @@
 package com.kustlik.medicalclinic.model.mapper;
 
 import com.kustlik.medicalclinic.exception.DoctorDoesNotExistException;
+import com.kustlik.medicalclinic.model.dto.visit.VisitCreationDTO;
 import com.kustlik.medicalclinic.model.dto.visit.VisitDTO;
 import com.kustlik.medicalclinic.model.entity.Doctor;
 import com.kustlik.medicalclinic.model.entity.Patient;
@@ -15,6 +16,7 @@ public interface VisitMapper {
     @Mapping(source = "patient", target = "patientId", qualifiedByName = "patientToId")
     VisitDTO toDto(Visit visit);
     Visit toVisit(VisitDTO visitDTO);
+    Visit toVisit(VisitCreationDTO visitCreationDTO);
 
     @Named("doctorToId")
     static Long doctorToId(Doctor doctor){

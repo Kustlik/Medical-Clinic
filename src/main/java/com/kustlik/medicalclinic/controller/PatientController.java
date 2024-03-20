@@ -50,13 +50,13 @@ public class PatientController {
 
     @PutMapping("/{email}")
     public PatientDTO editPatient(@PathVariable("email") String email, @RequestBody PatientDTO newPatientDataDTO){
-        Patient patient = patientService.editPatient(email, patientMapper.toPatientEdit(newPatientDataDTO));
+        Patient patient = patientService.editPatient(email, patientMapper.toPatient(newPatientDataDTO));
         return patientMapper.toDto(patient);
     }
 
     @PatchMapping("/{email}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void editPatientPassword(@PathVariable("email") String email, @RequestBody PatientPasswordDTO newPatientDataDTO){
-        patientService.editPatientPassword(email, patientMapper.toPatientPasswordEdit(newPatientDataDTO));
+        patientService.editPatientPassword(email, patientMapper.toPatient(newPatientDataDTO));
     }
 }

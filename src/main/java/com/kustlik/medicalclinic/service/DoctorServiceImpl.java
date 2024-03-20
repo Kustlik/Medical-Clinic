@@ -2,6 +2,7 @@ package com.kustlik.medicalclinic.service;
 
 import com.kustlik.medicalclinic.exception.*;
 import com.kustlik.medicalclinic.model.entity.Doctor;
+import com.kustlik.medicalclinic.model.entity.Visit;
 import com.kustlik.medicalclinic.repository.DoctorRepository;
 import com.kustlik.medicalclinic.repository.MedicalFacilityRepository;
 import jakarta.transaction.Transactional;
@@ -52,5 +53,10 @@ public class DoctorServiceImpl implements DoctorService{
             throw new DoctorToMedicalFacilityAssignmentExistsException("Doctor is already assigned to this facility.");
         existingDoctor.get().getMedicalFacilities().add(existingMedicalFacility.get());
         return doctorRepository.save(existingDoctor.get());
+    }
+
+    @Transactional
+    public Visit createVisit(Visit visit, Long doctorID){
+        return visit;
     }
 }

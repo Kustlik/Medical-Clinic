@@ -193,7 +193,7 @@ class PatientIntegrationTest {
         // Given
         String exceptionMsg = "Patient does not exist.";
         PatientDTO patientDTO = PatientFactory.getPatientDTO();
-        Patient patient = patientMapper.toPatientEdit(patientDTO);
+        Patient patient = patientMapper.toPatient(patientDTO);
         String email = patient.getEmail();
         // When
 
