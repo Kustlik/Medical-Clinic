@@ -41,7 +41,7 @@ public class MedicalFacilityServiceImpl implements MedicalFacilityService{
         var existingDoctor = doctorRepository.findById(doctorID);
         if (existingDoctor.isEmpty())
             throw new DoctorDoesNotExistException("Doctor with given ID does not exist.");
-        var existingMedicalFacility = medicalFacilityRepository.findById(doctorID);
+        var existingMedicalFacility = medicalFacilityRepository.findById(medicalFacilityID);
         if (existingMedicalFacility.isEmpty())
             throw new MedicalFacilityDoesNotExistException("Medical facility with given ID does not exist.");
         var existingAssignment = existingDoctor.get().getMedicalFacilities().stream()

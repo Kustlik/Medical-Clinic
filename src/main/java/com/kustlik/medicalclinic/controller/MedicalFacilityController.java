@@ -42,7 +42,7 @@ public class MedicalFacilityController {
     @PostMapping("/{medicalFacilityId}/assign")
     @ResponseStatus(HttpStatus.CREATED)
     public MedicalFacilityDTO createMedicalFacilityAssignment(@RequestBody Long doctorID, @PathVariable("medicalFacilityId") Long medicalFacilityID){
-        MedicalFacility medicalFacility = medicalFacilityService.assignMedicalFacilityToDoctor(doctorID, medicalFacilityID);
+        MedicalFacility medicalFacility = medicalFacilityService.assignMedicalFacilityToDoctor(medicalFacilityID, doctorID);
         return medicalFacilityMapper.toDto(medicalFacility);
     }
 }
