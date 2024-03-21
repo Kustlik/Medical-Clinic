@@ -32,7 +32,7 @@ public class Doctor {
             inverseJoinColumns = @JoinColumn(name = "MEDICAL_FACILITY_ID")
     )
     private List<MedicalFacility> medicalFacilities;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.MERGE)
     private List<Visit> visits;
 
     public boolean validateDoctor(){

@@ -5,17 +5,21 @@ import com.kustlik.medicalclinic.model.entity.Doctor;
 import com.kustlik.medicalclinic.model.entity.Visit;
 import com.kustlik.medicalclinic.repository.DoctorRepository;
 import com.kustlik.medicalclinic.repository.MedicalFacilityRepository;
+import com.kustlik.medicalclinic.repository.VisitRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class DoctorServiceImpl implements DoctorService{
     private final DoctorRepository doctorRepository;
+    private final VisitRepository visitRepository;
     private final MedicalFacilityRepository medicalFacilityRepository;
     public List<Doctor> getDoctors() {
         return doctorRepository.findAll();
@@ -57,6 +61,27 @@ public class DoctorServiceImpl implements DoctorService{
 
     @Transactional
     public Visit createVisit(Visit visit, Long doctorID){
+        if (visit.getAppointment().isBefore(LocalDateTime.now())){
+            throw new RuntimeException("Unable to create a visit for past dates");
+        }
+        if (visit.getAppointment().getMinute() % 15 != 0){
+            throw new RuntimeException("Visit creation is possible only for a full quarter of an hour");
+        }
+        var existingDoctor = doctorRepository.findById(doctorID);
+        if (existingDoctor.isEmpty())
+            throw new DoctorDoesNotExistException("Doctor with given ID does not exist.");
+        LocalDateTime visitStartTime = visit.getAppointment();
+        LocalDateTime visitEndTime = visitStartTime.plusMinutes(visit.getDuration());
+        if(!visitRepository.findAllVisitsForDoctorBetween(visitStartTime, visitEndTime, doctorID).isEmpty()){
+            throw new RuntimeException("Visit could not be created, there will be another visit at this time");
+        }
+        existingDoctor.get().getVisits().add(visit);
+        doctorRepository.save(existingDoctor.get());
+        //Optional<Visit> savedVisit = existingDoctor.get().getVisits().stream()
+        //        .filter(x -> x.getId().equals(visit.getId())).findFirst();
+        //if(savedVisit.isEmpty()){
+        //    throw new RuntimeException("Visit was not saved properly");
+        //}
         return visit;
     }
 }
