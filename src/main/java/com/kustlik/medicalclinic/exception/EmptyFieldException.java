@@ -1,6 +1,6 @@
 package com.kustlik.medicalclinic.exception;
 
-public class EmptyFieldException extends RuntimeException{
+public class EmptyFieldException extends RuntimeException {
     public EmptyFieldException(String message) {
         super(message);
     }

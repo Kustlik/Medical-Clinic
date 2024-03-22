@@ -28,7 +28,7 @@ public class MedicalFacility {
     @ManyToMany(mappedBy = "medicalFacilities", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Doctor> doctors;
 
-    public boolean validateMedicalFacility(){
+    public boolean validateMedicalFacility() {
         return Stream.of(name, city, zipCode, street, buildingNumber)
                 .noneMatch(Objects::isNull);
     }

@@ -18,24 +18,23 @@ public interface DoctorMapper {
     @Mapping(source = "medicalFacilities", target = "medicalFacilityIds", qualifiedByName = "facilityListToIdList")
     @Mapping(source = "visits", target = "visitIds", qualifiedByName = "visitListToIdList")
     DoctorDTO toDto(Doctor doctor);
+
     Doctor toDoctor(DoctorCreationDTO doctorDTO);
 
     @Named("facilityListToIdList")
-    static List<Long> facilityListToIdList(List<MedicalFacility> medicalFacilities){
-        if(medicalFacilities == null){
+    static List<Long> facilityListToIdList(List<MedicalFacility> medicalFacilities) {
+        if (medicalFacilities == null) {
             return new ArrayList<>();
-        }
-        else{
+        } else {
             return medicalFacilities.stream().map(MedicalFacility::getId).collect(Collectors.toList());
         }
     }
 
     @Named("visitListToIdList")
-    static List<Long> visitListToIdList(List<Visit> visits){
-        if(visits == null){
+    static List<Long> visitListToIdList(List<Visit> visits) {
+        if (visits == null) {
             return new ArrayList<>();
-        }
-        else{
+        } else {
             return visits.stream().map(Visit::getId).collect(Collectors.toList());
         }
     }

@@ -1,7 +1,10 @@
 package com.kustlik.medicalclinic.model.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,7 +16,7 @@ import java.util.stream.Stream;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Patient{
+public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -26,22 +29,22 @@ public class Patient{
     private String lastName;
     private String password;
     private LocalDate birthday;
-    @OneToMany
+    @OneToMany(mappedBy = "patient")
     private List<Visit> visits;
 
-    public void update(Patient newPatientData){
+    public void update(Patient newPatientData) {
         this.email = newPatientData.getEmail();
         this.firstName = newPatientData.getFirstName();
         this.lastName = newPatientData.getLastName();
         this.birthday = newPatientData.getBirthday();
     }
 
-    public boolean validatePatient(){
+    public boolean validatePatient() {
         return Stream.of(email, idCardNo, firstName, lastName, password, birthday)
                 .noneMatch(Objects::isNull);
     }
 
-    public boolean validateEdit(){
+    public boolean validateEdit() {
         return Stream.of(email, firstName, lastName, birthday)
                 .noneMatch(Objects::isNull);
     }

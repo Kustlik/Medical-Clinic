@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -161,7 +160,7 @@ public class DoctorIntegrationTest {
     }
 
     @Test
-    void createDoctorAssignment_ExistingAssignmentIsGiven_ThenIsBadRequest() throws  Exception{
+    void createDoctorAssignment_ExistingAssignmentIsGiven_ThenIsBadRequest() throws Exception {
         // Given
         String exceptionMsg = "Doctor is already assigned to this facility.";
         Long doctorId = 2L;
@@ -177,7 +176,7 @@ public class DoctorIntegrationTest {
     }
 
     @Test
-    void createDoctorAssignment_DoctorDoesNotExist_ThenIsNotFound() throws  Exception{
+    void createDoctorAssignment_DoctorDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
         String exceptionMsg = "Doctor does not exist.";
         Long doctorId = 5L;
@@ -193,7 +192,7 @@ public class DoctorIntegrationTest {
     }
 
     @Test
-    void createDoctorAssignment_MedicalFacilityDoesNotExist_ThenIsNotFound() throws  Exception{
+    void createDoctorAssignment_MedicalFacilityDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
         String exceptionMsg = "Medical facility does not exist.";
         Long doctorId = 1L;
@@ -209,7 +208,7 @@ public class DoctorIntegrationTest {
     }
 
     @Test
-    void createDoctorAssignment_ValidAssignmentIsGiven_DoctorDTOReturned() throws  Exception{
+    void createDoctorAssignment_ValidAssignmentIsGiven_DoctorDTOReturned() throws Exception {
         // Given
         Long doctorId = 1L;
         Long medicalFacilityId = 1L;

@@ -17,16 +17,18 @@ import java.util.stream.Collectors;
 public interface PatientMapper {
     @Mapping(source = "visits", target = "visitIds", qualifiedByName = "visitListToIdList")
     PatientDTO toDto(Patient patient);
+
     Patient toPatient(PatientCreationDTO patientDTO);
+
     Patient toPatient(PatientDTO patientDTO);
+
     Patient toPatient(PatientPasswordDTO patientDTO);
 
     @Named("visitListToIdList")
-    static List<Long> visitListToIdList(List<Visit> visits){
-        if(visits == null){
+    static List<Long> visitListToIdList(List<Visit> visits) {
+        if (visits == null) {
             return new ArrayList<>();
-        }
-        else{
+        } else {
             return visits.stream().map(Visit::getId).collect(Collectors.toList());
         }
     }

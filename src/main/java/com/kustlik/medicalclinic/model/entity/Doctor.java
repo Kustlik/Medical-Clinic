@@ -32,10 +32,10 @@ public class Doctor {
             inverseJoinColumns = @JoinColumn(name = "MEDICAL_FACILITY_ID")
     )
     private List<MedicalFacility> medicalFacilities;
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "doctor", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     private List<Visit> visits;
 
-    public boolean validateDoctor(){
+    public boolean validateDoctor() {
         return Stream.of(email, firstName, lastName, password, specialisation)
                 .noneMatch(Objects::isNull);
     }

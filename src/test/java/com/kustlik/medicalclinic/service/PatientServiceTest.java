@@ -17,20 +17,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 public class PatientServiceTest {
     private PatientRepository patientRepository;
     private PatientService patientService;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         this.patientRepository = Mockito.mock(PatientRepository.class);
         this.patientService = new PatientServiceImpl(patientRepository);
     }
 
     @Test
-    void getPatients_ListOfPatientExists_ListOfPatientReturned(){
+    void getPatients_ListOfPatientExists_ListOfPatientReturned() {
         // Given
         List<Patient> patients = new ArrayList<>();
         when(patientRepository.findAll()).thenReturn(patients);
@@ -44,7 +44,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void getPatients_PatientsExists_ListOfPatientReturned(){
+    void getPatients_PatientsExists_ListOfPatientReturned() {
         // Given
         List<Patient> patients = new ArrayList<>();
         Patient patient = PatientFactory.getPatient();
@@ -60,7 +60,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void createPatient_NullPatientIsGiven_EmptyFieldExceptionThrown(){
+    void createPatient_NullPatientIsGiven_EmptyFieldExceptionThrown() {
         // Given
 
         // When
@@ -74,7 +74,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void createPatient_PatientWithSomeEmptyFieldsIsGiven_EmptyFieldExceptionThrown(){
+    void createPatient_PatientWithSomeEmptyFieldsIsGiven_EmptyFieldExceptionThrown() {
         // Given
         Patient patient = PatientFactory.getPatient(
                 1L,
@@ -96,7 +96,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void createPatient_PatientWithSameEmailDoesExists_PatientExistsExceptionThrown(){
+    void createPatient_PatientWithSameEmailDoesExists_PatientExistsExceptionThrown() {
         // Given
         Patient patient = PatientFactory.getPatient();
         when(patientRepository.findByEmail(patient.getEmail())).thenReturn(Optional.of(patient));
@@ -112,7 +112,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void createPatient_PatientWithSameEmailDoesNotExist_PatientReturned(){
+    void createPatient_PatientWithSameEmailDoesNotExist_PatientReturned() {
         // Given
         Patient patient = PatientFactory.getPatient();
         when(patientRepository.findByEmail(patient.getEmail())).thenReturn(Optional.empty());
@@ -127,7 +127,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void deletePatient_NullEmailIsGiven_PatientDoesNotExistExceptionThrown(){
+    void deletePatient_NullEmailIsGiven_PatientDoesNotExistExceptionThrown() {
         // Given
         when(patientRepository.findByEmail(null)).thenReturn(Optional.empty());
 
@@ -142,7 +142,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void deletePatient_PatientWithGivenEmailDoesNotExist_PatientDoesNotExistExceptionThrown(){
+    void deletePatient_PatientWithGivenEmailDoesNotExist_PatientDoesNotExistExceptionThrown() {
         // Given
         String email = PatientFactory.getPatient().getEmail();
         when(patientRepository.findByEmail(email)).thenReturn(Optional.empty());
@@ -158,7 +158,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void deletePatient_PatientWithGivenEmailDoesExists_ExceptionIsNotThrown(){
+    void deletePatient_PatientWithGivenEmailDoesExists_ExceptionIsNotThrown() {
         // Given
         Patient patient = PatientFactory.getPatient();
         String email = patient.getEmail();
@@ -172,7 +172,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void editPatient_PatientWithGivenEmailDoesNotExist_PatientDoesNotExistExceptionThrown(){
+    void editPatient_PatientWithGivenEmailDoesNotExist_PatientDoesNotExistExceptionThrown() {
         // Given
         String email = PatientFactory.getPatient().getEmail();
         Patient toEdit = PatientFactory.getPatient(
@@ -197,7 +197,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void editPatient_NullEmailIsGivenToEdit_PatientDoesNotExistExceptionThrown(){
+    void editPatient_NullEmailIsGivenToEdit_PatientDoesNotExistExceptionThrown() {
         // Given
         Patient toEdit = PatientFactory.getPatient(
                 null,
@@ -221,7 +221,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void editPatient_NullPatientIsGivenToEdit_PatientDoesNotExistExceptionThrown(){
+    void editPatient_NullPatientIsGivenToEdit_PatientDoesNotExistExceptionThrown() {
         // Given
         Patient patient = PatientFactory.getPatient();
         String email = patient.getEmail();
@@ -238,7 +238,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void editPatient_PatientWithSomeEmptyFieldsIsGiven_EmptyFieldExceptionThrown(){
+    void editPatient_PatientWithSomeEmptyFieldsIsGiven_EmptyFieldExceptionThrown() {
         // Given
         Patient patient = PatientFactory.getPatient();
         String email = patient.getEmail();
@@ -264,7 +264,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void editPatient_PatientWithNewEmailGivenToEditIsPresent_PatientExistsExceptionThrown(){
+    void editPatient_PatientWithNewEmailGivenToEditIsPresent_PatientExistsExceptionThrown() {
         // Given
         Patient patientToEdit = PatientFactory.getPatient();
         String patientToEditEmail = patientToEdit.getEmail();
@@ -300,7 +300,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void editPatient_PatientWithValidDataIsGivenToEdit_PatientReturnedAndUpdated(){
+    void editPatient_PatientWithValidDataIsGivenToEdit_PatientReturnedAndUpdated() {
         // Given
         Patient patient = PatientFactory.getPatient();
         String email = patient.getEmail();
@@ -328,7 +328,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void editPatientPassword_NullEmailIsGiven_PatientDoesNotExistExceptionThrown(){
+    void editPatientPassword_NullEmailIsGiven_PatientDoesNotExistExceptionThrown() {
         // Given
         Patient toEdit = PatientFactory.getPatient(
                 null,
@@ -352,7 +352,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void editPatientPassword_NullPatientIsGivenToEdit_EmptyFieldExceptionThrown(){
+    void editPatientPassword_NullPatientIsGivenToEdit_EmptyFieldExceptionThrown() {
         // Given
         Patient patient = PatientFactory.getPatient();
         String email = patient.getEmail();
@@ -369,7 +369,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void editPatientPassword_NullPasswordIsGivenToEdit_EmptyFieldExceptionThrown(){
+    void editPatientPassword_NullPasswordIsGivenToEdit_EmptyFieldExceptionThrown() {
         // Given
         Patient patient = PatientFactory.getPatient();
         String email = patient.getEmail();
@@ -395,7 +395,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void editPatientPassword_BlankPasswordIsGivenToEdit_EmptyFieldExceptionThrown(){
+    void editPatientPassword_BlankPasswordIsGivenToEdit_EmptyFieldExceptionThrown() {
         // Given
         Patient patient = PatientFactory.getPatient();
         String email = patient.getEmail();
@@ -421,7 +421,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void editPatientPassword_PatientWithGivenEmailDoesNotExist_PatientDoesNotExistExceptionThrown(){
+    void editPatientPassword_PatientWithGivenEmailDoesNotExist_PatientDoesNotExistExceptionThrown() {
         // Given
         String email = PatientFactory.getPatient().getEmail();
         Patient toEdit = PatientFactory.getPatient(
@@ -446,7 +446,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    void editPatientPassword_PatientWithValidDataIsGivenToEdit_PatientPasswordUpdated(){
+    void editPatientPassword_PatientWithValidDataIsGivenToEdit_PatientPasswordUpdated() {
         // Given
         Patient patient = PatientFactory.getPatient();
         String email = patient.getEmail();

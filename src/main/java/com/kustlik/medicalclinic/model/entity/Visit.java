@@ -16,14 +16,14 @@ public class Visit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
-    LocalDateTime appointment;
-    int duration;
-    @ManyToOne(fetch = FetchType.LAZY)
+    private LocalDateTime appointmentStart;
+    private LocalDateTime appointmentEnd;
+    @ManyToOne()
     @JoinColumn(name = "DOCTOR_ID")
-    Doctor doctor;
+    private Doctor doctor;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "PATIENT_ID")
-    Patient patient;
+    private Patient patient;
 
     @Override
     public boolean equals(Object o) {

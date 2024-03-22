@@ -1,6 +1,6 @@
 package com.kustlik.medicalclinic.model.mapper;
 
-import com.kustlik.medicalclinic.exception.DoctorDoesNotExistException;
+import com.kustlik.medicalclinic.exception.VisitWithNoAssignedDoctorException;
 import com.kustlik.medicalclinic.model.dto.visit.VisitCreationDTO;
 import com.kustlik.medicalclinic.model.dto.visit.VisitDTO;
 import com.kustlik.medicalclinic.model.entity.Doctor;
@@ -15,25 +15,25 @@ public interface VisitMapper {
     @Mapping(source = "doctor", target = "doctorId", qualifiedByName = "doctorToId")
     @Mapping(source = "patient", target = "patientId", qualifiedByName = "patientToId")
     VisitDTO toDto(Visit visit);
+
     Visit toVisit(VisitDTO visitDTO);
+
     Visit toVisit(VisitCreationDTO visitCreationDTO);
 
     @Named("doctorToId")
-    static Long doctorToId(Doctor doctor){
-        if(doctor != null){
+    static Long doctorToId(Doctor doctor) {
+        if (doctor != null) {
             return doctor.getId();
-        }
-        else {
-            throw new DoctorDoesNotExistException("The visit has no doctor assigned.");
+        } else {
+            throw new VisitWithNoAssignedDoctorException("The visit has no doctor assigned.");
         }
     }
 
     @Named("patientToId")
-    static Long doctorToId(Patient patient){
-        if(patient != null){
+    static Long patientToId(Patient patient) {
+        if (patient != null) {
             return patient.getId();
-        }
-        else {
+        } else {
             return null;
         }
     }

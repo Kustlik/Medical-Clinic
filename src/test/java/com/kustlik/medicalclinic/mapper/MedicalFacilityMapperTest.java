@@ -12,12 +12,12 @@ public class MedicalFacilityMapperTest {
     MedicalFacilityMapper medicalFacilityMapper;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         this.medicalFacilityMapper = Mappers.getMapper(MedicalFacilityMapper.class);
     }
 
     @Test
-    void toDto_MedicalFacilityIsMappedToDTO_MedicalFacilityDTOReturned(){
+    void toDto_MedicalFacilityIsMappedToDTO_MedicalFacilityDTOReturned() {
         //Given
         MedicalFacility medicalFacility = MedicalFacility.builder()
                 .id(1L)
@@ -47,7 +47,7 @@ public class MedicalFacilityMapperTest {
     }
 
     @Test
-    void toMedicalFacility_MedicalFacilityCreationDTOIsMappedToMedicalFacility_MedicalFacilityReturned(){
+    void toMedicalFacility_MedicalFacilityCreationDTOIsMappedToMedicalFacility_MedicalFacilityReturned() {
         //Given
         MedicalFacilityDTO medicalFacilityDTO = MedicalFacilityDTO.builder()
                 .city("Łódź")

@@ -12,14 +12,19 @@ import java.util.Optional;
 
 public interface VisitRepository extends JpaRepository<Visit, Long> {
     @NonNull Optional<Visit> findById(@NonNull Long id);
-    @Query(value = "SELECT *, DATEADD(MINUTE, DURATION, APPOINTMENT) as ESTIMATED_TIME " +
-            "FROM VISIT " +
-            "WHERE DOCTOR_ID = :doctorID " +
-            "AND NOT (:startTime < APPOINTMENT AND :endTime > DATEADD(MINUTE, DURATION, APPOINTMENT))" +
-            "AND NOT (:startTime < APPOINTMENT AND :endTime < DATEADD(MINUTE, DURATION, APPOINTMENT) AND :endTime > APPOINTMENT)" +
-            "AND NOT (:startTime > APPOINTMENT AND :endTime > DATEADD(MINUTE, DURATION, APPOINTMENT) AND :startTime < DATEADD(MINUTE, DURATION, APPOINTMENT))" +
-            "AND NOT (:startTime > APPOINTMENT AND :endTime < DATEADD(MINUTE, DURATION, APPOINTMENT))", nativeQuery = true)
-    List<Visit> findAllVisitsForDoctorBetween(
+
+    List<Visit> findByDoctorIdAndPatientIdIsNull(@NonNull Long doctor);
+
+    List<Visit> findByPatientIdIsNull();
+
+    List<Visit> findByPatientId(Long id);
+
+    @Query(value = "SELECT * " +
+            "FROM visit v " +
+            "WHERE :doctorID = doctor_id " +
+            "AND v.appointment_start  <= :endTime " +
+            "and v.appointment_end >= :startTime", nativeQuery = true)
+    List<Visit> findAllOverlapping(
             @Param("startTime") LocalDateTime startTime,
             @Param("endTime") LocalDateTime endTime,
             @Param("doctorID") Long doctorID);

@@ -157,7 +157,7 @@ public class MedicalFacilityControllerTest {
     }
 
     @Test
-    void createMedicalFacilityAssignment_ExistingAssignmentIsGiven_ThenIsBadRequest() throws  Exception{
+    void createMedicalFacilityAssignment_ExistingAssignmentIsGiven_ThenIsBadRequest() throws Exception {
         // Given
         String exceptionMsg = "Doctor is already assigned to this facility.";
         Long doctorId = 1L;
@@ -174,7 +174,7 @@ public class MedicalFacilityControllerTest {
     }
 
     @Test
-    void createMedicalFacilityAssignment_DoctorDoesNotExist_ThenIsNotFound() throws  Exception{
+    void createMedicalFacilityAssignment_DoctorDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
         String exceptionMsg = "Doctor does not exist.";
         Long doctorId = 1L;
@@ -191,7 +191,7 @@ public class MedicalFacilityControllerTest {
     }
 
     @Test
-    void createMedicalFacilityAssignment_MedicalFacilityDoesNotExist_ThenIsNotFound() throws  Exception{
+    void createMedicalFacilityAssignment_MedicalFacilityDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
         String exceptionMsg = "Medical facility does not exist.";
         Long doctorId = 1L;
@@ -208,7 +208,7 @@ public class MedicalFacilityControllerTest {
     }
 
     @Test
-    void createMedicalFacilityAssignment_ValidAssignmentIsGiven_MedicalFacilityDTOReturned() throws  Exception{
+    void createMedicalFacilityAssignment_ValidAssignmentIsGiven_MedicalFacilityDTOReturned() throws Exception {
         // Given
         Long doctorId = 1L;
         Long medicalFacilityId = 1L;

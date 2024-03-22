@@ -16,12 +16,12 @@ public class PatientMapperTest {
     PatientMapper patientMapper;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         this.patientMapper = Mappers.getMapper(PatientMapper.class);
     }
 
     @Test
-    void toDto_PatientIsMappedToDTO_PatientDTOReturned(){
+    void toDto_PatientIsMappedToDTO_PatientDTOReturned() {
         //Given
         Patient patient = Patient.builder()
                 .id(1L)
@@ -50,7 +50,7 @@ public class PatientMapperTest {
     }
 
     @Test
-    void toPatient_PatientCreationDTOIsMappedToPatient_PatientReturned(){
+    void toPatient_PatientCreationDTOIsMappedToPatient_PatientReturned() {
         //Given
         PatientCreationDTO patientDTO = PatientCreationDTO.builder()
                 .email("jankow@gmail.com")
@@ -82,7 +82,7 @@ public class PatientMapperTest {
     }
 
     @Test
-    void toPatientEdit_PatientDTOIsMappedToPatient_PatientReturned(){
+    void toPatientEdit_PatientDTOIsMappedToPatient_PatientReturned() {
         //Given
         PatientDTO patientDTO = PatientDTO.builder()
                 .email("jankow@gmail.com")
@@ -108,7 +108,7 @@ public class PatientMapperTest {
     }
 
     @Test
-    void toPatientPasswordEdit_PatientPasswordDTOIsMappedToPatient_PatientReturned(){
+    void toPatientPasswordEdit_PatientPasswordDTOIsMappedToPatient_PatientReturned() {
         //Given
         PatientPasswordDTO patientDTO = PatientPasswordDTO.builder()
                 .email("jankow@gmail.com")

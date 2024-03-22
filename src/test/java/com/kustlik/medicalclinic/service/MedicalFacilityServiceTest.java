@@ -26,14 +26,14 @@ public class MedicalFacilityServiceTest {
     private MedicalFacilityService medicalFacilityService;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         this.medicalFacilityRepository = Mockito.mock(MedicalFacilityRepository.class);
         this.doctorRepository = Mockito.mock(DoctorRepository.class);
         this.medicalFacilityService = new MedicalFacilityServiceImpl(medicalFacilityRepository, doctorRepository);
     }
 
     @Test
-    void getMedicalFacilities_ListOfMedicalFacilityExists_ListOfMedicalFacilityReturned(){
+    void getMedicalFacilities_ListOfMedicalFacilityExists_ListOfMedicalFacilityReturned() {
         // Given
         List<MedicalFacility> medicalFacilities = new ArrayList<>();
         when(medicalFacilityRepository.findAll()).thenReturn(medicalFacilities);
@@ -47,7 +47,7 @@ public class MedicalFacilityServiceTest {
     }
 
     @Test
-    void getMedicalFacilities_MedicalFacilitiesExists_ListOfMedicalFacilityReturned(){
+    void getMedicalFacilities_MedicalFacilitiesExists_ListOfMedicalFacilityReturned() {
         // Given
         List<MedicalFacility> medicalFacilities = new ArrayList<>();
         MedicalFacility medicalFacility = MedicalFacilityFactory.getMedicalFacility();
@@ -63,7 +63,7 @@ public class MedicalFacilityServiceTest {
     }
 
     @Test
-    void createMedicalFacility_NullMedicalFacilityIsGiven_EmptyFieldExceptionThrown(){
+    void createMedicalFacility_NullMedicalFacilityIsGiven_EmptyFieldExceptionThrown() {
         // Given
 
         // When
@@ -77,7 +77,7 @@ public class MedicalFacilityServiceTest {
     }
 
     @Test
-    void createMedicalFacility_MedicalFacilityWithSomeEmptyFieldsIsGiven_EmptyFieldExceptionThrown(){
+    void createMedicalFacility_MedicalFacilityWithSomeEmptyFieldsIsGiven_EmptyFieldExceptionThrown() {
         // Given
         MedicalFacility medicalFacility = MedicalFacilityFactory.getMedicalFacility(
                 1L,
@@ -99,7 +99,7 @@ public class MedicalFacilityServiceTest {
     }
 
     @Test
-    void createMedicalFacility_MedicalFacilityWithSameIdDoesExists_MedicalFacilityExistsExceptionThrown(){
+    void createMedicalFacility_MedicalFacilityWithSameIdDoesExists_MedicalFacilityExistsExceptionThrown() {
         // Given
         MedicalFacility medicalFacility = MedicalFacilityFactory.getMedicalFacility();
         when(medicalFacilityRepository.findByName(medicalFacility.getName())).thenReturn(Optional.of(medicalFacility));
@@ -115,7 +115,7 @@ public class MedicalFacilityServiceTest {
     }
 
     @Test
-    void createMedicalFacility_MedicalFacilityWithSameIdDoesNotExist_MedicalFacilityReturned(){
+    void createMedicalFacility_MedicalFacilityWithSameIdDoesNotExist_MedicalFacilityReturned() {
         // Given
         MedicalFacility medicalFacility = MedicalFacilityFactory.getMedicalFacility();
         when(medicalFacilityRepository.findByName(medicalFacility.getName())).thenReturn(Optional.empty());
@@ -130,7 +130,7 @@ public class MedicalFacilityServiceTest {
     }
 
     @Test
-    void assignMedicalFacilityToDoctor_DoctorWithGivenIdDoesNotExist_DoctorDoesNotExistExceptionThrown(){
+    void assignMedicalFacilityToDoctor_DoctorWithGivenIdDoesNotExist_DoctorDoesNotExistExceptionThrown() {
         // Given
         Long doctorID = 1L;
         Long medicalFacilityID = 1L;
@@ -147,7 +147,7 @@ public class MedicalFacilityServiceTest {
     }
 
     @Test
-    void assignMedicalFacilityToDoctor_MedicalFacilityWithGivenIdDoesNotExist_MedicalFacilityDoesNotExistExceptionThrown(){
+    void assignMedicalFacilityToDoctor_MedicalFacilityWithGivenIdDoesNotExist_MedicalFacilityDoesNotExistExceptionThrown() {
         // Given
         Long doctorID = 1L;
         Long medicalFacilityID = 1L;
@@ -166,7 +166,7 @@ public class MedicalFacilityServiceTest {
     }
 
     @Test
-    void assignMedicalFacilityToDoctor_AssignmentIsPresent_DoctorToMedicalFacilityAssignmentExistsExceptionThrown(){
+    void assignMedicalFacilityToDoctor_AssignmentIsPresent_DoctorToMedicalFacilityAssignmentExistsExceptionThrown() {
         // Given
         Long doctorID = 1L;
         Long medicalFacilityID = 1L;
@@ -188,7 +188,7 @@ public class MedicalFacilityServiceTest {
     }
 
     @Test
-    void assignMedicalFacilityToDoctor_AssignmentIsNotPresent_MedicalFacilityWithAssignedDoctorReturned(){
+    void assignMedicalFacilityToDoctor_AssignmentIsNotPresent_MedicalFacilityWithAssignedDoctorReturned() {
         // Given
         Long doctorID = 1L;
         Long medicalFacilityID = 1L;

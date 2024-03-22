@@ -26,14 +26,14 @@ public class DoctorServiceTest {
     private DoctorService doctorService;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         this.doctorRepository = Mockito.mock(DoctorRepository.class);
         this.medicalFacilityRepository = Mockito.mock(MedicalFacilityRepository.class);
         this.doctorService = new DoctorServiceImpl(doctorRepository, medicalFacilityRepository);
     }
 
     @Test
-    void getDoctors_ListOfDoctorExists_ListOfDoctorReturned(){
+    void getDoctors_ListOfDoctorExists_ListOfDoctorReturned() {
         // Given
         List<Doctor> doctors = new ArrayList<>();
         when(doctorRepository.findAll()).thenReturn(doctors);
@@ -47,7 +47,7 @@ public class DoctorServiceTest {
     }
 
     @Test
-    void getDoctors_DoctorsExists_ListOfDoctorReturned(){
+    void getDoctors_DoctorsExists_ListOfDoctorReturned() {
         // Given
         List<Doctor> doctors = new ArrayList<>();
         Doctor doctor = DoctorFactory.getDoctor();
@@ -63,7 +63,7 @@ public class DoctorServiceTest {
     }
 
     @Test
-    void createDoctor_NullDoctorIsGiven_EmptyFieldExceptionThrown(){
+    void createDoctor_NullDoctorIsGiven_EmptyFieldExceptionThrown() {
         // Given
 
         // When
@@ -77,7 +77,7 @@ public class DoctorServiceTest {
     }
 
     @Test
-    void createDoctor_DoctorWithSomeEmptyFieldsIsGiven_EmptyFieldExceptionThrown(){
+    void createDoctor_DoctorWithSomeEmptyFieldsIsGiven_EmptyFieldExceptionThrown() {
         // Given
         Doctor doctor = DoctorFactory.getDoctor(
                 1L,
@@ -99,7 +99,7 @@ public class DoctorServiceTest {
     }
 
     @Test
-    void createDoctor_DoctorWithSameEmailDoesExists_DoctorExistsExceptionThrown(){
+    void createDoctor_DoctorWithSameEmailDoesExists_DoctorExistsExceptionThrown() {
         // Given
         Doctor doctor = DoctorFactory.getDoctor();
         when(doctorRepository.findByEmail(doctor.getEmail())).thenReturn(Optional.of(doctor));
@@ -115,7 +115,7 @@ public class DoctorServiceTest {
     }
 
     @Test
-    void createDoctor_DoctorWithSameEmailDoesNotExist_DoctorReturned(){
+    void createDoctor_DoctorWithSameEmailDoesNotExist_DoctorReturned() {
         // Given
         Doctor doctor = DoctorFactory.getDoctor();
         when(doctorRepository.findByEmail(doctor.getEmail())).thenReturn(Optional.empty());
@@ -130,7 +130,7 @@ public class DoctorServiceTest {
     }
 
     @Test
-    void assignDoctorToMedicalFacility_DoctorWithGivenIdDoesNotExist_DoctorDoesNotExistExceptionThrown(){
+    void assignDoctorToMedicalFacility_DoctorWithGivenIdDoesNotExist_DoctorDoesNotExistExceptionThrown() {
         // Given
         Long doctorID = 1L;
         Long medicalFacilityID = 1L;
@@ -147,7 +147,7 @@ public class DoctorServiceTest {
     }
 
     @Test
-    void assignDoctorToMedicalFacility_MedicalFacilityWithGivenIdDoesNotExist_MedicalFacilityDoesNotExistExceptionThrown(){
+    void assignDoctorToMedicalFacility_MedicalFacilityWithGivenIdDoesNotExist_MedicalFacilityDoesNotExistExceptionThrown() {
         // Given
         Long doctorID = 1L;
         Long medicalFacilityID = 1L;
@@ -166,7 +166,7 @@ public class DoctorServiceTest {
     }
 
     @Test
-    void assignDoctorToMedicalFacility_AssignmentIsPresent_DoctorToMedicalFacilityAssignmentExistsExceptionThrown(){
+    void assignDoctorToMedicalFacility_AssignmentIsPresent_DoctorToMedicalFacilityAssignmentExistsExceptionThrown() {
         // Given
         Long doctorID = 1L;
         Long medicalFacilityID = 1L;
@@ -188,7 +188,7 @@ public class DoctorServiceTest {
     }
 
     @Test
-    void assignDoctorToMedicalFacility_AssignmentIsNotPresent_DoctorWithAssignedFacilityReturned(){
+    void assignDoctorToMedicalFacility_AssignmentIsNotPresent_DoctorWithAssignedFacilityReturned() {
         // Given
         Long doctorID = 1L;
         Long medicalFacilityID = 1L;

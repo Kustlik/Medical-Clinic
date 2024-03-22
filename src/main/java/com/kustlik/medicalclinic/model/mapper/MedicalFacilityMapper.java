@@ -15,14 +15,14 @@ import java.util.stream.Collectors;
 public interface MedicalFacilityMapper {
     @Mapping(source = "doctors", target = "doctorIds", qualifiedByName = "doctorListToIdList")
     MedicalFacilityDTO toDto(MedicalFacility medicalFacility);
+
     MedicalFacility toMedicalFacility(MedicalFacilityDTO medicalFacilityDTO);
 
     @Named("doctorListToIdList")
-    static List<Long> doctorListToIdList(List<Doctor> doctors){
-        if(doctors == null){
+    static List<Long> doctorListToIdList(List<Doctor> doctors) {
+        if (doctors == null) {
             return new ArrayList<>();
-        }
-        else{
+        } else {
             return doctors.stream().map(Doctor::getId).collect(Collectors.toList());
         }
     }

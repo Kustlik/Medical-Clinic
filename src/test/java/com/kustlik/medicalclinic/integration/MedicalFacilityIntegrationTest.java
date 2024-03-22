@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -169,7 +168,7 @@ public class MedicalFacilityIntegrationTest {
     }
 
     @Test
-    void createMedicalFacilityAssignment_ExistingAssignmentIsGiven_ThenIsBadRequest() throws  Exception{
+    void createMedicalFacilityAssignment_ExistingAssignmentIsGiven_ThenIsBadRequest() throws Exception {
         // Given
         String exceptionMsg = "Doctor is already assigned to this facility.";
         Long doctorId = 2L;
@@ -185,7 +184,7 @@ public class MedicalFacilityIntegrationTest {
     }
 
     @Test
-    void createMedicalFacilityAssignment_DoctorDoesNotExist_ThenIsNotFound() throws  Exception{
+    void createMedicalFacilityAssignment_DoctorDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
         String exceptionMsg = "Doctor does not exist.";
         Long doctorId = 5L;
@@ -201,7 +200,7 @@ public class MedicalFacilityIntegrationTest {
     }
 
     @Test
-    void createMedicalFacilityAssignment_MedicalFacilityDoesNotExist_ThenIsNotFound() throws  Exception{
+    void createMedicalFacilityAssignment_MedicalFacilityDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
         String exceptionMsg = "Medical facility does not exist.";
         Long doctorId = 1L;
@@ -217,7 +216,7 @@ public class MedicalFacilityIntegrationTest {
     }
 
     @Test
-    void createMedicalFacilityAssignment_ValidAssignmentIsGiven_MedicalFacilityDTOReturned() throws  Exception{
+    void createMedicalFacilityAssignment_ValidAssignmentIsGiven_MedicalFacilityDTOReturned() throws Exception {
         // Given
         Long doctorId = 1L;
         Long medicalFacilityId = 1L;

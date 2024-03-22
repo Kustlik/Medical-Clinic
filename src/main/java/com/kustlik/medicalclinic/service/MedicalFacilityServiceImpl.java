@@ -13,19 +13,21 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class MedicalFacilityServiceImpl implements MedicalFacilityService{
+public class MedicalFacilityServiceImpl implements MedicalFacilityService {
     private final MedicalFacilityRepository medicalFacilityRepository;
     private final DoctorRepository doctorRepository;
-    public List<MedicalFacility> getMedicalFacilities(){
+
+    public List<MedicalFacility> getMedicalFacilities() {
         return medicalFacilityRepository.findAll();
     }
-    public MedicalFacility getMedicalFacility(Long id){
+
+    public MedicalFacility getMedicalFacility(Long id) {
         return medicalFacilityRepository.findById(id)
                 .orElseThrow(() -> new MedicalFacilityDoesNotExistException("Medical facility not found."));
     }
 
     @Transactional
-    public MedicalFacility createMedicalFacility(MedicalFacility medicalFacility){
+    public MedicalFacility createMedicalFacility(MedicalFacility medicalFacility) {
         if (medicalFacility == null || !medicalFacility.validateMedicalFacility())
             throw new EmptyFieldException("No empty argument is allowed.");
         var existingFacility = medicalFacilityRepository.findByName(medicalFacility.getName());
@@ -35,7 +37,7 @@ public class MedicalFacilityServiceImpl implements MedicalFacilityService{
     }
 
     @Transactional
-    public MedicalFacility assignMedicalFacilityToDoctor(Long medicalFacilityID, Long doctorID){
+    public MedicalFacility assignMedicalFacilityToDoctor(Long medicalFacilityID, Long doctorID) {
         if (doctorID == null || medicalFacilityID == null)
             throw new EmptyFieldException("No empty argument is allowed.");
         var existingDoctor = doctorRepository.findById(doctorID);

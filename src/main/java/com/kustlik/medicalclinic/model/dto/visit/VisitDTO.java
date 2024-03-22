@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 @Getter
 @EqualsAndHashCode
 public class VisitDTO {
-    final private LocalDateTime appointment;
-    final private int duration;
+    final private LocalDateTime appointmentStart;
+    final private LocalDateTime appointmentEnd;
     final private Long doctorId;
     final private Long patientId;
 }

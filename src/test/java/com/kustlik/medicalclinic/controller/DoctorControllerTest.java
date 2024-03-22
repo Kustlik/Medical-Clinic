@@ -5,7 +5,6 @@ import com.kustlik.medicalclinic.exception.*;
 import com.kustlik.medicalclinic.factory.DoctorFactory;
 import com.kustlik.medicalclinic.factory.MedicalFacilityFactory;
 import com.kustlik.medicalclinic.model.dto.doctor.DoctorCreationDTO;
-import com.kustlik.medicalclinic.model.dto.doctor.DoctorDTO;
 import com.kustlik.medicalclinic.model.entity.Doctor;
 import com.kustlik.medicalclinic.model.entity.MedicalFacility;
 import com.kustlik.medicalclinic.model.mapper.DoctorMapper;
@@ -20,9 +19,12 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -151,7 +153,7 @@ public class DoctorControllerTest {
     }
 
     @Test
-    void createDoctorAssignment_ExistingAssignmentIsGiven_ThenIsBadRequest() throws  Exception{
+    void createDoctorAssignment_ExistingAssignmentIsGiven_ThenIsBadRequest() throws Exception {
         // Given
         String exceptionMsg = "Doctor is already assigned to this facility.";
         Long doctorId = 1L;
@@ -168,7 +170,7 @@ public class DoctorControllerTest {
     }
 
     @Test
-    void createDoctorAssignment_DoctorDoesNotExist_ThenIsNotFound() throws  Exception{
+    void createDoctorAssignment_DoctorDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
         String exceptionMsg = "Doctor does not exist.";
         Long doctorId = 1L;
@@ -185,7 +187,7 @@ public class DoctorControllerTest {
     }
 
     @Test
-    void createDoctorAssignment_MedicalFacilityDoesNotExist_ThenIsNotFound() throws  Exception{
+    void createDoctorAssignment_MedicalFacilityDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
         String exceptionMsg = "Medical facility does not exist.";
         Long doctorId = 1L;
@@ -202,7 +204,7 @@ public class DoctorControllerTest {
     }
 
     @Test
-    void createDoctorAssignment_ValidAssignmentIsGiven_DoctorDTOReturned() throws  Exception{
+    void createDoctorAssignment_ValidAssignmentIsGiven_DoctorDTOReturned() throws Exception {
         // Given
         Long doctorId = 1L;
         Long medicalFacilityId = 1L;
