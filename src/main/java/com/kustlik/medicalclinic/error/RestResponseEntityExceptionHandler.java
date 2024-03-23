@@ -71,7 +71,25 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(value = {VisitWithNoAssignedDoctorException.class})
     protected ResponseEntity<Object> handleVisitWithNoAssignedDoctor(final RuntimeException ex, final WebRequest request) {
-        final String bodyOfResponse = ex.getMessage();
+        final String bodyOfResponse = "Visit has no assigned doctor.";
+        return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(value = {VisitExistsException.class})
+    protected ResponseEntity<Object> handleVisitExists(final RuntimeException ex, final WebRequest request) {
+        final String bodyOfResponse = "Visit already exists.";
+        return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(value = {VisitDoesNotExistException.class})
+    protected ResponseEntity<Object> handleVisitDoesNotExist(final RuntimeException ex, final WebRequest request) {
+        final String bodyOfResponse = "Visit does not exist.";
+        return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(value = {InvalidDateTimeException.class})
+    protected ResponseEntity<Object> handleInvalidDateTime(final RuntimeException ex, final WebRequest request) {
+        final String bodyOfResponse = "Wrong time period.";
         return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 }

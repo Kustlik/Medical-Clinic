@@ -55,7 +55,7 @@ public class MedicalFacilityIntegrationTest {
     private MockMvc mockMvc;
 
     @Test
-    void getMedicalFacilities_MedicalFacilitiesExists_ListOfMedicalFacilitiesReturned() throws Exception {
+    void getMedicalFacilities_MedicalFacilitiesExists_ListOfMedicalFacilityDTOReturned() throws Exception {
         // Given
 
         // When
@@ -92,7 +92,7 @@ public class MedicalFacilityIntegrationTest {
     }
 
     @Test
-    void getMedicalFacility_MedicalFacilityExists_MedicalFacilityReturned() throws Exception {
+    void getMedicalFacility_MedicalFacilityExists_MedicalFacilityDTOReturned() throws Exception {
         // Given
         Long id = 1L;
         // When

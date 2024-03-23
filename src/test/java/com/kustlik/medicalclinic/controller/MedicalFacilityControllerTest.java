@@ -45,7 +45,7 @@ public class MedicalFacilityControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    void getMedicalFacilities_MedicalFacilitiesExists_ListOfMedicalFacilitiesReturned() throws Exception {
+    void getMedicalFacilities_MedicalFacilitiesExists_ListOfMedicalFacilityDTOReturned() throws Exception {
         // Given
         MedicalFacility medicalFacility = MedicalFacilityFactory.getMedicalFacility();
         List<MedicalFacility> medicalFacilities = List.of(medicalFacility);
@@ -80,7 +80,7 @@ public class MedicalFacilityControllerTest {
     }
 
     @Test
-    void getMedicalFacility_MedicalFacilityExists_MedicalFacilityReturned() throws Exception {
+    void getMedicalFacility_MedicalFacilityExists_MedicalFacilityDTOReturned() throws Exception {
         // Given
         MedicalFacility medicalFacility = MedicalFacilityFactory.getMedicalFacility();
         Long id = medicalFacility.getId();

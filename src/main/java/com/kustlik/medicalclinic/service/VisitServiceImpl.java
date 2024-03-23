@@ -1,6 +1,7 @@
 package com.kustlik.medicalclinic.service;
 
 import com.kustlik.medicalclinic.exception.DoctorDoesNotExistException;
+import com.kustlik.medicalclinic.exception.PatientDoesNotExistException;
 import com.kustlik.medicalclinic.model.entity.Visit;
 import com.kustlik.medicalclinic.repository.DoctorRepository;
 import com.kustlik.medicalclinic.repository.PatientRepository;
@@ -46,11 +47,11 @@ public class VisitServiceImpl implements VisitService {
     public Visit assignVisitToPatient(Long visitID, Long patientID) {
         var existingPatient = patientRepository.findById(patientID);
         if (existingPatient.isEmpty()) {
-            throw new DoctorDoesNotExistException("Patient with given ID does not exist.");
+            throw new PatientDoesNotExistException("Patient with given ID does not exist.");
         }
-        var existingVisit = visitValidator.getExistingVisit(visitID);
+        var existingVisit = visitValidator.visitExists(visitID);
         visitValidator.validateVisitAssignment(existingVisit);
         existingVisit.setPatient(existingPatient.get());
-        return existingVisit;
+        return visitRepository.save(existingVisit);
     }
 }

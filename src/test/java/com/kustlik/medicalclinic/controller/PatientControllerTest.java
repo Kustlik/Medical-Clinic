@@ -48,7 +48,7 @@ public class PatientControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    void getPatients_PatientsExists_ListOfPatientsReturned() throws Exception {
+    void getPatients_PatientsExists_ListOfPatientDTOReturned() throws Exception {
         // Given
         Patient patient = PatientFactory.getPatient();
         List<Patient> patients = List.of(patient);
@@ -83,7 +83,7 @@ public class PatientControllerTest {
     }
 
     @Test
-    void getPatient_PatientExists_PatientReturned() throws Exception {
+    void getPatient_PatientExists_PatientDTOReturned() throws Exception {
         // Given
         Patient patient = PatientFactory.getPatient();
         String email = patient.getEmail();
