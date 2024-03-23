@@ -1,6 +1,5 @@
 package com.kustlik.medicalclinic.model.mapper;
 
-import com.kustlik.medicalclinic.exception.VisitWithNoAssignedDoctorException;
 import com.kustlik.medicalclinic.model.dto.visit.VisitCreationDTO;
 import com.kustlik.medicalclinic.model.dto.visit.VisitDTO;
 import com.kustlik.medicalclinic.model.entity.Doctor;

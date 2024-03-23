@@ -1,7 +1,9 @@
 package com.kustlik.medicalclinic.service.validator;
 
-import com.kustlik.medicalclinic.exception.*;
-import com.kustlik.medicalclinic.factory.DoctorFactory;
+import com.kustlik.medicalclinic.exception.EmptyFieldException;
+import com.kustlik.medicalclinic.exception.InvalidDateTimeException;
+import com.kustlik.medicalclinic.exception.VisitDoesNotExistException;
+import com.kustlik.medicalclinic.exception.VisitExistsException;
 import com.kustlik.medicalclinic.factory.VisitFactory;
 import com.kustlik.medicalclinic.model.entity.Visit;
 import com.kustlik.medicalclinic.repository.VisitRepository;
@@ -20,6 +22,7 @@ public class VisitValidatorTest {
     private static final int YEAR = LocalDateTime.now().getYear() + 1;
     private VisitRepository visitRepository;
     private VisitValidator visitValidator;
+
     @BeforeEach
     void setup() {
         this.visitRepository = Mockito.mock(VisitRepository.class);
@@ -27,7 +30,7 @@ public class VisitValidatorTest {
     }
 
     @Test
-    void validateVisitCreation_VisitWithSomeEmptyFieldsGiven_EmptyFieldExceptionThrown(){
+    void validateVisitCreation_VisitWithSomeEmptyFieldsGiven_EmptyFieldExceptionThrown() {
         // Given
         Long doctorID = 1L;
         Visit visit = VisitFactory.getVisit(
@@ -47,7 +50,7 @@ public class VisitValidatorTest {
     }
 
     @Test
-    void validateVisitCreation_VisitGivenIsPast_InvalidDateTimeExceptionThrown(){
+    void validateVisitCreation_VisitGivenIsPast_InvalidDateTimeExceptionThrown() {
         // Given
         Long doctorID = 1L;
         Visit visit = VisitFactory.getVisit(
@@ -67,7 +70,7 @@ public class VisitValidatorTest {
     }
 
     @Test
-    void validateVisitCreation_VisitGivenEndsBeforeStart_InvalidDateTimeExceptionThrown(){
+    void validateVisitCreation_VisitGivenEndsBeforeStart_InvalidDateTimeExceptionThrown() {
         // Given
         Long doctorID = 1L;
         Visit visit = VisitFactory.getVisit(
@@ -87,7 +90,7 @@ public class VisitValidatorTest {
     }
 
     @Test
-    void validateVisitCreation_VisitGivenIsNotReservedInFullQuarterOfAnHour_InvalidDateTimeExceptionThrown(){
+    void validateVisitCreation_VisitGivenIsNotReservedInFullQuarterOfAnHour_InvalidDateTimeExceptionThrown() {
         // Given
         Long doctorID = 1L;
         Visit visit = VisitFactory.getVisit(
@@ -107,7 +110,7 @@ public class VisitValidatorTest {
     }
 
     @Test
-    void validateVisitCreation_VisitGivenIsShorterThanMinDuration_InvalidDateTimeExceptionThrown(){
+    void validateVisitCreation_VisitGivenIsShorterThanMinDuration_InvalidDateTimeExceptionThrown() {
         // Given
         int shorterThanMin = VisitValidator.MIN_VISIT_DURATION_IN_MINUTES - 1;
         Long doctorID = 1L;
@@ -128,7 +131,7 @@ public class VisitValidatorTest {
     }
 
     @Test
-    void validateVisitCreation_VisitGivenIsLongerThanMaxDuration_InvalidDateTimeExceptionThrown(){
+    void validateVisitCreation_VisitGivenIsLongerThanMaxDuration_InvalidDateTimeExceptionThrown() {
         // Given
         int longerThanMax = VisitValidator.MAX_VISIT_DURATION_IN_HOURS + 1;
         int hour = 12 + longerThanMax;
@@ -150,7 +153,7 @@ public class VisitValidatorTest {
     }
 
     @Test
-    void validateVisitCreation_VisitGivenOverlapsWithExistingOne_VisitExistsExceptionThrown(){
+    void validateVisitCreation_VisitGivenOverlapsWithExistingOne_VisitExistsExceptionThrown() {
         // Given
         Long doctorID = 1L;
         Visit visit = VisitFactory.getVisit();
@@ -169,7 +172,7 @@ public class VisitValidatorTest {
     }
 
     @Test
-    void validateVisitCreation_ValidVisitIsGiven_ExceptionIsNotThrown(){
+    void validateVisitCreation_ValidVisitIsGiven_ExceptionIsNotThrown() {
         // Given
         Long doctorID = 1L;
         Visit visit = VisitFactory.getVisit();
@@ -184,7 +187,7 @@ public class VisitValidatorTest {
     }
 
     @Test
-    void validateVisitAssignment_VisitGivenIsPast_InvalidDateTimeExceptionThrown(){
+    void validateVisitAssignment_VisitGivenIsPast_InvalidDateTimeExceptionThrown() {
         // Given
         Visit visit = VisitFactory.getVisit(
                 1L,
@@ -203,7 +206,7 @@ public class VisitValidatorTest {
     }
 
     @Test
-    void validateVisitAssignment_ValidVisitIsGiven_ExceptionIsNotThrown(){
+    void validateVisitAssignment_ValidVisitIsGiven_ExceptionIsNotThrown() {
         // Given
         Visit visit = VisitFactory.getVisit();
 
@@ -214,7 +217,7 @@ public class VisitValidatorTest {
     }
 
     @Test
-    void visitExists_VisitDoesNotExist_VisitDoesNotExistExceptionThrown(){
+    void visitExists_VisitDoesNotExist_VisitDoesNotExistExceptionThrown() {
         // Given
         Long visitID = 1L;
         when(visitRepository.findById(visitID)).thenReturn(Optional.empty());
@@ -229,7 +232,7 @@ public class VisitValidatorTest {
     }
 
     @Test
-    void visitExists_VisitDoesExist_VisitReturned(){
+    void visitExists_VisitDoesExist_VisitReturned() {
         // Given
         Long visitID = 1L;
         Visit visit = VisitFactory.getVisit();

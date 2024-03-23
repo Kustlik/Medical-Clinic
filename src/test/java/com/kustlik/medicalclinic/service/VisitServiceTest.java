@@ -38,7 +38,7 @@ public class VisitServiceTest {
     }
 
     @Test
-    void getFreeVisits_ListOfFreeVisitsExists_ListOfVisitReturned(){
+    void getFreeVisits_ListOfFreeVisitsExists_ListOfVisitReturned() {
         // Given
         Visit visit = VisitFactory.getVisit();
         List<Visit> visits = List.of(visit);
@@ -52,7 +52,7 @@ public class VisitServiceTest {
     }
 
     @Test
-    void getFreeVisitsByDoctor_ListOfFreeVisitsExists_ListOfVisitReturned(){
+    void getFreeVisitsByDoctor_ListOfFreeVisitsExists_ListOfVisitReturned() {
         // Given
         Visit visit = VisitFactory.getVisit();
         List<Visit> visits = List.of(visit);
@@ -66,7 +66,7 @@ public class VisitServiceTest {
     }
 
     @Test
-    void getVisitsByPatient_ListOfVisitsForPatientExists_ListOfVisitReturned(){
+    void getVisitsByPatient_ListOfVisitsForPatientExists_ListOfVisitReturned() {
         // Given
         Visit visit = VisitFactory.getVisit();
         List<Visit> visits = List.of(visit);
@@ -80,7 +80,7 @@ public class VisitServiceTest {
     }
 
     @Test
-    void createVisit_ValidVisitToCreationIsGiven_CreatedVisitReturned(){
+    void createVisit_ValidVisitToCreationIsGiven_CreatedVisitReturned() {
         // Given
         Visit visit = VisitFactory.getVisit();
         Doctor doctor = DoctorFactory.getDoctor();
@@ -96,7 +96,7 @@ public class VisitServiceTest {
     }
 
     @Test
-    void assignVisitToPatient_ValidVisitToAssignIsGiven_AssignedVisitReturned(){
+    void assignVisitToPatient_ValidVisitToAssignIsGiven_AssignedVisitReturned() {
         // Given
         Visit visit = VisitFactory.getVisit();
         Patient patient = PatientFactory.getPatient();

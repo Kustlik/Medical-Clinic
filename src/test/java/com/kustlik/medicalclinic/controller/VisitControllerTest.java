@@ -2,15 +2,10 @@ package com.kustlik.medicalclinic.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kustlik.medicalclinic.exception.*;
-import com.kustlik.medicalclinic.factory.DoctorFactory;
 import com.kustlik.medicalclinic.factory.VisitFactory;
-import com.kustlik.medicalclinic.model.dto.doctor.DoctorCreationDTO;
 import com.kustlik.medicalclinic.model.dto.visit.VisitDTO;
-import com.kustlik.medicalclinic.model.entity.Doctor;
 import com.kustlik.medicalclinic.model.entity.Visit;
-import com.kustlik.medicalclinic.model.mapper.DoctorMapper;
 import com.kustlik.medicalclinic.model.mapper.VisitMapper;
-import com.kustlik.medicalclinic.service.DoctorService;
 import com.kustlik.medicalclinic.service.VisitService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +15,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
-import java.time.Year;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

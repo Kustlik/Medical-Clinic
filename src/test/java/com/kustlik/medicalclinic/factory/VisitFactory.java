@@ -7,12 +7,11 @@ import com.kustlik.medicalclinic.model.entity.Patient;
 import com.kustlik.medicalclinic.model.entity.Visit;
 
 import java.time.LocalDateTime;
-import java.time.Year;
 
 public class VisitFactory {
     private static int YEAR = 2029;
 
-    public static Visit getVisit(){
+    public static Visit getVisit() {
         return getVisit(
                 1L,
                 LocalDateTime.of(YEAR, 1, 1, 12, 0),
@@ -20,7 +19,8 @@ public class VisitFactory {
                 null,
                 null);
     }
-    public static Visit getVisit(Long id, LocalDateTime appointmentStart, LocalDateTime appointmentEnd, Doctor doctor, Patient patient){
+
+    public static Visit getVisit(Long id, LocalDateTime appointmentStart, LocalDateTime appointmentEnd, Doctor doctor, Patient patient) {
         return Visit.builder()
                 .id(id)
                 .appointmentStart(appointmentStart)
@@ -30,14 +30,15 @@ public class VisitFactory {
                 .build();
     }
 
-    public static VisitDTO getVisitDTO(){
+    public static VisitDTO getVisitDTO() {
         return getVisitDTO(
                 LocalDateTime.of(YEAR, 1, 1, 12, 0),
                 LocalDateTime.of(YEAR, 1, 1, 12, 30),
                 null,
                 null);
     }
-    public static VisitDTO getVisitDTO(LocalDateTime appointmentStart, LocalDateTime appointmentEnd, Long doctorId, Long patientId){
+
+    public static VisitDTO getVisitDTO(LocalDateTime appointmentStart, LocalDateTime appointmentEnd, Long doctorId, Long patientId) {
         return VisitDTO.builder()
                 .appointmentStart(appointmentStart)
                 .appointmentEnd(appointmentEnd)
@@ -46,12 +47,13 @@ public class VisitFactory {
                 .build();
     }
 
-    public static VisitCreationDTO getVisitCreationDTO(){
+    public static VisitCreationDTO getVisitCreationDTO() {
         return getVisitCreationDTO(
                 LocalDateTime.of(YEAR, 1, 1, 12, 0),
                 LocalDateTime.of(YEAR, 1, 1, 12, 30));
     }
-    public static VisitCreationDTO getVisitCreationDTO(LocalDateTime appointmentStart, LocalDateTime appointmentEnd){
+
+    public static VisitCreationDTO getVisitCreationDTO(LocalDateTime appointmentStart, LocalDateTime appointmentEnd) {
         return VisitCreationDTO.builder()
                 .appointmentStart(appointmentStart)
                 .appointmentEnd(appointmentEnd)

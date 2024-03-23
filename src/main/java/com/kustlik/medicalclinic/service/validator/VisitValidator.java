@@ -1,6 +1,9 @@
 package com.kustlik.medicalclinic.service.validator;
 
-import com.kustlik.medicalclinic.exception.*;
+import com.kustlik.medicalclinic.exception.EmptyFieldException;
+import com.kustlik.medicalclinic.exception.InvalidDateTimeException;
+import com.kustlik.medicalclinic.exception.VisitDoesNotExistException;
+import com.kustlik.medicalclinic.exception.VisitExistsException;
 import com.kustlik.medicalclinic.model.entity.Visit;
 import com.kustlik.medicalclinic.repository.VisitRepository;
 import lombok.RequiredArgsConstructor;
