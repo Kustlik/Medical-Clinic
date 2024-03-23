@@ -1,5 +1,6 @@
 package com.kustlik.medicalclinic.service.validator;
 
+import com.kustlik.medicalclinic.exception.*;
 import com.kustlik.medicalclinic.model.entity.Visit;
 import com.kustlik.medicalclinic.repository.VisitRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +14,8 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class VisitValidator {
     private final VisitRepository visitRepository;
-    private final static int MIN_VISIT_DURATION = 15;
-    private final static int MAX_VISIT_DURATION = 60;
+    public final static int MIN_VISIT_DURATION_IN_MINUTES = 15;
+    public final static int MAX_VISIT_DURATION_IN_HOURS = 1;
 
     public void validateVisitCreation(Visit visit, Long doctorID) {
         validateVisit(visit);
@@ -30,10 +31,10 @@ public class VisitValidator {
         visitIsNotPast(visit);
     }
 
-    public Visit getExistingVisit(Long visitID) {
+    public Visit visitExists(Long visitID) {
         var existingVisit = visitRepository.findById(visitID);
         if (existingVisit.isEmpty()) {
-            throw new RuntimeException("Visit with given ID does not exist.");
+            throw new VisitDoesNotExistException("Visit with given ID does not exist.");
         }
         return existingVisit.get();
     }
@@ -41,7 +42,7 @@ public class VisitValidator {
     private void visitIsNotPast(Visit visit) {
         LocalDateTime startTime = visit.getAppointmentStart();
         if (startTime.isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("Unable to create a visit for past dates.");
+            throw new InvalidDateTimeException("Unable to create a visit for past dates.");
         }
     }
 
@@ -49,30 +50,30 @@ public class VisitValidator {
         LocalDateTime startTime = visit.getAppointmentStart();
         LocalDateTime endTime = visit.getAppointmentEnd();
         if (endTime.isBefore(startTime) || endTime.isEqual(startTime)) {
-            throw new RuntimeException("End time should be after start time.");
+            throw new InvalidDateTimeException("End time should be after start time.");
         }
     }
 
     private void visitReservedInFullQuarterOfAnHour(Visit visit) {
         LocalDateTime startTime = visit.getAppointmentStart();
         if (startTime.getMinute() % 15 != 0) {
-            throw new RuntimeException("Visit creation is possible only for a full quarter of an hour.");
+            throw new InvalidDateTimeException("Visit creation is possible only for a full quarter of an hour.");
         }
     }
 
     private void visitIsLongerThanMinDuration(Visit visit) {
         LocalDateTime startTime = visit.getAppointmentStart();
         LocalDateTime endTime = visit.getAppointmentEnd();
-        if (endTime.isBefore(startTime.plusMinutes(MIN_VISIT_DURATION))) {
-            throw new RuntimeException("Visit should have minimal duration of " + MIN_VISIT_DURATION + " min.");
+        if (endTime.isBefore(startTime.plusMinutes(MIN_VISIT_DURATION_IN_MINUTES))) {
+            throw new InvalidDateTimeException("Visit should have minimal duration of " + MIN_VISIT_DURATION_IN_MINUTES + " min.");
         }
     }
 
     private void visitIsShorterThanMaxDuration(Visit visit) {
         LocalDateTime startTime = visit.getAppointmentStart();
         LocalDateTime endTime = visit.getAppointmentEnd();
-        if (endTime.isAfter(startTime.plusMinutes(MAX_VISIT_DURATION))) {
-            throw new RuntimeException("Visit should have maximal duration of " + MAX_VISIT_DURATION + " min.");
+        if (endTime.isAfter(startTime.plusHours(MAX_VISIT_DURATION_IN_HOURS))) {
+            throw new InvalidDateTimeException("Visit should have maximal duration of " + MAX_VISIT_DURATION_IN_HOURS + " hours.");
         }
     }
 
@@ -81,14 +82,14 @@ public class VisitValidator {
                 visit.getAppointmentStart(),
                 visit.getAppointmentEnd(),
                 doctorID).isEmpty()) {
-            throw new RuntimeException("Visit could not be created, there will be another visit at this time.");
+            throw new VisitExistsException("Visit could not be created, there will be another visit at this time.");
         }
     }
 
     public void validateVisit(Visit visit) {
         if (Stream.of(visit.getAppointmentStart(), visit.getAppointmentEnd())
                 .anyMatch(Objects::isNull)) {
-            throw new RuntimeException("Visit has some null fields, please fill everything correctly.");
+            throw new EmptyFieldException("Visit has some null fields, please fill everything correctly.");
         }
     }
 }

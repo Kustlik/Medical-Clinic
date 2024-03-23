@@ -25,7 +25,7 @@ public interface VisitMapper {
         if (doctor != null) {
             return doctor.getId();
         } else {
-            throw new VisitWithNoAssignedDoctorException("The visit has no doctor assigned.");
+            return null;
         }
     }
 

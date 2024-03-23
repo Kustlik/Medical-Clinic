@@ -21,7 +21,7 @@ public class Visit {
     @ManyToOne()
     @JoinColumn(name = "DOCTOR_ID")
     private Doctor doctor;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "PATIENT_ID")
     private Patient patient;
 

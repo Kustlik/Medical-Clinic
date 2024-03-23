@@ -48,7 +48,7 @@ class PatientIntegrationTest {
     private MockMvc mockMvc;
 
     @Test
-    void getPatients_PatientsExists_ListOfPatientsReturned() throws Exception {
+    void getPatients_PatientsExists_ListOfPatientDTOReturned() throws Exception {
         // Given
 
         // When
@@ -85,7 +85,7 @@ class PatientIntegrationTest {
     }
 
     @Test
-    void getPatient_PatientExists_PatientReturned() throws Exception {
+    void getPatient_PatientExists_PatientDTOReturned() throws Exception {
         // Given
         String email = "boczek@gmail.com";
         // When
