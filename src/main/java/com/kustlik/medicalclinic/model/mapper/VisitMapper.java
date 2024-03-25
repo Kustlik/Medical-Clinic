@@ -23,17 +23,15 @@ public interface VisitMapper {
     static Long doctorToId(Doctor doctor) {
         if (doctor != null) {
             return doctor.getId();
-        } else {
-            return null;
         }
+        return null;
     }
 
     @Named("patientToId")
     static Long patientToId(Patient patient) {
         if (patient != null) {
             return patient.getId();
-        } else {
-            return null;
         }
+        return null;
     }
 }

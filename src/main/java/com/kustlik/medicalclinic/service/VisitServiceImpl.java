@@ -21,8 +21,16 @@ public class VisitServiceImpl implements VisitService {
     private final VisitRepository visitRepository;
     private final VisitValidator visitValidator;
 
+    public List<Visit> getVisits() {
+        return visitRepository.findAll();
+    }
+
     public List<Visit> getFreeVisits() {
         return visitRepository.findByPatientIdIsNull();
+    }
+
+    public List<Visit> getVisitsByDoctor(Long doctorID) {
+        return visitRepository.findByDoctorId(doctorID);
     }
 
     public List<Visit> getFreeVisitsByDoctor(Long doctorID) {

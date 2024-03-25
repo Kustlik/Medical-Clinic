@@ -1,7 +1,6 @@
 package com.kustlik.medicalclinic.repository;
 
 import com.kustlik.medicalclinic.model.entity.Visit;
-import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,9 +10,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface VisitRepository extends JpaRepository<Visit, Long> {
-    @NonNull Optional<Visit> findById(@NonNull Long id);
+    Optional<Visit> findById(Long id);
 
-    List<Visit> findByDoctorIdAndPatientIdIsNull(@NonNull Long doctor);
+    List<Visit> findByDoctorId(Long id);
+
+    List<Visit> findByDoctorIdAndPatientIdIsNull(Long doctor);
 
     List<Visit> findByPatientIdIsNull();
 

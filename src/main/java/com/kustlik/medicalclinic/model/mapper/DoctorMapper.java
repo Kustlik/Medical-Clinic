@@ -25,17 +25,15 @@ public interface DoctorMapper {
     static List<Long> facilityListToIdList(List<MedicalFacility> medicalFacilities) {
         if (medicalFacilities == null) {
             return new ArrayList<>();
-        } else {
-            return medicalFacilities.stream().map(MedicalFacility::getId).collect(Collectors.toList());
         }
+        return medicalFacilities.stream().map(MedicalFacility::getId).collect(Collectors.toList());
     }
 
     @Named("visitListToIdList")
     static List<Long> visitListToIdList(List<Visit> visits) {
         if (visits == null) {
             return new ArrayList<>();
-        } else {
-            return visits.stream().map(Visit::getId).collect(Collectors.toList());
         }
+        return visits.stream().map(Visit::getId).collect(Collectors.toList());
     }
 }

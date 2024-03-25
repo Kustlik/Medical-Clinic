@@ -10,6 +10,6 @@ import java.time.LocalDateTime;
 @Getter
 @EqualsAndHashCode
 public class VisitCreationDTO {
-    final private LocalDateTime appointmentStart;
-    final private LocalDateTime appointmentEnd;
+    private final LocalDateTime appointmentStart;
+    private final LocalDateTime appointmentEnd;
 }

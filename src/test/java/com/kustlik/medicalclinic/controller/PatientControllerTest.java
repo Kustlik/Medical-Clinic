@@ -71,7 +71,7 @@ public class PatientControllerTest {
         // Given
         String exceptionMsg = "Patient does not exist.";
         String email = PatientFactory.getPatient().getEmail();
-        when(patientService.getPatient(email)).thenThrow(PatientDoesNotExistException.class);
+        when(patientService.getPatient(email)).thenThrow(new PatientDoesNotExistException(exceptionMsg));
         // When
 
         // Then
@@ -112,7 +112,7 @@ public class PatientControllerTest {
                 null,
                 "password123",
                 null);
-        when(patientService.createPatient(any())).thenThrow(EmptyFieldException.class);
+        when(patientService.createPatient(any())).thenThrow(new EmptyFieldException(exceptionMsg));
         // When
 
         // Then
@@ -128,7 +128,7 @@ public class PatientControllerTest {
         // Given
         String exceptionMsg = "Patient already exists.";
         PatientCreationDTO patientDTO = PatientFactory.getPatientCreationDTO();
-        when(patientService.createPatient(any())).thenThrow(PatientExistsException.class);
+        when(patientService.createPatient(any())).thenThrow(new PatientExistsException(exceptionMsg));
         // When
 
         // Then
@@ -163,7 +163,7 @@ public class PatientControllerTest {
         // Given
         String exceptionMsg = "Patient does not exist.";
         String email = PatientFactory.getPatient().getEmail();
-        doThrow(PatientDoesNotExistException.class).when(patientService).deletePatient(email);
+        doThrow(new PatientDoesNotExistException(exceptionMsg)).when(patientService).deletePatient(email);
         // When
 
         // Then
@@ -196,7 +196,7 @@ public class PatientControllerTest {
         PatientDTO patientDTO = PatientFactory.getPatientDTO();
         Patient patient = patientMapper.toPatient(patientDTO);
         String email = patient.getEmail();
-        when(patientService.editPatient(any(), any())).thenThrow(PatientDoesNotExistException.class);
+        when(patientService.editPatient(any(), any())).thenThrow(new PatientDoesNotExistException(exceptionMsg));
         // When
 
         // Then
@@ -214,7 +214,7 @@ public class PatientControllerTest {
         PatientDTO patientDTO = PatientFactory.getPatientDTO();
         Patient patient = patientMapper.toPatient(patientDTO);
         String email = patient.getEmail();
-        when(patientService.editPatient(any(), any())).thenThrow(PatientExistsException.class);
+        when(patientService.editPatient(any(), any())).thenThrow(new PatientExistsException(exceptionMsg));
         // When
 
         // Then
@@ -236,7 +236,7 @@ public class PatientControllerTest {
                 null);
         Patient patient = patientMapper.toPatient(patientDTO);
         String email = patient.getEmail();
-        when(patientService.editPatient(any(), any())).thenThrow(EmptyFieldException.class);
+        when(patientService.editPatient(any(), any())).thenThrow(new EmptyFieldException(exceptionMsg));
         // When
 
         // Then
@@ -278,7 +278,7 @@ public class PatientControllerTest {
         PatientPasswordDTO patientDTO = PatientFactory.getPatientPasswordDTO();
         Patient patientPassword = patientMapper.toPatient(patientDTO);
         String email = patientDTO.getEmail();
-        doThrow(PatientDoesNotExistException.class).when(patientService).editPatientPassword(any(), any());
+        doThrow(new PatientDoesNotExistException(exceptionMsg)).when(patientService).editPatientPassword(any(), any());
         // When
 
         // Then
@@ -298,7 +298,7 @@ public class PatientControllerTest {
                 null);
         Patient patientPassword = patientMapper.toPatient(patientDTO);
         String email = patientDTO.getEmail();
-        doThrow(EmptyFieldException.class).when(patientService).editPatientPassword(any(), any());
+        doThrow(new EmptyFieldException(exceptionMsg)).when(patientService).editPatientPassword(any(), any());
         // When
 
         // Then

@@ -19,8 +19,7 @@ public class MedicalFacilityController {
 
     @GetMapping
     public List<MedicalFacilityDTO> getMedicalFacilities() {
-        return medicalFacilityService.getMedicalFacilities()
-                .stream()
+        return medicalFacilityService.getMedicalFacilities().stream()
                 .map(medicalFacilityMapper::toDto)
                 .toList();
     }

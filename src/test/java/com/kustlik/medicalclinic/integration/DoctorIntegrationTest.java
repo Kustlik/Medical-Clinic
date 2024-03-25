@@ -75,7 +75,7 @@ public class DoctorIntegrationTest {
     @Test
     void getDoctor_DoctorDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
-        String exceptionMsg = "Doctor does not exist.";
+        String exceptionMsg = "Doctor not found.";
         String email = DoctorFactory.getDoctor().getEmail();
         // When
 
@@ -106,7 +106,7 @@ public class DoctorIntegrationTest {
     @Test
     void createDoctor_DoctorWithEmptyFieldsIsGiven_ThenIsBadRequest() throws Exception {
         // Given
-        String exceptionMsg = "All valid fields should be properly filled.";
+        String exceptionMsg = "No empty argument is allowed.";
         DoctorCreationDTO doctor = DoctorFactory.getDoctorCreationDTO(
                 "jankow@gmail.com",
                 "Jan",
@@ -126,7 +126,7 @@ public class DoctorIntegrationTest {
     @Test
     void createDoctor_DoctorWithSameEmailExists_ThenIsBadRequest() throws Exception {
         // Given
-        String exceptionMsg = "Doctor already exists.";
+        String exceptionMsg = "Doctor with given email exists.";
         DoctorCreationDTO doctorDTO = DoctorFactory.getDoctorCreationDTO(
                 "jankowski@gmail.com",
                 "Jan",
@@ -178,7 +178,7 @@ public class DoctorIntegrationTest {
     @Test
     void createDoctorAssignment_DoctorDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
-        String exceptionMsg = "Doctor does not exist.";
+        String exceptionMsg = "Doctor with given ID does not exist.";
         Long doctorId = 5L;
         Long medicalFacilityId = 1L;
         // When
@@ -194,7 +194,7 @@ public class DoctorIntegrationTest {
     @Test
     void createDoctorAssignment_MedicalFacilityDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
-        String exceptionMsg = "Medical facility does not exist.";
+        String exceptionMsg = "Medical facility with given ID does not exist.";
         Long doctorId = 1L;
         Long medicalFacilityId = 5L;
         // When

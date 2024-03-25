@@ -1,6 +1,7 @@
 package com.kustlik.medicalclinic.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kustlik.medicalclinic.controller.status.VisitStatus;
 import com.kustlik.medicalclinic.exception.*;
 import com.kustlik.medicalclinic.factory.VisitFactory;
 import com.kustlik.medicalclinic.model.dto.visit.VisitDTO;
@@ -56,13 +57,31 @@ public class VisitIntegrationTest {
     private MockMvc mockMvc;
 
     @Test
-    void getFreeVisits_FreeVisitsExists_ListOfVisitDTOReturned() throws Exception {
-        // Given
-
-        // When
-
+    void getVisits_WithStatusAll_ListOfVisitDTOReturned() throws Exception {
         // Then
-        mockMvc.perform(get("/visits/available"))
+        mockMvc.perform(get("/visits")
+                        .param("status", VisitStatus.ALL.toString()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].appointmentStart").value(
+                        "2029-12-01T12:00:00"))
+                .andExpect(jsonPath("$[0].appointmentEnd").value(
+                        "2029-12-01T12:30:00"))
+                .andExpect(jsonPath("$[0].doctorId").value("2"))
+                .andExpect(jsonPath("$[0].patientId").value(IsNull.nullValue()))
+                .andExpect(jsonPath("$[1].appointmentStart").value(
+                        "2029-12-01T13:00:00"))
+                .andExpect(jsonPath("$[1].appointmentEnd").value(
+                        "2029-12-01T13:30:00"))
+                .andExpect(jsonPath("$[1].doctorId").value("2"))
+                .andExpect(jsonPath("$[1].patientId").value("1"));
+    }
+
+    @Test
+    void getFree_WithStatusAvailable_ListOfVisitDTOReturned() throws Exception {
+        // Then
+        mockMvc.perform(get("/visits")
+                        .param("status", VisitStatus.AVAILABLE.toString()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].appointmentStart").value(
@@ -74,14 +93,38 @@ public class VisitIntegrationTest {
     }
 
     @Test
-    void getFreeVisitsByDoctor_FreeVisitsExists_ListOfVisitDTOReturned() throws Exception {
+    void getVisitsByDoctor_WithStatusAll_ListOfVisitDTOReturned() throws Exception {
         // Given
         Long doctorId = 2L;
 
+        // Then
+        mockMvc.perform(get("/visits/doctor/{doctorId}", doctorId)
+                        .param("status", VisitStatus.ALL.toString()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].appointmentStart").value(
+                        "2029-12-01T12:00:00"))
+                .andExpect(jsonPath("$[0].appointmentEnd").value(
+                        "2029-12-01T12:30:00"))
+                .andExpect(jsonPath("$[0].doctorId").value("2"))
+                .andExpect(jsonPath("$[0].patientId").value(IsNull.nullValue()))
+                .andExpect(jsonPath("$[1].appointmentStart").value(
+                        "2029-12-01T13:00:00"))
+                .andExpect(jsonPath("$[1].appointmentEnd").value(
+                        "2029-12-01T13:30:00"))
+                .andExpect(jsonPath("$[1].doctorId").value("2"))
+                .andExpect(jsonPath("$[1].patientId").value("1"));
+    }
+
+    @Test
+    void getVisitsByDoctor_WithStatusAvailable_ListOfVisitDTOReturned() throws Exception {
+        // Given
+        Long doctorId = 2L;
         // When
 
         // Then
-        mockMvc.perform(get("/visits/available/doctor/{doctorId}", doctorId))
+        mockMvc.perform(get("/visits/doctor/{doctorId}", doctorId)
+                        .param("status", VisitStatus.AVAILABLE.toString()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].appointmentStart").value(
@@ -114,7 +157,7 @@ public class VisitIntegrationTest {
     void createVisit_DoctorWithGivenIdDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
         Long doctorId = 5L;
-        String exceptionMsg = "Doctor does not exist.";
+        String exceptionMsg = "Doctor with given ID does not exist.";
         VisitDTO visitDTO = VisitFactory.getVisitDTO();
         // When
 
@@ -130,7 +173,7 @@ public class VisitIntegrationTest {
     void createVisit_BodyWithSomeEmptyFieldsGiven_ThenIsBadRequest() throws Exception {
         // Given
         Long doctorId = 1L;
-        String exceptionMsg = "All valid fields should be properly filled.";
+        String exceptionMsg = "Visit has some null fields, please fill everything correctly.";
         VisitDTO visitDTO = VisitFactory.getVisitDTO(
                 LocalDateTime.of(2029, 1, 1, 12, 0),
                 null,
@@ -150,7 +193,7 @@ public class VisitIntegrationTest {
     void createVisit_VisitWithWrongTimePeriodIsGiven_ThenIsBadRequest() throws Exception {
         // Given
         Long doctorId = 1L;
-        String exceptionMsg = "Wrong time period.";
+        String exceptionMsg = "Visit should have minimal duration of 15 min.";
         VisitDTO visitDTO = VisitFactory.getVisitDTO(
                 LocalDateTime.of(2029, 1, 1, 12, 0),
                 LocalDateTime.of(2029, 1, 1, 12, 5),
@@ -169,7 +212,7 @@ public class VisitIntegrationTest {
     @Test
     void createVisit_VisitGivenOverlapsWithExistingOne_ThenIsBadRequest() throws Exception {
         // Given
-        String exceptionMsg = "Visit already exists.";
+        String exceptionMsg = "Visit could not be created, there will be another visit at this time.";
         Long doctorId = 2L;
         VisitDTO visitDTO = VisitFactory.getVisitDTO(
                 LocalDateTime.of(2029, 12, 1, 12, 15),
@@ -209,7 +252,7 @@ public class VisitIntegrationTest {
     @Test
     void assignVisitToPatient_PatientGivenToAssignmentDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
-        String exceptionMsg = "Patient does not exist.";
+        String exceptionMsg = "Patient with given ID does not exist.";
         Long visitId = 1L;
         Long patientId = 5L;
         // When
@@ -225,7 +268,7 @@ public class VisitIntegrationTest {
     @Test
     void assignVisitToPatient_VisitGivenToAssignmentDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
-        String exceptionMsg = "Visit does not exist.";
+        String exceptionMsg = "Visit with given ID does not exist.";
         Long visitId = 5L;
         Long patientId = 1L;
         // When
@@ -241,7 +284,7 @@ public class VisitIntegrationTest {
     @Test
     void assignVisitToPatient_VisitGivenToAssignmentIsInThePast_ThenIsBadRequest() throws Exception {
         // Given
-        String exceptionMsg = "Wrong time period.";
+        String exceptionMsg = "Unable to create a visit for past dates.";
         Long visitId = 3L;
         Long patientId = 1L;
         // When

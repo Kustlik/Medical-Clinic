@@ -1,6 +1,7 @@
 package com.kustlik.medicalclinic.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kustlik.medicalclinic.controller.status.VisitStatus;
 import com.kustlik.medicalclinic.exception.*;
 import com.kustlik.medicalclinic.factory.VisitFactory;
 import com.kustlik.medicalclinic.model.dto.visit.VisitDTO;
@@ -43,7 +44,23 @@ public class VisitControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    void getFreeVisits_FreeVisitsExists_ListOfVisitDTOReturned() throws Exception {
+    void getVisits_WithStatusAll_ListOfVisitDTOReturned() throws Exception {
+        // When
+        Visit visit = VisitFactory.getVisit();
+        List<Visit> visits = List.of(visit);
+        when(visitService.getVisits()).thenReturn(visits);
+
+        // Then
+        mockMvc.perform(get("/visits")
+                        .param("status", VisitStatus.ALL.toString()))
+                .andExpect(jsonPath("$[0].appointmentStart").value(
+                        YEAR + "-01-01T12:00:00"))
+                .andExpect(jsonPath("$[0].appointmentEnd").value(
+                        YEAR + "-01-01T12:30:00"));
+    }
+
+    @Test
+    void getFree_WithStatusAvailable_ListOfVisitDTOReturned() throws Exception {
         // Given
         Visit visit = VisitFactory.getVisit();
         List<Visit> visits = List.of(visit);
@@ -51,17 +68,38 @@ public class VisitControllerTest {
         // When
 
         // Then
-        mockMvc.perform(get("/visits/available"))
+        mockMvc.perform(get("/visits")
+                        .param("status", VisitStatus.AVAILABLE.toString()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].appointmentStart").value(
-                        String.valueOf(YEAR) + "-01-01T12:00:00"))
+                        YEAR + "-01-01T12:00:00"))
                 .andExpect(jsonPath("$[0].appointmentEnd").value(
-                        String.valueOf(YEAR) + "-01-01T12:30:00"));
+                        YEAR + "-01-01T12:30:00"));
     }
 
     @Test
-    void getFreeVisitsByDoctor_FreeVisitsExists_ListOfVisitDTOReturned() throws Exception {
+    void getVisitsByDoctor_WithStatusAll_ListOfVisitDTOReturned() throws Exception {
+        // Given
+        Long doctorId = 1L;
+        Visit visit = VisitFactory.getVisit();
+        List<Visit> visits = List.of(visit);
+        when(visitService.getVisitsByDoctor(any())).thenReturn(visits);
+        // When
+
+        // Then
+        mockMvc.perform(get("/visits/doctor/{doctorId}", doctorId)
+                        .param("status", VisitStatus.ALL.toString()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].appointmentStart").value(
+                        YEAR + "-01-01T12:00:00"))
+                .andExpect(jsonPath("$[0].appointmentEnd").value(
+                        YEAR + "-01-01T12:30:00"));
+    }
+
+    @Test
+    void getVisitsByDoctor_WithStatusAvailable_ListOfVisitDTOReturned() throws Exception {
         // Given
         Long doctorId = 1L;
         Visit visit = VisitFactory.getVisit();
@@ -70,13 +108,14 @@ public class VisitControllerTest {
         // When
 
         // Then
-        mockMvc.perform(get("/visits/available/doctor/{doctorId}", doctorId))
+        mockMvc.perform(get("/visits/doctor/{doctorId}", doctorId)
+                        .param("status", VisitStatus.AVAILABLE.toString()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].appointmentStart").value(
-                        String.valueOf(YEAR) + "-01-01T12:00:00"))
+                        YEAR + "-01-01T12:00:00"))
                 .andExpect(jsonPath("$[0].appointmentEnd").value(
-                        String.valueOf(YEAR) + "-01-01T12:30:00"));
+                        YEAR + "-01-01T12:30:00"));
     }
 
     @Test
@@ -93,9 +132,9 @@ public class VisitControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].appointmentStart").value(
-                        String.valueOf(YEAR) + "-01-01T12:00:00"))
+                        YEAR + "-01-01T12:00:00"))
                 .andExpect(jsonPath("$[0].appointmentEnd").value(
-                        String.valueOf(YEAR) + "-01-01T12:30:00"));
+                        YEAR + "-01-01T12:30:00"));
     }
 
     @Test
@@ -104,7 +143,7 @@ public class VisitControllerTest {
         Long doctorId = 1L;
         String exceptionMsg = "Doctor does not exist.";
         VisitDTO visitDTO = VisitFactory.getVisitDTO();
-        when(visitService.createVisit(any(), any())).thenThrow(DoctorDoesNotExistException.class);
+        when(visitService.createVisit(any(), any())).thenThrow(new DoctorDoesNotExistException(exceptionMsg));
         // When
 
         // Then
@@ -121,7 +160,7 @@ public class VisitControllerTest {
         Long doctorId = 1L;
         String exceptionMsg = "All valid fields should be properly filled.";
         VisitDTO visitDTO = VisitFactory.getVisitDTO();
-        when(visitService.createVisit(any(), any())).thenThrow(EmptyFieldException.class);
+        when(visitService.createVisit(any(), any())).thenThrow(new EmptyFieldException(exceptionMsg));
         // When
 
         // Then
@@ -138,7 +177,7 @@ public class VisitControllerTest {
         Long doctorId = 1L;
         String exceptionMsg = "Wrong time period.";
         VisitDTO visitDTO = VisitFactory.getVisitDTO();
-        when(visitService.createVisit(any(), any())).thenThrow(InvalidDateTimeException.class);
+        when(visitService.createVisit(any(), any())).thenThrow(new InvalidDateTimeException(exceptionMsg));
         // When
 
         // Then
@@ -155,7 +194,7 @@ public class VisitControllerTest {
         String exceptionMsg = "Visit already exists.";
         Long doctorId = 1L;
         VisitDTO visitDTO = VisitFactory.getVisitDTO();
-        when(visitService.createVisit(any(), any())).thenThrow(VisitExistsException.class);
+        when(visitService.createVisit(any(), any())).thenThrow(new VisitExistsException(exceptionMsg));
         // When
 
         // Then
@@ -180,9 +219,9 @@ public class VisitControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.appointmentStart").value(
-                        String.valueOf(YEAR) + "-01-01T12:00:00"))
+                        YEAR + "-01-01T12:00:00"))
                 .andExpect(jsonPath("$.appointmentEnd").value(
-                        String.valueOf(YEAR) + "-01-01T12:30:00"));
+                        YEAR + "-01-01T12:30:00"));
     }
 
     @Test
@@ -191,7 +230,7 @@ public class VisitControllerTest {
         String exceptionMsg = "Patient does not exist.";
         Long visitId = 1L;
         Long patientId = 1L;
-        when(visitService.assignVisitToPatient(any(), any())).thenThrow(PatientDoesNotExistException.class);
+        when(visitService.assignVisitToPatient(any(), any())).thenThrow(new PatientDoesNotExistException(exceptionMsg));
         // When
 
         // Then
@@ -208,7 +247,7 @@ public class VisitControllerTest {
         String exceptionMsg = "Visit does not exist.";
         Long visitId = 1L;
         Long patientId = 1L;
-        when(visitService.assignVisitToPatient(any(), any())).thenThrow(VisitDoesNotExistException.class);
+        when(visitService.assignVisitToPatient(any(), any())).thenThrow(new VisitDoesNotExistException(exceptionMsg));
         // When
 
         // Then
@@ -225,7 +264,7 @@ public class VisitControllerTest {
         String exceptionMsg = "Wrong time period.";
         Long visitId = 1L;
         Long patientId = 1L;
-        when(visitService.assignVisitToPatient(any(), any())).thenThrow(InvalidDateTimeException.class);
+        when(visitService.assignVisitToPatient(any(), any())).thenThrow(new InvalidDateTimeException(exceptionMsg));
         // When
 
         // Then
@@ -250,8 +289,8 @@ public class VisitControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.appointmentStart").value(
-                        String.valueOf(YEAR) + "-01-01T12:00:00"))
+                        YEAR + "-01-01T12:00:00"))
                 .andExpect(jsonPath("$.appointmentEnd").value(
-                        String.valueOf(YEAR) + "-01-01T12:30:00"));
+                        YEAR + "-01-01T12:30:00"));
     }
 }

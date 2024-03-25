@@ -10,10 +10,10 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode
 public class MedicalFacilityDTO {
-    private String name;
-    private String city;
-    private String zipCode;
-    private String street;
-    private String buildingNumber;
-    private List<Long> doctorIds;
+    private final String name;
+    private final String city;
+    private final String zipCode;
+    private final String street;
+    private final String buildingNumber;
+    private final List<Long> doctorIds;
 }

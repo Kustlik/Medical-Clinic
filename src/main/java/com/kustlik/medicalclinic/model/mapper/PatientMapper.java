@@ -28,8 +28,7 @@ public interface PatientMapper {
     static List<Long> visitListToIdList(List<Visit> visits) {
         if (visits == null) {
             return new ArrayList<>();
-        } else {
-            return visits.stream().map(Visit::getId).collect(Collectors.toList());
         }
+        return visits.stream().map(Visit::getId).collect(Collectors.toList());
     }
 }

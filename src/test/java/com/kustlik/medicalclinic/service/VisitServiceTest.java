@@ -38,6 +38,20 @@ public class VisitServiceTest {
     }
 
     @Test
+    void getVisits_ListOfVisitsExists_ListOfVisitReturned() {
+        // Given
+        Visit visit = VisitFactory.getVisit();
+        List<Visit> visits = List.of(visit);
+        when(visitRepository.findAll()).thenReturn(visits);
+        // When
+        var result = visitService.getVisits();
+
+        // Then
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(visits, result);
+    }
+
+    @Test
     void getFreeVisits_ListOfFreeVisitsExists_ListOfVisitReturned() {
         // Given
         Visit visit = VisitFactory.getVisit();
@@ -45,6 +59,20 @@ public class VisitServiceTest {
         when(visitRepository.findByPatientIdIsNull()).thenReturn(visits);
         // When
         var result = visitService.getFreeVisits();
+
+        // Then
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(visits, result);
+    }
+
+    @Test
+    void getVisitsByDoctor_ListOfFreeVisitsExists_ListOfVisitReturned() {
+        // Given
+        Visit visit = VisitFactory.getVisit();
+        List<Visit> visits = List.of(visit);
+        when(visitRepository.findByDoctorId(any())).thenReturn(visits);
+        // When
+        var result = visitRepository.findByDoctorId(any());
 
         // Then
         Assertions.assertNotNull(result);

@@ -67,7 +67,7 @@ public class DoctorControllerTest {
         // Given
         String exceptionMsg = "Doctor does not exist.";
         String email = DoctorFactory.getDoctor().getEmail();
-        when(doctorService.getDoctor(email)).thenThrow(DoctorDoesNotExistException.class);
+        when(doctorService.getDoctor(email)).thenThrow(new DoctorDoesNotExistException(exceptionMsg));
         // When
 
         // Then
@@ -106,7 +106,7 @@ public class DoctorControllerTest {
                 null,
                 "password123",
                 null);
-        when(doctorService.createDoctor(any())).thenThrow(EmptyFieldException.class);
+        when(doctorService.createDoctor(any())).thenThrow(new EmptyFieldException(exceptionMsg));
         // When
 
         // Then
@@ -123,7 +123,7 @@ public class DoctorControllerTest {
         String exceptionMsg = "Doctor already exists.";
         DoctorCreationDTO doctorDTO = DoctorFactory.getDoctorCreationDTO();
         Doctor doctor = doctorMapper.toDoctor(doctorDTO);
-        when(doctorService.createDoctor(any())).thenThrow(DoctorExistsException.class);
+        when(doctorService.createDoctor(any())).thenThrow(new DoctorExistsException(exceptionMsg));
         // When
 
         // Then
@@ -158,7 +158,7 @@ public class DoctorControllerTest {
         String exceptionMsg = "Doctor is already assigned to this facility.";
         Long doctorId = 1L;
         Long medicalFacilityId = 1L;
-        when(doctorService.assignDoctorToMedicalFacility(doctorId, medicalFacilityId)).thenThrow(DoctorToMedicalFacilityAssignmentExistsException.class);
+        when(doctorService.assignDoctorToMedicalFacility(doctorId, medicalFacilityId)).thenThrow(new DoctorToMedicalFacilityAssignmentExistsException(exceptionMsg));
         // When
 
         // Then
@@ -175,7 +175,7 @@ public class DoctorControllerTest {
         String exceptionMsg = "Doctor does not exist.";
         Long doctorId = 1L;
         Long medicalFacilityId = 1L;
-        when(doctorService.assignDoctorToMedicalFacility(doctorId, medicalFacilityId)).thenThrow(DoctorDoesNotExistException.class);
+        when(doctorService.assignDoctorToMedicalFacility(doctorId, medicalFacilityId)).thenThrow(new DoctorDoesNotExistException(exceptionMsg));
         // When
 
         // Then
@@ -192,7 +192,7 @@ public class DoctorControllerTest {
         String exceptionMsg = "Medical facility does not exist.";
         Long doctorId = 1L;
         Long medicalFacilityId = 1L;
-        when(doctorService.assignDoctorToMedicalFacility(doctorId, medicalFacilityId)).thenThrow(MedicalFacilityDoesNotExistException.class);
+        when(doctorService.assignDoctorToMedicalFacility(doctorId, medicalFacilityId)).thenThrow(new MedicalFacilityDoesNotExistException(exceptionMsg));
         // When
 
         // Then

@@ -72,7 +72,7 @@ class PatientIntegrationTest {
     @Test
     void getPatient_PatientDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
-        String exceptionMsg = "Patient does not exist.";
+        String exceptionMsg = "Patient not found.";
         String email = PatientFactory.getPatient().getEmail();
         // When
 
@@ -104,7 +104,7 @@ class PatientIntegrationTest {
     @Test
     void createPatient_PatientWithEmptyFieldsIsGiven_ThenIsBadRequest() throws Exception {
         // Given
-        String exceptionMsg = "All valid fields should be properly filled.";
+        String exceptionMsg = "No empty argument is allowed.";
         PatientCreationDTO patient = PatientFactory.getPatientCreationDTO(
                 "jankow@gmail.com",
                 null,
@@ -125,7 +125,7 @@ class PatientIntegrationTest {
     @Test
     void createPatient_PatientWithSameEmailExists_ThenIsBadRequest() throws Exception {
         // Given
-        String exceptionMsg = "Patient already exists.";
+        String exceptionMsg = "Patient with given email exists.";
         PatientCreationDTO patientDTO = PatientFactory.getPatientCreationDTO(
                 "boczek@gmail.com",
                 "12345",
@@ -163,7 +163,7 @@ class PatientIntegrationTest {
     @Test
     void deletePatient_PatientWithGivenEmailDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
-        String exceptionMsg = "Patient does not exist.";
+        String exceptionMsg = "Patient with given email does not exist.";
         String email = PatientFactory.getPatient().getEmail();
         // When
 
@@ -190,7 +190,7 @@ class PatientIntegrationTest {
     @Test
     void editPatient_PatientWithGivenEmailDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
-        String exceptionMsg = "Patient does not exist.";
+        String exceptionMsg = "Patient with given email does not exist.";
         PatientDTO patientDTO = PatientFactory.getPatientDTO();
         Patient patient = patientMapper.toPatient(patientDTO);
         String email = patient.getEmail();
@@ -207,7 +207,7 @@ class PatientIntegrationTest {
     @Test
     void editPatient_PatientWithNewEmailGivenToEditIsPresent_ThenIsBadRequest() throws Exception {
         // Given
-        String exceptionMsg = "Patient already exists.";
+        String exceptionMsg = "New email is not available.";
         PatientDTO patientDTO = PatientFactory.getPatientDTO(
                 "karkow@gmail.com",
                 "12345",
@@ -228,7 +228,7 @@ class PatientIntegrationTest {
     @Test
     void editPatient_PatientWithSomeEmptyFieldsIsGiven_ThenIsBadRequest() throws Exception {
         // Given
-        String exceptionMsg = "All valid fields should be properly filled.";
+        String exceptionMsg = "No empty argument to edit is allowed.";
         PatientDTO patientDTO = PatientFactory.getPatientDTO(
                 "zimczyn23@gmail.com",
                 "Karol",
@@ -270,7 +270,7 @@ class PatientIntegrationTest {
     @Test
     void editPatientPassword_PatientWithGivenEmailDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
-        String exceptionMsg = "Patient does not exist.";
+        String exceptionMsg = "Patient with given email does not exist.";
         PatientPasswordDTO patientDTO = PatientFactory.getPatientPasswordDTO();
         String email = patientDTO.getEmail();
         // When
@@ -286,7 +286,7 @@ class PatientIntegrationTest {
     @Test
     void editPatientPassword_PatientWithEmptyFieldsIsGiven_ThenIsBadRequest() throws Exception {
         // Given
-        String exceptionMsg = "All valid fields should be properly filled.";
+        String exceptionMsg = "Password is empty.";
         PatientPasswordDTO patientDTO = PatientFactory.getPatientPasswordDTO(
                 "jankow@gmail.com",
                 null);

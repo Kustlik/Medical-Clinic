@@ -79,7 +79,7 @@ public class MedicalFacilityIntegrationTest {
     @Test
     void getMedicalFacility_MedicalFacilityDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
-        String exceptionMsg = "Medical facility does not exist.";
+        String exceptionMsg = "Medical facility not found.";
         Long id = 5L;
         // When
 
@@ -111,7 +111,7 @@ public class MedicalFacilityIntegrationTest {
     @Test
     void createMedicalFacility_MedicalFacilityWithEmptyFieldsIsGiven_ThenIsBadRequest() throws Exception {
         // Given
-        String exceptionMsg = "All valid fields should be properly filled.";
+        String exceptionMsg = "No empty argument is allowed.";
         MedicalFacilityDTO medicalFacility = MedicalFacilityFactory.getMedicalFacilityDTO(
                 "28",
                 null,
@@ -132,7 +132,7 @@ public class MedicalFacilityIntegrationTest {
     @Test
     void createMedicalFacility_MedicalFacilityWithSameIdExists_ThenIsBadRequest() throws Exception {
         // Given
-        String exceptionMsg = "Medical facility already exists.";
+        String exceptionMsg = "Medical facility with given name exists.";
         MedicalFacilityDTO medicalFacilityDTO = MedicalFacilityFactory.getMedicalFacilityDTO(
                 "28",
                 "Kraków",
@@ -186,7 +186,7 @@ public class MedicalFacilityIntegrationTest {
     @Test
     void createMedicalFacilityAssignment_DoctorDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
-        String exceptionMsg = "Doctor does not exist.";
+        String exceptionMsg = "Doctor with given ID does not exist.";
         Long doctorId = 5L;
         Long medicalFacilityId = 1L;
         // When
@@ -202,7 +202,7 @@ public class MedicalFacilityIntegrationTest {
     @Test
     void createMedicalFacilityAssignment_MedicalFacilityDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
-        String exceptionMsg = "Medical facility does not exist.";
+        String exceptionMsg = "Medical facility with given ID does not exist.";
         Long doctorId = 1L;
         Long medicalFacilityId = 5L;
         // When

@@ -22,8 +22,7 @@ public class PatientController {
 
     @GetMapping
     public List<PatientDTO> getPatients() {
-        return patientService.getPatients()
-                .stream()
+        return patientService.getPatients().stream()
                 .map(patientMapper::toDto)
                 .toList();
     }

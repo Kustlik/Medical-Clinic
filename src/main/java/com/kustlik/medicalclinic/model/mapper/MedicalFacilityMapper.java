@@ -22,8 +22,7 @@ public interface MedicalFacilityMapper {
     static List<Long> doctorListToIdList(List<Doctor> doctors) {
         if (doctors == null) {
             return new ArrayList<>();
-        } else {
-            return doctors.stream().map(Doctor::getId).collect(Collectors.toList());
         }
+        return doctors.stream().map(Doctor::getId).collect(Collectors.toList());
     }
 }
