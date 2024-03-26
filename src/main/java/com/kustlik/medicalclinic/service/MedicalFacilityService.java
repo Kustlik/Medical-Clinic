@@ -6,7 +6,10 @@ import java.util.List;
 
 public interface MedicalFacilityService {
     List<MedicalFacility> getMedicalFacilities();
+
     MedicalFacility getMedicalFacility(Long id);
+
     MedicalFacility createMedicalFacility(MedicalFacility medicalFacility);
+
     MedicalFacility assignMedicalFacilityToDoctor(Long medicalFacilityID, Long doctorID);
 }

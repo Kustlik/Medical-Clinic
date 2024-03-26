@@ -8,9 +8,9 @@ import lombok.Getter;
 @Getter
 @EqualsAndHashCode
 public class DoctorCreationDTO {
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String password;
-    private String specialisation;
+    private final String email;
+    private final String firstName;
+    private final String lastName;
+    private final String password;
+    private final String specialisation;
 }

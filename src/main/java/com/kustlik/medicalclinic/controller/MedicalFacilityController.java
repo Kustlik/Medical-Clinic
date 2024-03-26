@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,21 +18,20 @@ public class MedicalFacilityController {
     private final MedicalFacilityMapper medicalFacilityMapper;
 
     @GetMapping
-    public List<MedicalFacilityDTO> getMedicalFacilities(){
-        return medicalFacilityService.getMedicalFacilities()
-                .stream()
+    public List<MedicalFacilityDTO> getMedicalFacilities() {
+        return medicalFacilityService.getMedicalFacilities().stream()
                 .map(medicalFacilityMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public MedicalFacilityDTO getMedicalFacility(@PathVariable("id") Long id){
+    public MedicalFacilityDTO getMedicalFacility(@PathVariable("id") Long id) {
         return medicalFacilityMapper.toDto(medicalFacilityService.getMedicalFacility(id));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MedicalFacilityDTO createMedicalFacility(@RequestBody MedicalFacilityDTO medicalFacilityDTO){
+    public MedicalFacilityDTO createMedicalFacility(@RequestBody MedicalFacilityDTO medicalFacilityDTO) {
         MedicalFacility medicalFacility = medicalFacilityService.createMedicalFacility(
                 medicalFacilityMapper.toMedicalFacility(medicalFacilityDTO));
         return medicalFacilityMapper.toDto(medicalFacility);
@@ -41,7 +39,7 @@ public class MedicalFacilityController {
 
     @PostMapping("/{medicalFacilityId}/assign")
     @ResponseStatus(HttpStatus.CREATED)
-    public MedicalFacilityDTO createMedicalFacilityAssignment(@RequestBody Long doctorID, @PathVariable("medicalFacilityId") Long medicalFacilityID){
+    public MedicalFacilityDTO createMedicalFacilityAssignment(@RequestBody Long doctorID, @PathVariable("medicalFacilityId") Long medicalFacilityID) {
         MedicalFacility medicalFacility = medicalFacilityService.assignMedicalFacilityToDoctor(medicalFacilityID, doctorID);
         return medicalFacilityMapper.toDto(medicalFacility);
     }

@@ -12,12 +12,12 @@ public class MedicalFacilityMapperTest {
     MedicalFacilityMapper medicalFacilityMapper;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         this.medicalFacilityMapper = Mappers.getMapper(MedicalFacilityMapper.class);
     }
 
     @Test
-    void toDto_MedicalFacilityIsMappedToDTO_MedicalFacilityDTOReturned(){
+    void toDto_MedicalFacilityIsMappedToDTO_MedicalFacilityDTOReturned() {
         //Given
         MedicalFacility medicalFacility = MedicalFacility.builder()
                 .id(1L)
@@ -36,7 +36,6 @@ public class MedicalFacilityMapperTest {
                 .build();
         //When
         var result = medicalFacilityMapper.toDto(medicalFacility);
-
         //Then
         Assertions.assertInstanceOf(MedicalFacilityDTO.class, result);
         Assertions.assertEquals(medicalFacility.getCity(), medicalFacilityDTO.getCity());
@@ -47,7 +46,7 @@ public class MedicalFacilityMapperTest {
     }
 
     @Test
-    void toMedicalFacility_MedicalFacilityCreationDTOIsMappedToMedicalFacility_MedicalFacilityReturned(){
+    void toMedicalFacility_MedicalFacilityCreationDTOIsMappedToMedicalFacility_MedicalFacilityReturned() {
         //Given
         MedicalFacilityDTO medicalFacilityDTO = MedicalFacilityDTO.builder()
                 .city("Łódź")
@@ -65,7 +64,6 @@ public class MedicalFacilityMapperTest {
                 .build();
         //When
         var result = medicalFacilityMapper.toMedicalFacility(medicalFacilityDTO);
-
         //Then
         Assertions.assertInstanceOf(MedicalFacility.class, result);
         Assertions.assertEquals(medicalFacility.getCity(), medicalFacilityDTO.getCity());

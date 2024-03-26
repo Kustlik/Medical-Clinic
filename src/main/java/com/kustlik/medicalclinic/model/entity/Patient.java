@@ -1,19 +1,20 @@
 package com.kustlik.medicalclinic.model.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Objects;
-import java.util.stream.Stream;
+import java.util.List;
 
 @Builder
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-public class Patient{
+public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -26,22 +27,14 @@ public class Patient{
     private String lastName;
     private String password;
     private LocalDate birthday;
+    @OneToMany(mappedBy = "patient")
+    private List<Visit> visits;
 
-    public void update(Patient newPatientData){
+    public void update(Patient newPatientData) {
         this.email = newPatientData.getEmail();
         this.firstName = newPatientData.getFirstName();
         this.lastName = newPatientData.getLastName();
         this.birthday = newPatientData.getBirthday();
-    }
-
-    public boolean validatePatient(){
-        return Stream.of(email, idCardNo, firstName, lastName, password, birthday)
-                .noneMatch(Objects::isNull);
-    }
-
-    public boolean validateEdit(){
-        return Stream.of(email, firstName, lastName, birthday)
-                .noneMatch(Objects::isNull);
     }
 
 
@@ -49,10 +42,8 @@ public class Patient{
     public boolean equals(Object o) {
         if (this == o) return true;
 
-        if (!(o instanceof Patient))
+        if (!(o instanceof Patient other))
             return false;
-
-        Patient other = (Patient) o;
 
         return id != null &&
                 id.equals(other.getId());

@@ -10,11 +10,10 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode
 public class DoctorDTO {
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String specialisation;
-    private List<Long> medicalFacilityIds;
-
-
+    private final String email;
+    private final String firstName;
+    private final String lastName;
+    private final String specialisation;
+    private final List<Long> medicalFacilityIds;
+    private final List<Long> visitIds;
 }

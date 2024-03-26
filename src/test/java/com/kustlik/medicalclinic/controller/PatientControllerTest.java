@@ -24,7 +24,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -47,13 +48,11 @@ public class PatientControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    void getPatients_PatientsExists_ListOfPatientsReturned() throws Exception {
+    void getPatients_PatientsExists_ListOfPatientDTOReturned() throws Exception {
         // Given
         Patient patient = PatientFactory.getPatient();
         List<Patient> patients = List.of(patient);
         when(patientService.getPatients()).thenReturn(patients);
-        // When
-
         // Then
         mockMvc.perform(get("/patients"))
                 .andDo(print())
@@ -70,9 +69,7 @@ public class PatientControllerTest {
         // Given
         String exceptionMsg = "Patient does not exist.";
         String email = PatientFactory.getPatient().getEmail();
-        when(patientService.getPatient(email)).thenThrow(PatientDoesNotExistException.class);
-        // When
-
+        when(patientService.getPatient(email)).thenThrow(new PatientDoesNotExistException(exceptionMsg));
         // Then
         mockMvc.perform(get("/patients/{email}", email))
                 .andDo(print())
@@ -82,13 +79,11 @@ public class PatientControllerTest {
     }
 
     @Test
-    void getPatient_PatientExists_PatientReturned() throws Exception {
+    void getPatient_PatientExists_PatientDTOReturned() throws Exception {
         // Given
         Patient patient = PatientFactory.getPatient();
         String email = patient.getEmail();
         when(patientService.getPatient(email)).thenReturn(patient);
-        // When
-
         // Then
         mockMvc.perform(get("/patients/{email}", email))
                 .andDo(print())
@@ -111,9 +106,7 @@ public class PatientControllerTest {
                 null,
                 "password123",
                 null);
-        when(patientService.createPatient(any())).thenThrow(EmptyFieldException.class);
-        // When
-
+        when(patientService.createPatient(any())).thenThrow(new EmptyFieldException(exceptionMsg));
         // Then
         mockMvc.perform(post("/patients").content(objectMapper.writeValueAsString(patient)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -127,9 +120,7 @@ public class PatientControllerTest {
         // Given
         String exceptionMsg = "Patient already exists.";
         PatientCreationDTO patientDTO = PatientFactory.getPatientCreationDTO();
-        when(patientService.createPatient(any())).thenThrow(PatientExistsException.class);
-        // When
-
+        when(patientService.createPatient(any())).thenThrow(new PatientExistsException(exceptionMsg));
         // Then
         mockMvc.perform(post("/patients").content(objectMapper.writeValueAsString(patientDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -144,8 +135,6 @@ public class PatientControllerTest {
         PatientCreationDTO patientDTO = PatientFactory.getPatientCreationDTO();
         Patient patient = patientMapper.toPatient(patientDTO);
         when(patientService.createPatient(any())).thenReturn(patient);
-        // When
-
         // Then
         mockMvc.perform(post("/patients").content(objectMapper.writeValueAsString(patientDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -162,9 +151,7 @@ public class PatientControllerTest {
         // Given
         String exceptionMsg = "Patient does not exist.";
         String email = PatientFactory.getPatient().getEmail();
-        doThrow(PatientDoesNotExistException.class).when(patientService).deletePatient(email);
-        // When
-
+        doThrow(new PatientDoesNotExistException(exceptionMsg)).when(patientService).deletePatient(email);
         // Then
         mockMvc.perform(delete("/patients/{email}", email))
                 .andDo(print())
@@ -178,8 +165,6 @@ public class PatientControllerTest {
         // Given
         String email = PatientFactory.getPatient().getEmail();
         doNothing().when(patientService).deletePatient(email);
-        // When
-
         // Then
         mockMvc.perform(delete("/patients/{email}", email))
                 .andDo(print())
@@ -193,11 +178,9 @@ public class PatientControllerTest {
         // Given
         String exceptionMsg = "Patient does not exist.";
         PatientDTO patientDTO = PatientFactory.getPatientDTO();
-        Patient patient = patientMapper.toPatientEdit(patientDTO);
+        Patient patient = patientMapper.toPatient(patientDTO);
         String email = patient.getEmail();
-        when(patientService.editPatient(any(), any())).thenThrow(PatientDoesNotExistException.class);
-        // When
-
+        when(patientService.editPatient(any(), any())).thenThrow(new PatientDoesNotExistException(exceptionMsg));
         // Then
         mockMvc.perform(put("/patients/{email}", email).content(objectMapper.writeValueAsString(patientDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -211,11 +194,9 @@ public class PatientControllerTest {
         // Given
         String exceptionMsg = "Patient already exists.";
         PatientDTO patientDTO = PatientFactory.getPatientDTO();
-        Patient patient = patientMapper.toPatientEdit(patientDTO);
+        Patient patient = patientMapper.toPatient(patientDTO);
         String email = patient.getEmail();
-        when(patientService.editPatient(any(), any())).thenThrow(PatientExistsException.class);
-        // When
-
+        when(patientService.editPatient(any(), any())).thenThrow(new PatientExistsException(exceptionMsg));
         // Then
         mockMvc.perform(put("/patients/{email}", email).content(objectMapper.writeValueAsString(patientDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -233,11 +214,9 @@ public class PatientControllerTest {
                 "Karol",
                 null,
                 null);
-        Patient patient = patientMapper.toPatientEdit(patientDTO);
+        Patient patient = patientMapper.toPatient(patientDTO);
         String email = patient.getEmail();
-        when(patientService.editPatient(any(), any())).thenThrow(EmptyFieldException.class);
-        // When
-
+        when(patientService.editPatient(any(), any())).thenThrow(new EmptyFieldException(exceptionMsg));
         // Then
         mockMvc.perform(put("/patients/{email}", email).content(objectMapper.writeValueAsString(patientDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -254,11 +233,9 @@ public class PatientControllerTest {
                 "Karol",
                 "Kowalski",
                 LocalDate.of(2000, 1, 1));
-        Patient patient = patientMapper.toPatientEdit(patientDTO);
+        Patient patient = patientMapper.toPatient(patientDTO);
         String email = patient.getEmail();
         when(patientService.editPatient(any(), any())).thenReturn(patient);
-        // When
-
         // Then
         mockMvc.perform(put("/patients/{email}", email).content(objectMapper.writeValueAsString(patientDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -275,11 +252,8 @@ public class PatientControllerTest {
         // Given
         String exceptionMsg = "Patient does not exist.";
         PatientPasswordDTO patientDTO = PatientFactory.getPatientPasswordDTO();
-        Patient patientPassword = patientMapper.toPatientPasswordEdit(patientDTO);
         String email = patientDTO.getEmail();
-        doThrow(PatientDoesNotExistException.class).when(patientService).editPatientPassword(any(), any());
-        // When
-
+        doThrow(new PatientDoesNotExistException(exceptionMsg)).when(patientService).editPatientPassword(any(), any());
         // Then
         mockMvc.perform(patch("/patients/{email}", email).content(objectMapper.writeValueAsString(patientDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -295,11 +269,8 @@ public class PatientControllerTest {
         PatientPasswordDTO patientDTO = PatientFactory.getPatientPasswordDTO(
                 "jankow@gmail.com",
                 null);
-        Patient patientPassword = patientMapper.toPatientPasswordEdit(patientDTO);
         String email = patientDTO.getEmail();
-        doThrow(EmptyFieldException.class).when(patientService).editPatientPassword(any(), any());
-        // When
-
+        doThrow(new EmptyFieldException(exceptionMsg)).when(patientService).editPatientPassword(any(), any());
         // Then
         mockMvc.perform(patch("/patients/{email}", email).content(objectMapper.writeValueAsString(patientDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -314,11 +285,9 @@ public class PatientControllerTest {
         PatientPasswordDTO patientDTO = PatientFactory.getPatientPasswordDTO(
                 "jankow@gmail.com",
                 "admin123");
-        Patient patientPassword = patientMapper.toPatientPasswordEdit(patientDTO);
+        Patient patientPassword = patientMapper.toPatient(patientDTO);
         String email = patientDTO.getEmail();
         doNothing().when(patientService).editPatientPassword(email, patientPassword);
-        // When
-
         // Then
         mockMvc.perform(patch("/patients/{email}", email).content(objectMapper.writeValueAsString(patientDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

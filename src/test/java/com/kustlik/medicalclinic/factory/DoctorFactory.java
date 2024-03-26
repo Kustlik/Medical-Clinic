@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DoctorFactory {
-    public static Doctor getDoctor(){
+    public static Doctor getDoctor() {
         return getDoctor(
                 1L,
                 "jankow@gmail.com",
@@ -20,7 +20,7 @@ public class DoctorFactory {
                 new ArrayList<>());
     }
 
-    public static Doctor getDoctor(Long id, String email, String firstName, String lastName, String password, String specialisation, List<MedicalFacility> medicalFacilities){
+    public static Doctor getDoctor(Long id, String email, String firstName, String lastName, String password, String specialisation, List<MedicalFacility> medicalFacilities) {
         return Doctor.builder()
                 .id(id)
                 .email(email)
@@ -32,7 +32,7 @@ public class DoctorFactory {
                 .build();
     }
 
-    public static DoctorDTO getDoctorDTO(){
+    public static DoctorDTO getDoctorDTO() {
         return getDoctorDTO(
                 "jankow@gmail.com",
                 "Jan",
@@ -42,7 +42,7 @@ public class DoctorFactory {
         );
     }
 
-    public static DoctorDTO getDoctorDTO(String email, String firstName, String lastName, String specialisation, List<Long> medicalFacilityIds){
+    public static DoctorDTO getDoctorDTO(String email, String firstName, String lastName, String specialisation, List<Long> medicalFacilityIds) {
         return DoctorDTO.builder()
                 .email(email)
                 .firstName(firstName)
@@ -52,7 +52,7 @@ public class DoctorFactory {
                 .build();
     }
 
-    public static DoctorCreationDTO getDoctorCreationDTO(){
+    public static DoctorCreationDTO getDoctorCreationDTO() {
         return getDoctorCreationDTO(
                 "jankow@gmail.com",
                 "Jan",
@@ -61,7 +61,7 @@ public class DoctorFactory {
                 "Psychiatra");
     }
 
-    public static DoctorCreationDTO getDoctorCreationDTO(String email, String firstName, String lastName, String password, String specialisation){
+    public static DoctorCreationDTO getDoctorCreationDTO(String email, String firstName, String lastName, String password, String specialisation) {
         return DoctorCreationDTO.builder()
                 .email(email)
                 .firstName(firstName)

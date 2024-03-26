@@ -25,7 +25,6 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -49,11 +48,7 @@ class PatientIntegrationTest {
     private MockMvc mockMvc;
 
     @Test
-    void getPatients_PatientsExists_ListOfPatientsReturned() throws Exception {
-        // Given
-
-        // When
-
+    void getPatients_PatientsExists_ListOfPatientDTOReturned() throws Exception {
         // Then
         mockMvc.perform(get("/patients"))
                 .andDo(print())
@@ -73,10 +68,8 @@ class PatientIntegrationTest {
     @Test
     void getPatient_PatientDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
-        String exceptionMsg = "Patient does not exist.";
+        String exceptionMsg = "Patient with given email does not exist.";
         String email = PatientFactory.getPatient().getEmail();
-        // When
-
         // Then
         mockMvc.perform(get("/patients/{email}", email))
                 .andDo(print())
@@ -86,11 +79,9 @@ class PatientIntegrationTest {
     }
 
     @Test
-    void getPatient_PatientExists_PatientReturned() throws Exception {
+    void getPatient_PatientExists_PatientDTOReturned() throws Exception {
         // Given
         String email = "boczek@gmail.com";
-        // When
-
         // Then
         mockMvc.perform(get("/patients/{email}", email))
                 .andDo(print())
@@ -105,7 +96,7 @@ class PatientIntegrationTest {
     @Test
     void createPatient_PatientWithEmptyFieldsIsGiven_ThenIsBadRequest() throws Exception {
         // Given
-        String exceptionMsg = "All valid fields should be properly filled.";
+        String exceptionMsg = "No empty argument is allowed.";
         PatientCreationDTO patient = PatientFactory.getPatientCreationDTO(
                 "jankow@gmail.com",
                 null,
@@ -113,8 +104,6 @@ class PatientIntegrationTest {
                 null,
                 "password123",
                 null);
-        // When
-
         // Then
         mockMvc.perform(post("/patients").content(objectMapper.writeValueAsString(patient)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -126,7 +115,7 @@ class PatientIntegrationTest {
     @Test
     void createPatient_PatientWithSameEmailExists_ThenIsBadRequest() throws Exception {
         // Given
-        String exceptionMsg = "Patient already exists.";
+        String exceptionMsg = "Patient with given email exists.";
         PatientCreationDTO patientDTO = PatientFactory.getPatientCreationDTO(
                 "boczek@gmail.com",
                 "12345",
@@ -134,8 +123,6 @@ class PatientIntegrationTest {
                 "Kowalski",
                 "password123",
                 LocalDate.of(2000, 1, 1));
-        // When
-
         // Then
         mockMvc.perform(post("/patients").content(objectMapper.writeValueAsString(patientDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -148,8 +135,6 @@ class PatientIntegrationTest {
     void createPatient_PatientWithValidBodyIsGiven_PatientDTOReturned() throws Exception {
         // Given
         PatientCreationDTO patientDTO = PatientFactory.getPatientCreationDTO();
-        // When
-
         // Then
         mockMvc.perform(post("/patients").content(objectMapper.writeValueAsString(patientDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -164,10 +149,8 @@ class PatientIntegrationTest {
     @Test
     void deletePatient_PatientWithGivenEmailDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
-        String exceptionMsg = "Patient does not exist.";
+        String exceptionMsg = "Patient with given email does not exist.";
         String email = PatientFactory.getPatient().getEmail();
-        // When
-
         // Then
         mockMvc.perform(delete("/patients/{email}", email))
                 .andDo(print())
@@ -180,8 +163,6 @@ class PatientIntegrationTest {
     void deletePatient_PatientWithValidEmailExists_NoContentReturned() throws Exception {
         // Given
         String email = "boczek@gmail.com";
-        // When
-
         // Then
         mockMvc.perform(delete("/patients/{email}", email))
                 .andDo(print())
@@ -191,12 +172,10 @@ class PatientIntegrationTest {
     @Test
     void editPatient_PatientWithGivenEmailDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
-        String exceptionMsg = "Patient does not exist.";
+        String exceptionMsg = "Patient with given email does not exist.";
         PatientDTO patientDTO = PatientFactory.getPatientDTO();
-        Patient patient = patientMapper.toPatientEdit(patientDTO);
+        Patient patient = patientMapper.toPatient(patientDTO);
         String email = patient.getEmail();
-        // When
-
         // Then
         mockMvc.perform(put("/patients/{email}", email).content(objectMapper.writeValueAsString(patientDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -208,7 +187,7 @@ class PatientIntegrationTest {
     @Test
     void editPatient_PatientWithNewEmailGivenToEditIsPresent_ThenIsBadRequest() throws Exception {
         // Given
-        String exceptionMsg = "Patient already exists.";
+        String exceptionMsg = "Patient with given email exists.";
         PatientDTO patientDTO = PatientFactory.getPatientDTO(
                 "karkow@gmail.com",
                 "12345",
@@ -216,8 +195,6 @@ class PatientIntegrationTest {
                 LocalDate.of(1980, 2, 2)
         );
         String email = "boczek@gmail.com";
-        // When
-
         // Then
         mockMvc.perform(put("/patients/{email}", email).content(objectMapper.writeValueAsString(patientDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -229,15 +206,13 @@ class PatientIntegrationTest {
     @Test
     void editPatient_PatientWithSomeEmptyFieldsIsGiven_ThenIsBadRequest() throws Exception {
         // Given
-        String exceptionMsg = "All valid fields should be properly filled.";
+        String exceptionMsg = "No empty argument to edit is allowed.";
         PatientDTO patientDTO = PatientFactory.getPatientDTO(
                 "zimczyn23@gmail.com",
                 "Karol",
                 null,
                 null);
         String email = "boczek@gmail.com";
-        // When
-
         // Then
         mockMvc.perform(put("/patients/{email}", email).content(objectMapper.writeValueAsString(patientDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -255,8 +230,6 @@ class PatientIntegrationTest {
                 "Kowalski",
                 LocalDate.of(2000, 1, 1));
         String email = "boczek@gmail.com";
-        // When
-
         // Then
         mockMvc.perform(put("/patients/{email}", email).content(objectMapper.writeValueAsString(patientDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -271,11 +244,9 @@ class PatientIntegrationTest {
     @Test
     void editPatientPassword_PatientWithGivenEmailDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
-        String exceptionMsg = "Patient does not exist.";
+        String exceptionMsg = "Patient with given email does not exist.";
         PatientPasswordDTO patientDTO = PatientFactory.getPatientPasswordDTO();
         String email = patientDTO.getEmail();
-        // When
-
         // Then
         mockMvc.perform(patch("/patients/{email}", email).content(objectMapper.writeValueAsString(patientDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -287,13 +258,11 @@ class PatientIntegrationTest {
     @Test
     void editPatientPassword_PatientWithEmptyFieldsIsGiven_ThenIsBadRequest() throws Exception {
         // Given
-        String exceptionMsg = "All valid fields should be properly filled.";
+        String exceptionMsg = "Password is empty.";
         PatientPasswordDTO patientDTO = PatientFactory.getPatientPasswordDTO(
                 "jankow@gmail.com",
                 null);
         String email = patientDTO.getEmail();
-        // When
-
         // Then
         mockMvc.perform(patch("/patients/{email}", email).content(objectMapper.writeValueAsString(patientDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -309,8 +278,6 @@ class PatientIntegrationTest {
                 "boczek@gmail.com",
                 "admin123");
         String email = patientDTO.getEmail();
-        // When
-
         // Then
         mockMvc.perform(patch("/patients/{email}", email).content(objectMapper.writeValueAsString(patientDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,21 +19,20 @@ public class DoctorController {
     private final DoctorMapper doctorMapper;
 
     @GetMapping
-    public List<DoctorDTO> getDoctors(){
-        return doctorService.getDoctors()
-                .stream()
+    public List<DoctorDTO> getDoctors() {
+        return doctorService.getDoctors().stream()
                 .map(doctorMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @GetMapping("/{email}")
-    public DoctorDTO getDoctor(@PathVariable("email") String email){
+    public DoctorDTO getDoctor(@PathVariable("email") String email) {
         return doctorMapper.toDto(doctorService.getDoctor(email));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public DoctorDTO createDoctor(@RequestBody DoctorCreationDTO doctorDTO){
+    public DoctorDTO createDoctor(@RequestBody DoctorCreationDTO doctorDTO) {
         Doctor doctor = doctorService.createDoctor(
                 doctorMapper.toDoctor(doctorDTO));
         return doctorMapper.toDto(doctor);
@@ -42,7 +40,7 @@ public class DoctorController {
 
     @PostMapping("/{doctorId}/assign")
     @ResponseStatus(HttpStatus.CREATED)
-    public DoctorDTO createDoctorAssignment(@RequestBody Long medicalFacilityID, @PathVariable("doctorId") Long doctorID){
+    public DoctorDTO createDoctorAssignment(@RequestBody Long medicalFacilityID, @PathVariable("doctorId") Long doctorID) {
         Doctor doctor = doctorService.assignDoctorToMedicalFacility(doctorID, medicalFacilityID);
         return doctorMapper.toDto(doctor);
     }

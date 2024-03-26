@@ -13,12 +13,12 @@ public class DoctorMapperTest {
     DoctorMapper doctorMapper;
 
     @BeforeEach
-    void setup(){
+    void setup() {
         this.doctorMapper = Mappers.getMapper(DoctorMapper.class);
     }
 
     @Test
-    void toDto_DoctorIsMappedToDTO_DoctorDTOReturned(){
+    void toDto_DoctorIsMappedToDTO_DoctorDTOReturned() {
         //Given
         Doctor doctor = Doctor.builder()
                 .id(1L)
@@ -37,7 +37,6 @@ public class DoctorMapperTest {
                 .build();
         //When
         var result = doctorMapper.toDto(doctor);
-
         //Then
         Assertions.assertInstanceOf(DoctorDTO.class, result);
         Assertions.assertEquals(doctor.getEmail(), doctorDTO.getEmail());
@@ -47,7 +46,7 @@ public class DoctorMapperTest {
     }
 
     @Test
-    void toDoctor_DoctorCreationDTOIsMappedToDoctor_DoctorReturned(){
+    void toDoctor_DoctorCreationDTOIsMappedToDoctor_DoctorReturned() {
         //Given
         DoctorCreationDTO doctorDTO = DoctorCreationDTO.builder()
                 .email("jankow@gmail.com")
@@ -65,7 +64,6 @@ public class DoctorMapperTest {
                 .build();
         //When
         var result = doctorMapper.toDoctor(doctorDTO);
-
         //Then
         Assertions.assertInstanceOf(Doctor.class, result);
         Assertions.assertEquals(doctor.getEmail(), doctorDTO.getEmail());

@@ -2,10 +2,10 @@ package com.kustlik.medicalclinic.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
 
 @Builder
 @Entity
@@ -32,11 +32,9 @@ public class Doctor {
             inverseJoinColumns = @JoinColumn(name = "MEDICAL_FACILITY_ID")
     )
     private List<MedicalFacility> medicalFacilities;
-
-    public boolean validateDoctor(){
-        return Stream.of(email, firstName, lastName, password, specialisation)
-                .noneMatch(Objects::isNull);
-    }
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "doctor", cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
+    private List<Visit> visits;
 
     @Override
     public boolean equals(Object o) {

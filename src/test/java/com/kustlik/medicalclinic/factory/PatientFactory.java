@@ -8,7 +8,7 @@ import com.kustlik.medicalclinic.model.entity.Patient;
 import java.time.LocalDate;
 
 public class PatientFactory {
-    public static Patient getPatient(){
+    public static Patient getPatient() {
         return getPatient(
                 1L,
                 "jankow@gmail.com",
@@ -19,7 +19,7 @@ public class PatientFactory {
                 LocalDate.of(2000, 1, 1));
     }
 
-    public static Patient getPatient(Long id, String email, String idCardNo, String firstName, String lastName, String password, LocalDate birthday){
+    public static Patient getPatient(Long id, String email, String idCardNo, String firstName, String lastName, String password, LocalDate birthday) {
         return Patient.builder()
                 .id(id)
                 .email(email)
@@ -31,7 +31,7 @@ public class PatientFactory {
                 .build();
     }
 
-    public static PatientDTO getPatientDTO(){
+    public static PatientDTO getPatientDTO() {
         return getPatientDTO(
                 "jankow@gmail.com",
                 "Jan",
@@ -40,7 +40,7 @@ public class PatientFactory {
         );
     }
 
-    public static PatientDTO getPatientDTO(String email, String firstName, String lastName, LocalDate birthday){
+    public static PatientDTO getPatientDTO(String email, String firstName, String lastName, LocalDate birthday) {
         return PatientDTO.builder()
                 .email(email)
                 .firstName(firstName)
@@ -49,7 +49,7 @@ public class PatientFactory {
                 .build();
     }
 
-    public static PatientCreationDTO getPatientCreationDTO(){
+    public static PatientCreationDTO getPatientCreationDTO() {
         return getPatientCreationDTO(
                 "jankow@gmail.com",
                 "12345",
@@ -59,7 +59,7 @@ public class PatientFactory {
                 LocalDate.of(2000, 1, 1));
     }
 
-    public static PatientCreationDTO getPatientCreationDTO(String email, String idCardNo, String firstName, String lastName, String password, LocalDate birthday){
+    public static PatientCreationDTO getPatientCreationDTO(String email, String idCardNo, String firstName, String lastName, String password, LocalDate birthday) {
         return PatientCreationDTO.builder()
                 .email(email)
                 .idCardNo(idCardNo)
@@ -70,13 +70,13 @@ public class PatientFactory {
                 .build();
     }
 
-    public static PatientPasswordDTO getPatientPasswordDTO(){
+    public static PatientPasswordDTO getPatientPasswordDTO() {
         return getPatientPasswordDTO(
                 "jankow@gmail.com",
                 "password123");
     }
 
-    public static PatientPasswordDTO getPatientPasswordDTO(String email, String password){
+    public static PatientPasswordDTO getPatientPasswordDTO(String email, String password) {
         return PatientPasswordDTO.builder()
                 .email(email)
                 .password(password)
