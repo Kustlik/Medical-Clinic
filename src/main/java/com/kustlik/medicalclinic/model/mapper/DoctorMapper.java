@@ -15,12 +15,6 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface DoctorMapper {
-    @Mapping(source = "medicalFacilities", target = "medicalFacilityIds", qualifiedByName = "facilityListToIdList")
-    @Mapping(source = "visits", target = "visitIds", qualifiedByName = "visitListToIdList")
-    DoctorDTO toDto(Doctor doctor);
-
-    Doctor toDoctor(DoctorCreationDTO doctorDTO);
-
     @Named("facilityListToIdList")
     static List<Long> facilityListToIdList(List<MedicalFacility> medicalFacilities) {
         if (medicalFacilities == null) {
@@ -36,4 +30,10 @@ public interface DoctorMapper {
         }
         return visits.stream().map(Visit::getId).collect(Collectors.toList());
     }
+
+    @Mapping(source = "medicalFacilities", target = "medicalFacilityIds", qualifiedByName = "facilityListToIdList")
+    @Mapping(source = "visits", target = "visitIds", qualifiedByName = "visitListToIdList")
+    DoctorDTO toDto(Doctor doctor);
+
+    Doctor toDoctor(DoctorCreationDTO doctorDTO);
 }

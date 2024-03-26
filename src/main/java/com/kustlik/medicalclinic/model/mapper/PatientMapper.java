@@ -15,6 +15,14 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface PatientMapper {
+    @Named("visitListToIdList")
+    static List<Long> visitListToIdList(List<Visit> visits) {
+        if (visits == null) {
+            return new ArrayList<>();
+        }
+        return visits.stream().map(Visit::getId).collect(Collectors.toList());
+    }
+
     @Mapping(source = "visits", target = "visitIds", qualifiedByName = "visitListToIdList")
     PatientDTO toDto(Patient patient);
 
@@ -23,12 +31,4 @@ public interface PatientMapper {
     Patient toPatient(PatientDTO patientDTO);
 
     Patient toPatient(PatientPasswordDTO patientDTO);
-
-    @Named("visitListToIdList")
-    static List<Long> visitListToIdList(List<Visit> visits) {
-        if (visits == null) {
-            return new ArrayList<>();
-        }
-        return visits.stream().map(Visit::getId).collect(Collectors.toList());
-    }
 }

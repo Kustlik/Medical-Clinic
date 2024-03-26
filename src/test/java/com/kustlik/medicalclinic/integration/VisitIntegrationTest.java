@@ -5,8 +5,6 @@ import com.kustlik.medicalclinic.controller.status.VisitStatus;
 import com.kustlik.medicalclinic.exception.*;
 import com.kustlik.medicalclinic.factory.VisitFactory;
 import com.kustlik.medicalclinic.model.dto.visit.VisitDTO;
-import com.kustlik.medicalclinic.model.entity.Visit;
-import com.kustlik.medicalclinic.model.mapper.VisitMapper;
 import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,9 +49,6 @@ public class VisitIntegrationTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private VisitMapper visitMapper;
-
-    @Autowired
     private MockMvc mockMvc;
 
     @Test
@@ -96,7 +91,6 @@ public class VisitIntegrationTest {
     void getVisitsByDoctor_WithStatusAll_ListOfVisitDTOReturned() throws Exception {
         // Given
         Long doctorId = 2L;
-
         // Then
         mockMvc.perform(get("/visits/doctor/{doctorId}", doctorId)
                         .param("status", VisitStatus.ALL.toString()))
@@ -120,8 +114,6 @@ public class VisitIntegrationTest {
     void getVisitsByDoctor_WithStatusAvailable_ListOfVisitDTOReturned() throws Exception {
         // Given
         Long doctorId = 2L;
-        // When
-
         // Then
         mockMvc.perform(get("/visits/doctor/{doctorId}", doctorId)
                         .param("status", VisitStatus.AVAILABLE.toString()))
@@ -139,8 +131,6 @@ public class VisitIntegrationTest {
     void getVisitsByPatient_ListOfVisitsForPatientExists_ListOfVisitDTOReturned() throws Exception {
         // Given
         Long patientId = 1L;
-        // When
-
         // Then
         mockMvc.perform(get("/visits/patient/{patientId}", patientId))
                 .andDo(print())
@@ -159,8 +149,6 @@ public class VisitIntegrationTest {
         Long doctorId = 5L;
         String exceptionMsg = "Doctor with given ID does not exist.";
         VisitDTO visitDTO = VisitFactory.getVisitDTO();
-        // When
-
         // Then
         mockMvc.perform(post("/visits/doctor/{doctorId}", doctorId).content(objectMapper.writeValueAsString(visitDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -179,8 +167,6 @@ public class VisitIntegrationTest {
                 null,
                 null,
                 null);
-        // When
-
         // Then
         mockMvc.perform(post("/visits/doctor/{doctorId}", doctorId).content(objectMapper.writeValueAsString(visitDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -199,8 +185,6 @@ public class VisitIntegrationTest {
                 LocalDateTime.of(2029, 1, 1, 12, 5),
                 null,
                 null);
-        // When
-
         // Then
         mockMvc.perform(post("/visits/doctor/{doctorId}", doctorId).content(objectMapper.writeValueAsString(visitDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -219,8 +203,6 @@ public class VisitIntegrationTest {
                 LocalDateTime.of(2029, 12, 1, 12, 45),
                 null,
                 null);
-        // When
-
         // Then
         mockMvc.perform(post("/visits/doctor/{doctorId}", doctorId).content(objectMapper.writeValueAsString(visitDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -233,10 +215,7 @@ public class VisitIntegrationTest {
     void createVisit_ValidBodyIsGivenToCreation_CreatedVisitDTOReturned() throws Exception {
         // Given
         Long doctorId = 1L;
-        Visit visit = VisitFactory.getVisit();
         VisitDTO visitDTO = VisitFactory.getVisitDTO();
-        // When
-
         // Then
         mockMvc.perform(post("/visits/doctor/{doctorId}", doctorId).content(objectMapper.writeValueAsString(visitDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -255,8 +234,6 @@ public class VisitIntegrationTest {
         String exceptionMsg = "Patient with given ID does not exist.";
         Long visitId = 1L;
         Long patientId = 5L;
-        // When
-
         // Then
         mockMvc.perform(patch("/visits/patient/{patientId}", patientId).content(objectMapper.writeValueAsString(visitId)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -271,8 +248,6 @@ public class VisitIntegrationTest {
         String exceptionMsg = "Visit with given ID does not exist.";
         Long visitId = 5L;
         Long patientId = 1L;
-        // When
-
         // Then
         mockMvc.perform(patch("/visits/patient/{patientId}", patientId).content(objectMapper.writeValueAsString(visitId)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -287,8 +262,6 @@ public class VisitIntegrationTest {
         String exceptionMsg = "Unable to create a visit for past dates.";
         Long visitId = 3L;
         Long patientId = 1L;
-        // When
-
         // Then
         mockMvc.perform(patch("/visits/patient/{patientId}", patientId).content(objectMapper.writeValueAsString(visitId)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -302,8 +275,6 @@ public class VisitIntegrationTest {
         // Given
         Long visitId = 1L;
         Long patientId = 1L;
-        // When
-
         // Then
         mockMvc.perform(patch("/visits/patient/{patientId}", patientId).content(objectMapper.writeValueAsString(visitId)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

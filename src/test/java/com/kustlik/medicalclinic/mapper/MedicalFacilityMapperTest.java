@@ -36,7 +36,6 @@ public class MedicalFacilityMapperTest {
                 .build();
         //When
         var result = medicalFacilityMapper.toDto(medicalFacility);
-
         //Then
         Assertions.assertInstanceOf(MedicalFacilityDTO.class, result);
         Assertions.assertEquals(medicalFacility.getCity(), medicalFacilityDTO.getCity());
@@ -65,7 +64,6 @@ public class MedicalFacilityMapperTest {
                 .build();
         //When
         var result = medicalFacilityMapper.toMedicalFacility(medicalFacilityDTO);
-
         //Then
         Assertions.assertInstanceOf(MedicalFacility.class, result);
         Assertions.assertEquals(medicalFacility.getCity(), medicalFacilityDTO.getCity());

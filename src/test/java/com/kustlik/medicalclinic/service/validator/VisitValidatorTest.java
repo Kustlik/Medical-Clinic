@@ -39,8 +39,6 @@ public class VisitValidatorTest {
                 null,
                 null,
                 null);
-        // When
-
         // Then
         var exception = Assertions.assertThrows(EmptyFieldException.class,
                 () -> visitValidator.validateVisitCreation(visit, doctorID));
@@ -59,8 +57,6 @@ public class VisitValidatorTest {
                 LocalDateTime.of(1990, 1, 1, 12, 30),
                 null,
                 null);
-        // When
-
         // Then
         var exception = Assertions.assertThrows(InvalidDateTimeException.class,
                 () -> visitValidator.validateVisitCreation(visit, doctorID));
@@ -79,8 +75,6 @@ public class VisitValidatorTest {
                 LocalDateTime.of(YEAR, 1, 1, 12, 0),
                 null,
                 null);
-        // When
-
         // Then
         var exception = Assertions.assertThrows(InvalidDateTimeException.class,
                 () -> visitValidator.validateVisitCreation(visit, doctorID));
@@ -99,8 +93,6 @@ public class VisitValidatorTest {
                 LocalDateTime.of(YEAR, 1, 1, 12, 30),
                 null,
                 null);
-        // When
-
         // Then
         var exception = Assertions.assertThrows(InvalidDateTimeException.class,
                 () -> visitValidator.validateVisitCreation(visit, doctorID));
@@ -120,8 +112,6 @@ public class VisitValidatorTest {
                 LocalDateTime.of(YEAR, 1, 1, 12, shorterThanMin),
                 null,
                 null);
-        // When
-
         // Then
         var exception = Assertions.assertThrows(InvalidDateTimeException.class,
                 () -> visitValidator.validateVisitCreation(visit, doctorID));
@@ -142,8 +132,6 @@ public class VisitValidatorTest {
                 LocalDateTime.of(YEAR, 1, 1, hour, 0),
                 null,
                 null);
-        // When
-
         // Then
         var exception = Assertions.assertThrows(InvalidDateTimeException.class,
                 () -> visitValidator.validateVisitCreation(visit, doctorID));
@@ -161,8 +149,6 @@ public class VisitValidatorTest {
                 visit.getAppointmentStart(),
                 visit.getAppointmentEnd(),
                 doctorID)).thenReturn(List.of(visit));
-        // When
-
         // Then
         var exception = Assertions.assertThrows(VisitExistsException.class,
                 () -> visitValidator.validateVisitCreation(visit, doctorID));
@@ -182,8 +168,6 @@ public class VisitValidatorTest {
                 doctorID)).thenReturn(List.of());
         // When
         visitValidator.validateVisitCreation(visit, doctorID);
-
-        // Then
     }
 
     @Test
@@ -195,8 +179,6 @@ public class VisitValidatorTest {
                 LocalDateTime.of(1990, 1, 1, 12, 30),
                 null,
                 null);
-        // When
-
         // Then
         var exception = Assertions.assertThrows(InvalidDateTimeException.class,
                 () -> visitValidator.validateVisitAssignment(visit));
@@ -209,11 +191,8 @@ public class VisitValidatorTest {
     void validateVisitAssignment_ValidVisitIsGiven_ExceptionIsNotThrown() {
         // Given
         Visit visit = VisitFactory.getVisit();
-
         // When
         visitValidator.validateVisitAssignment(visit);
-
-        // Then
     }
 
     @Test
@@ -221,8 +200,6 @@ public class VisitValidatorTest {
         // Given
         Long visitID = 1L;
         when(visitRepository.findById(visitID)).thenReturn(Optional.empty());
-        // When
-
         // Then
         var exception = Assertions.assertThrows(VisitDoesNotExistException.class,
                 () -> visitValidator.visitExists(visitID));
@@ -239,7 +216,6 @@ public class VisitValidatorTest {
         when(visitRepository.findById(visitID)).thenReturn(Optional.of(visit));
         // When
         var result = visitValidator.visitExists(visitID);
-
         // Then
         Assertions.assertNotNull(result);
         Assertions.assertEquals(visit, result);

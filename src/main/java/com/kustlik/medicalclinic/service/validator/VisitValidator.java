@@ -16,9 +16,9 @@ import java.util.stream.Stream;
 @Component
 @RequiredArgsConstructor
 public class VisitValidator {
-    private final VisitRepository visitRepository;
     public final static int MIN_VISIT_DURATION_IN_MINUTES = 15;
     public final static int MAX_VISIT_DURATION_IN_HOURS = 1;
+    private final VisitRepository visitRepository;
 
     public void validateVisitCreation(Visit visit, Long doctorID) {
         validateVisit(visit);

@@ -45,7 +45,6 @@ public class VisitServiceTest {
         when(visitRepository.findAll()).thenReturn(visits);
         // When
         var result = visitService.getVisits();
-
         // Then
         Assertions.assertNotNull(result);
         Assertions.assertEquals(visits, result);
@@ -59,7 +58,6 @@ public class VisitServiceTest {
         when(visitRepository.findByPatientIdIsNull()).thenReturn(visits);
         // When
         var result = visitService.getFreeVisits();
-
         // Then
         Assertions.assertNotNull(result);
         Assertions.assertEquals(visits, result);
@@ -73,7 +71,6 @@ public class VisitServiceTest {
         when(visitRepository.findByDoctorId(any())).thenReturn(visits);
         // When
         var result = visitRepository.findByDoctorId(any());
-
         // Then
         Assertions.assertNotNull(result);
         Assertions.assertEquals(visits, result);
@@ -87,7 +84,6 @@ public class VisitServiceTest {
         when(visitRepository.findByDoctorIdAndPatientIdIsNull(any())).thenReturn(visits);
         // When
         var result = visitRepository.findByDoctorIdAndPatientIdIsNull(any());
-
         // Then
         Assertions.assertNotNull(result);
         Assertions.assertEquals(visits, result);
@@ -101,7 +97,6 @@ public class VisitServiceTest {
         when(visitRepository.findByPatientId(any())).thenReturn(visits);
         // When
         var result = visitService.getVisitsByPatient(any());
-
         // Then
         Assertions.assertNotNull(result);
         Assertions.assertEquals(visits, result);
@@ -116,7 +111,6 @@ public class VisitServiceTest {
         when(visitRepository.save(visit)).thenReturn(visit);
         // When
         var result = visitService.createVisit(visit, doctor.getId());
-
         // Then
         Assertions.assertNotNull(result);
         Assertions.assertEquals(visit, result);
@@ -133,7 +127,6 @@ public class VisitServiceTest {
         when(visitRepository.save(visit)).thenReturn(visit);
         // When
         var result = visitService.assignVisitToPatient(visit.getId(), patient.getId());
-
         // Then
         Assertions.assertNotNull(result);
         Assertions.assertEquals(visit, result);

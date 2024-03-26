@@ -37,7 +37,6 @@ public class DoctorMapperTest {
                 .build();
         //When
         var result = doctorMapper.toDto(doctor);
-
         //Then
         Assertions.assertInstanceOf(DoctorDTO.class, result);
         Assertions.assertEquals(doctor.getEmail(), doctorDTO.getEmail());
@@ -65,7 +64,6 @@ public class DoctorMapperTest {
                 .build();
         //When
         var result = doctorMapper.toDoctor(doctorDTO);
-
         //Then
         Assertions.assertInstanceOf(Doctor.class, result);
         Assertions.assertEquals(doctor.getEmail(), doctorDTO.getEmail());

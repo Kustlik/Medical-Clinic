@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
 
 @Builder
 @Entity
@@ -37,16 +35,6 @@ public class Patient {
         this.firstName = newPatientData.getFirstName();
         this.lastName = newPatientData.getLastName();
         this.birthday = newPatientData.getBirthday();
-    }
-
-    public boolean validatePatient() {
-        return Stream.of(email, idCardNo, firstName, lastName, password, birthday)
-                .noneMatch(Objects::isNull);
-    }
-
-    public boolean validateEdit() {
-        return Stream.of(email, firstName, lastName, birthday)
-                .noneMatch(Objects::isNull);
     }
 
 

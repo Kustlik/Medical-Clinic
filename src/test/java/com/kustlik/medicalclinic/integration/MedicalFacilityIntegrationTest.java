@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kustlik.medicalclinic.exception.*;
 import com.kustlik.medicalclinic.factory.MedicalFacilityFactory;
 import com.kustlik.medicalclinic.model.dto.medical_facility.MedicalFacilityDTO;
-import com.kustlik.medicalclinic.model.mapper.MedicalFacilityMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -49,17 +48,10 @@ public class MedicalFacilityIntegrationTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private MedicalFacilityMapper medicalFacilityMapper;
-
-    @Autowired
     private MockMvc mockMvc;
 
     @Test
     void getMedicalFacilities_MedicalFacilitiesExists_ListOfMedicalFacilityDTOReturned() throws Exception {
-        // Given
-
-        // When
-
         // Then
         mockMvc.perform(get("/medical_facilities"))
                 .andDo(print())
@@ -79,10 +71,8 @@ public class MedicalFacilityIntegrationTest {
     @Test
     void getMedicalFacility_MedicalFacilityDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
-        String exceptionMsg = "Medical facility not found.";
+        String exceptionMsg = "Medical facility with given ID does not exist.";
         Long id = 5L;
-        // When
-
         // Then
         mockMvc.perform(get("/medical_facilities/{id}", id))
                 .andDo(print())
@@ -95,8 +85,6 @@ public class MedicalFacilityIntegrationTest {
     void getMedicalFacility_MedicalFacilityExists_MedicalFacilityDTOReturned() throws Exception {
         // Given
         Long id = 1L;
-        // When
-
         // Then
         mockMvc.perform(get("/medical_facilities/{id}", id))
                 .andDo(print())
@@ -119,8 +107,6 @@ public class MedicalFacilityIntegrationTest {
                 null,
                 "12-593",
                 null);
-        // When
-
         // Then
         mockMvc.perform(post("/medical_facilities").content(objectMapper.writeValueAsString(medicalFacility)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -140,8 +126,6 @@ public class MedicalFacilityIntegrationTest {
                 "Szmaragdowa",
                 "12-593",
                 new ArrayList<>());
-        // When
-
         // Then
         mockMvc.perform(post("/medical_facilities").content(objectMapper.writeValueAsString(medicalFacilityDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -154,8 +138,6 @@ public class MedicalFacilityIntegrationTest {
     void createMedicalFacility_MedicalFacilityWithValidBodyIsGiven_MedicalFacilityDTOReturned() throws Exception {
         // Given
         MedicalFacilityDTO medicalFacilityDTO = MedicalFacilityFactory.getMedicalFacilityDTO();
-        // When
-
         // Then
         mockMvc.perform(post("/medical_facilities").content(objectMapper.writeValueAsString(medicalFacilityDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -173,8 +155,6 @@ public class MedicalFacilityIntegrationTest {
         String exceptionMsg = "Doctor is already assigned to this facility.";
         Long doctorId = 2L;
         Long medicalFacilityId = 1L;
-        // When
-
         // Then
         mockMvc.perform(post("/medical_facilities/{medicalFacilityId}/assign", medicalFacilityId).content(objectMapper.writeValueAsString(doctorId)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -189,8 +169,6 @@ public class MedicalFacilityIntegrationTest {
         String exceptionMsg = "Doctor with given ID does not exist.";
         Long doctorId = 5L;
         Long medicalFacilityId = 1L;
-        // When
-
         // Then
         mockMvc.perform(post("/medical_facilities/{medicalFacilityId}/assign", medicalFacilityId).content(objectMapper.writeValueAsString(doctorId)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -205,8 +183,6 @@ public class MedicalFacilityIntegrationTest {
         String exceptionMsg = "Medical facility with given ID does not exist.";
         Long doctorId = 1L;
         Long medicalFacilityId = 5L;
-        // When
-
         // Then
         mockMvc.perform(post("/medical_facilities/{medicalFacilityId}/assign", medicalFacilityId).content(objectMapper.writeValueAsString(doctorId)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -220,8 +196,6 @@ public class MedicalFacilityIntegrationTest {
         // Given
         Long doctorId = 1L;
         Long medicalFacilityId = 1L;
-        // When
-
         // Then
         mockMvc.perform(post("/medical_facilities/{medicalFacilityId}/assign", medicalFacilityId).content(objectMapper.writeValueAsString(doctorId)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

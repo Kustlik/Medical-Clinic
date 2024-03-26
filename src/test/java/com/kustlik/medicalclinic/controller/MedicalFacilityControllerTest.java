@@ -50,8 +50,6 @@ public class MedicalFacilityControllerTest {
         MedicalFacility medicalFacility = MedicalFacilityFactory.getMedicalFacility();
         List<MedicalFacility> medicalFacilities = List.of(medicalFacility);
         when(medicalFacilityService.getMedicalFacilities()).thenReturn(medicalFacilities);
-        // When
-
         // Then
         mockMvc.perform(get("/medical_facilities"))
                 .andDo(print())
@@ -69,8 +67,6 @@ public class MedicalFacilityControllerTest {
         String exceptionMsg = "Medical facility does not exist.";
         Long id = MedicalFacilityFactory.getMedicalFacility().getId();
         when(medicalFacilityService.getMedicalFacility(id)).thenThrow(new MedicalFacilityDoesNotExistException(exceptionMsg));
-        // When
-
         // Then
         mockMvc.perform(get("/medical_facilities/{id}", id))
                 .andDo(print())
@@ -85,8 +81,6 @@ public class MedicalFacilityControllerTest {
         MedicalFacility medicalFacility = MedicalFacilityFactory.getMedicalFacility();
         Long id = medicalFacility.getId();
         when(medicalFacilityService.getMedicalFacility(id)).thenReturn(medicalFacility);
-        // When
-
         // Then
         mockMvc.perform(get("/medical_facilities/{id}", id))
                 .andDo(print())
@@ -110,8 +104,6 @@ public class MedicalFacilityControllerTest {
                 null,
                 null);
         when(medicalFacilityService.createMedicalFacility(any())).thenThrow(new EmptyFieldException(exceptionMsg));
-        // When
-
         // Then
         mockMvc.perform(post("/medical_facilities").content(objectMapper.writeValueAsString(medicalFacility)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -125,10 +117,7 @@ public class MedicalFacilityControllerTest {
         // Given
         String exceptionMsg = "Medical facility already exists.";
         MedicalFacilityDTO medicalFacilityDTO = MedicalFacilityFactory.getMedicalFacilityDTO();
-        MedicalFacility medicalFacility = medicalFacilityMapper.toMedicalFacility(medicalFacilityDTO);
         when(medicalFacilityService.createMedicalFacility(any())).thenThrow(new MedicalFacilityExistsException(exceptionMsg));
-        // When
-
         // Then
         mockMvc.perform(post("/medical_facilities").content(objectMapper.writeValueAsString(medicalFacilityDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -143,8 +132,6 @@ public class MedicalFacilityControllerTest {
         MedicalFacilityDTO medicalFacilityDTO = MedicalFacilityFactory.getMedicalFacilityDTO();
         MedicalFacility medicalFacility = medicalFacilityMapper.toMedicalFacility(medicalFacilityDTO);
         when(medicalFacilityService.createMedicalFacility(any())).thenReturn(medicalFacility);
-        // When
-
         // Then
         mockMvc.perform(post("/medical_facilities").content(objectMapper.writeValueAsString(medicalFacilityDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -163,8 +150,6 @@ public class MedicalFacilityControllerTest {
         Long doctorId = 1L;
         Long medicalFacilityId = 1L;
         when(medicalFacilityService.assignMedicalFacilityToDoctor(medicalFacilityId, doctorId)).thenThrow(new DoctorToMedicalFacilityAssignmentExistsException(exceptionMsg));
-        // When
-
         // Then
         mockMvc.perform(post("/medical_facilities/{medicalFacilityId}/assign", medicalFacilityId).content(objectMapper.writeValueAsString(doctorId)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -180,8 +165,6 @@ public class MedicalFacilityControllerTest {
         Long doctorId = 1L;
         Long medicalFacilityId = 1L;
         when(medicalFacilityService.assignMedicalFacilityToDoctor(medicalFacilityId, doctorId)).thenThrow(new DoctorDoesNotExistException(exceptionMsg));
-        // When
-
         // Then
         mockMvc.perform(post("/medical_facilities/{medicalFacilityId}/assign", medicalFacilityId).content(objectMapper.writeValueAsString(doctorId)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -197,8 +180,6 @@ public class MedicalFacilityControllerTest {
         Long doctorId = 1L;
         Long medicalFacilityId = 1L;
         when(medicalFacilityService.assignMedicalFacilityToDoctor(medicalFacilityId, doctorId)).thenThrow(new MedicalFacilityDoesNotExistException(exceptionMsg));
-        // When
-
         // Then
         mockMvc.perform(post("/medical_facilities/{medicalFacilityId}/assign", medicalFacilityId).content(objectMapper.writeValueAsString(doctorId)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -216,8 +197,6 @@ public class MedicalFacilityControllerTest {
         MedicalFacility medicalFacility = MedicalFacilityFactory.getMedicalFacility();
         medicalFacility.getDoctors().add(doctor);
         when(medicalFacilityService.assignMedicalFacilityToDoctor(medicalFacilityId, doctorId)).thenReturn(medicalFacility);
-        // When
-
         // Then
         mockMvc.perform(post("/medical_facilities/{medicalFacilityId}/assign", medicalFacilityId).content(objectMapper.writeValueAsString(doctorId)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kustlik.medicalclinic.exception.*;
 import com.kustlik.medicalclinic.factory.DoctorFactory;
 import com.kustlik.medicalclinic.model.dto.doctor.DoctorCreationDTO;
-import com.kustlik.medicalclinic.model.mapper.DoctorMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -47,17 +46,10 @@ public class DoctorIntegrationTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private DoctorMapper doctorMapper;
-
-    @Autowired
     private MockMvc mockMvc;
 
     @Test
     void getDoctors_DoctorsExists_ListOfDoctorDTOReturned() throws Exception {
-        // Given
-
-        // When
-
         // Then
         mockMvc.perform(get("/doctors"))
                 .andDo(print())
@@ -77,8 +69,6 @@ public class DoctorIntegrationTest {
         // Given
         String exceptionMsg = "Doctor not found.";
         String email = DoctorFactory.getDoctor().getEmail();
-        // When
-
         // Then
         mockMvc.perform(get("/doctors/{email}", email))
                 .andDo(print())
@@ -91,8 +81,6 @@ public class DoctorIntegrationTest {
     void getDoctor_DoctorExists_DoctorDTOReturned() throws Exception {
         // Given
         String email = "jankowski@gmail.com";
-        // When
-
         // Then
         mockMvc.perform(get("/doctors/{email}", email))
                 .andDo(print())
@@ -113,8 +101,6 @@ public class DoctorIntegrationTest {
                 null,
                 "password123",
                 null);
-        // When
-
         // Then
         mockMvc.perform(post("/doctors").content(objectMapper.writeValueAsString(doctor)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -133,8 +119,6 @@ public class DoctorIntegrationTest {
                 "Kowalski",
                 "password123",
                 "Pediatra");
-        // When
-
         // Then
         mockMvc.perform(post("/doctors").content(objectMapper.writeValueAsString(doctorDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -147,8 +131,6 @@ public class DoctorIntegrationTest {
     void createDoctor_DoctorWithValidBodyIsGiven_DoctorDTOReturned() throws Exception {
         // Given
         DoctorCreationDTO doctorDTO = DoctorFactory.getDoctorCreationDTO();
-        // When
-
         // Then
         mockMvc.perform(post("/doctors").content(objectMapper.writeValueAsString(doctorDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -165,8 +147,6 @@ public class DoctorIntegrationTest {
         String exceptionMsg = "Doctor is already assigned to this facility.";
         Long doctorId = 2L;
         Long medicalFacilityId = 1L;
-        // When
-
         // Then
         mockMvc.perform(post("/doctors/{doctorId}/assign", doctorId).content(objectMapper.writeValueAsString(medicalFacilityId)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -181,8 +161,6 @@ public class DoctorIntegrationTest {
         String exceptionMsg = "Doctor with given ID does not exist.";
         Long doctorId = 5L;
         Long medicalFacilityId = 1L;
-        // When
-
         // Then
         mockMvc.perform(post("/doctors/{doctorId}/assign", doctorId).content(objectMapper.writeValueAsString(medicalFacilityId)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -197,8 +175,6 @@ public class DoctorIntegrationTest {
         String exceptionMsg = "Medical facility with given ID does not exist.";
         Long doctorId = 1L;
         Long medicalFacilityId = 5L;
-        // When
-
         // Then
         mockMvc.perform(post("/doctors/{doctorId}/assign", doctorId).content(objectMapper.writeValueAsString(medicalFacilityId)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -212,8 +188,6 @@ public class DoctorIntegrationTest {
         // Given
         Long doctorId = 1L;
         Long medicalFacilityId = 1L;
-        // When
-
         // Then
         mockMvc.perform(post("/doctors/{doctorId}/assign", doctorId).content(objectMapper.writeValueAsString(medicalFacilityId)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

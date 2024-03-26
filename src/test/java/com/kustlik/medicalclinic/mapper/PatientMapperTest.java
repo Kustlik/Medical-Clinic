@@ -40,7 +40,6 @@ public class PatientMapperTest {
                 .build();
         //When
         var result = patientMapper.toDto(patient);
-
         //Then
         Assertions.assertInstanceOf(PatientDTO.class, result);
         Assertions.assertEquals(patient.getEmail(), patientDTO.getEmail());
@@ -70,7 +69,6 @@ public class PatientMapperTest {
                 .build();
         //When
         var result = patientMapper.toPatient(patientDTO);
-
         //Then
         Assertions.assertInstanceOf(Patient.class, result);
         Assertions.assertEquals(patient.getEmail(), patientDTO.getEmail());
@@ -82,7 +80,7 @@ public class PatientMapperTest {
     }
 
     @Test
-    void toPatientEdit_PatientDTOIsMappedToPatient_PatientReturned() {
+    void toPatient_PatientDTOIsMappedToPatient_PatientReturned() {
         //Given
         PatientDTO patientDTO = PatientDTO.builder()
                 .email("jankow@gmail.com")
@@ -98,7 +96,6 @@ public class PatientMapperTest {
                 .build();
         //When
         var result = patientMapper.toPatient(patientDTO);
-
         //Then
         Assertions.assertInstanceOf(Patient.class, result);
         Assertions.assertEquals(patient.getEmail(), patientDTO.getEmail());
@@ -108,7 +105,7 @@ public class PatientMapperTest {
     }
 
     @Test
-    void toPatientPasswordEdit_PatientPasswordDTOIsMappedToPatient_PatientReturned() {
+    void toPatient_PatientPasswordDTOIsMappedToPatient_PatientReturned() {
         //Given
         PatientPasswordDTO patientDTO = PatientPasswordDTO.builder()
                 .email("jankow@gmail.com")
@@ -120,7 +117,6 @@ public class PatientMapperTest {
                 .build();
         //When
         var result = patientMapper.toPatient(patientDTO);
-
         //Then
         Assertions.assertInstanceOf(Patient.class, result);
         Assertions.assertEquals(patient.getEmail(), patientDTO.getEmail());

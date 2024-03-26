@@ -6,8 +6,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
 
 @Builder
 @Entity
@@ -37,11 +35,6 @@ public class Doctor {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "doctor", cascade = {CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
     private List<Visit> visits;
-
-    public boolean validateDoctor() {
-        return Stream.of(email, firstName, lastName, password, specialisation)
-                .noneMatch(Objects::isNull);
-    }
 
     @Override
     public boolean equals(Object o) {

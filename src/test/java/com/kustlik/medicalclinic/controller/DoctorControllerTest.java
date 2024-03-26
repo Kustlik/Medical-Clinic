@@ -50,8 +50,6 @@ public class DoctorControllerTest {
         Doctor doctor = DoctorFactory.getDoctor();
         List<Doctor> doctors = List.of(doctor);
         when(doctorService.getDoctors()).thenReturn(doctors);
-        // When
-
         // Then
         mockMvc.perform(get("/doctors"))
                 .andDo(print())
@@ -68,8 +66,6 @@ public class DoctorControllerTest {
         String exceptionMsg = "Doctor does not exist.";
         String email = DoctorFactory.getDoctor().getEmail();
         when(doctorService.getDoctor(email)).thenThrow(new DoctorDoesNotExistException(exceptionMsg));
-        // When
-
         // Then
         mockMvc.perform(get("/doctors/{email}", email))
                 .andDo(print())
@@ -84,8 +80,6 @@ public class DoctorControllerTest {
         Doctor doctor = DoctorFactory.getDoctor();
         String email = doctor.getEmail();
         when(doctorService.getDoctor(email)).thenReturn(doctor);
-        // When
-
         // Then
         mockMvc.perform(get("/doctors/{email}", email))
                 .andDo(print())
@@ -107,8 +101,6 @@ public class DoctorControllerTest {
                 "password123",
                 null);
         when(doctorService.createDoctor(any())).thenThrow(new EmptyFieldException(exceptionMsg));
-        // When
-
         // Then
         mockMvc.perform(post("/doctors").content(objectMapper.writeValueAsString(doctor)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -122,10 +114,7 @@ public class DoctorControllerTest {
         // Given
         String exceptionMsg = "Doctor already exists.";
         DoctorCreationDTO doctorDTO = DoctorFactory.getDoctorCreationDTO();
-        Doctor doctor = doctorMapper.toDoctor(doctorDTO);
         when(doctorService.createDoctor(any())).thenThrow(new DoctorExistsException(exceptionMsg));
-        // When
-
         // Then
         mockMvc.perform(post("/doctors").content(objectMapper.writeValueAsString(doctorDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -140,8 +129,6 @@ public class DoctorControllerTest {
         DoctorCreationDTO doctorDTO = DoctorFactory.getDoctorCreationDTO();
         Doctor doctor = doctorMapper.toDoctor(doctorDTO);
         when(doctorService.createDoctor(any())).thenReturn(doctor);
-        // When
-
         // Then
         mockMvc.perform(post("/doctors").content(objectMapper.writeValueAsString(doctorDTO)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -159,8 +146,6 @@ public class DoctorControllerTest {
         Long doctorId = 1L;
         Long medicalFacilityId = 1L;
         when(doctorService.assignDoctorToMedicalFacility(doctorId, medicalFacilityId)).thenThrow(new DoctorToMedicalFacilityAssignmentExistsException(exceptionMsg));
-        // When
-
         // Then
         mockMvc.perform(post("/doctors/{doctorId}/assign", doctorId).content(objectMapper.writeValueAsString(medicalFacilityId)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -176,8 +161,6 @@ public class DoctorControllerTest {
         Long doctorId = 1L;
         Long medicalFacilityId = 1L;
         when(doctorService.assignDoctorToMedicalFacility(doctorId, medicalFacilityId)).thenThrow(new DoctorDoesNotExistException(exceptionMsg));
-        // When
-
         // Then
         mockMvc.perform(post("/doctors/{doctorId}/assign", doctorId).content(objectMapper.writeValueAsString(medicalFacilityId)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -193,8 +176,6 @@ public class DoctorControllerTest {
         Long doctorId = 1L;
         Long medicalFacilityId = 1L;
         when(doctorService.assignDoctorToMedicalFacility(doctorId, medicalFacilityId)).thenThrow(new MedicalFacilityDoesNotExistException(exceptionMsg));
-        // When
-
         // Then
         mockMvc.perform(post("/doctors/{doctorId}/assign", doctorId).content(objectMapper.writeValueAsString(medicalFacilityId)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -212,8 +193,6 @@ public class DoctorControllerTest {
         MedicalFacility medicalFacility = MedicalFacilityFactory.getMedicalFacility();
         doctor.getMedicalFacilities().add(medicalFacility);
         when(doctorService.assignDoctorToMedicalFacility(doctorId, medicalFacilityId)).thenReturn(doctor);
-        // When
-
         // Then
         mockMvc.perform(post("/doctors/{doctorId}/assign", doctorId).content(objectMapper.writeValueAsString(medicalFacilityId)).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

@@ -11,14 +11,6 @@ import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
 public interface VisitMapper {
-    @Mapping(source = "doctor", target = "doctorId", qualifiedByName = "doctorToId")
-    @Mapping(source = "patient", target = "patientId", qualifiedByName = "patientToId")
-    VisitDTO toDto(Visit visit);
-
-    Visit toVisit(VisitDTO visitDTO);
-
-    Visit toVisit(VisitCreationDTO visitCreationDTO);
-
     @Named("doctorToId")
     static Long doctorToId(Doctor doctor) {
         if (doctor != null) {
@@ -34,4 +26,12 @@ public interface VisitMapper {
         }
         return null;
     }
+
+    @Mapping(source = "doctor", target = "doctorId", qualifiedByName = "doctorToId")
+    @Mapping(source = "patient", target = "patientId", qualifiedByName = "patientToId")
+    VisitDTO toDto(Visit visit);
+
+    Visit toVisit(VisitDTO visitDTO);
+
+    Visit toVisit(VisitCreationDTO visitCreationDTO);
 }

@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
 
 @Builder
 @Entity
@@ -27,11 +25,6 @@ public class MedicalFacility {
     @ToString.Exclude
     @ManyToMany(mappedBy = "medicalFacilities", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Doctor> doctors;
-
-    public boolean validateMedicalFacility() {
-        return Stream.of(name, city, zipCode, street, buildingNumber)
-                .noneMatch(Objects::isNull);
-    }
 
     @Override
     public boolean equals(Object o) {
