@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: Łukasz
+      changes:
+        - createTable:
+            tableName: Visit
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_visit_id
+                  name: id
+                  type: int
+              - column:
+                  name: appointment_start
+                  type: timestamp
+              - column:
+                  name: appointment_end
+                  type: timestamp
+              - column:
+                  name: doctor_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKey:
+                      referenceTable: doctor
+                      referenceColumn: id
+                      onDelete: cascade
+              - column:
+                  name: patient_id
+                  type: int
+                  constraints:
+                    nullable: true
+                    foreignKey:
+                      referenceTable: patient
+                      referenceColumn: id

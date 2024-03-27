@@ -20,11 +20,10 @@ public interface VisitRepository extends JpaRepository<Visit, Long> {
 
     List<Visit> findByPatientId(Long id);
 
-    @Query(value = "SELECT * " +
-            "FROM visit v " +
-            "WHERE :doctorID = doctor_id " +
-            "AND v.appointment_start  <= :endTime " +
-            "and v.appointment_end >= :startTime", nativeQuery = true)
+    @Query("SELECT v " +
+            "FROM Visit v " +
+            "WHERE v.doctor.id = :doctorID " +
+            "AND v.appointmentStart <= :endTime AND v.appointmentEnd >= :startTime")
     List<Visit> findAllOverlapping(
             @Param("startTime") LocalDateTime startTime,
             @Param("endTime") LocalDateTime endTime,

@@ -27,9 +27,9 @@ public class Doctor {
     @ToString.Exclude
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
-            name = "DOCTOR_MEDICAL_FACILITY",
-            joinColumns = @JoinColumn(name = "DOCTOR_ID"),
-            inverseJoinColumns = @JoinColumn(name = "MEDICAL_FACILITY_ID")
+            name = "doctor_medical_facility",
+            joinColumns = @JoinColumn(name = "doctor_id"),
+            inverseJoinColumns = @JoinColumn(name = "medical_facility_id")
     )
     private List<MedicalFacility> medicalFacilities;
     @OnDelete(action = OnDeleteAction.CASCADE)
