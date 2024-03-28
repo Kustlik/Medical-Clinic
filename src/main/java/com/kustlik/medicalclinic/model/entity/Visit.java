@@ -19,10 +19,10 @@ public class Visit {
     private LocalDateTime appointmentStart;
     private LocalDateTime appointmentEnd;
     @ManyToOne()
-    @JoinColumn(name = "DOCTOR_ID")
+    @JoinColumn(name = "doctor_id")
     private Doctor doctor;
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "PATIENT_ID")
+    @JoinColumn(name = "patient_id")
     private Patient patient;
 
     @Override

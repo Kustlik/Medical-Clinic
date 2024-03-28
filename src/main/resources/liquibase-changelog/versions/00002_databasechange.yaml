@@ -1,0 +1,82 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: Łukasz
+      changes:
+        - createTable:
+            tableName: doctor
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_doctor_id
+                  name: id
+                  type: int
+              - column:
+                  name: email
+                  type: varchar(50)
+                  constraints:
+                    unique: true
+                    uniqueConstraintName: uq_doctor_email
+              - column:
+                  name: first_name
+                  type: varchar(50)
+              - column:
+                  name: last_name
+                  type: varchar(50)
+              - column:
+                  name: password
+                  type: varchar(50)
+              - column:
+                  name: specialisation
+                  type: varchar(50)
+        - createTable:
+            tableName: medical_facility
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_medical_facility_id
+                  name: id
+                  type: int
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    unique: true
+                    uniqueConstraintName: uq_medical_facility_name
+              - column:
+                  name: city
+                  type: varchar(50)
+              - column:
+                  name: zip_code
+                  type: varchar(50)
+              - column:
+                  name: street
+                  type: varchar(50)
+              - column:
+                  name: building_number
+                  type: varchar(50)
+        - createTable:
+            tableName: doctor_medical_facility
+            columns:
+              - column:
+                  name: doctor_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKey:
+                      referenceTable: doctor
+                      referenceColumn: id
+              - column:
+                  name: medical_facility_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKey:
+                      referenceTable: medical_facility
+                      referenceColumn: id
