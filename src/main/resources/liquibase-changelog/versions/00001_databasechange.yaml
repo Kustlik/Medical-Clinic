@@ -37,4 +37,4 @@ databaseChangeLog:
                   type: varchar(50)
               - column:
                   name: birthday
-                  type: Date
+                  type: date
