@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -48,10 +50,12 @@ public class MedicalFacilityControllerTest {
     void getMedicalFacilities_MedicalFacilitiesExists_ListOfMedicalFacilityDTOReturned() throws Exception {
         // Given
         MedicalFacility medicalFacility = MedicalFacilityFactory.getMedicalFacility();
-        List<MedicalFacility> medicalFacilities = List.of(medicalFacility);
-        when(medicalFacilityService.getMedicalFacilities()).thenReturn(medicalFacilities);
+        Page<MedicalFacility> medicalFacilitiesPage = new PageImpl<>(List.of(medicalFacility));
+        when(medicalFacilityService.getMedicalFacilities(any())).thenReturn(medicalFacilitiesPage);
         // Then
-        mockMvc.perform(get("/medical_facilities"))
+        mockMvc.perform(get("/medical_facilities")
+                        .param("page", "0")
+                        .param("size", "5"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].buildingNumber").value("43"))

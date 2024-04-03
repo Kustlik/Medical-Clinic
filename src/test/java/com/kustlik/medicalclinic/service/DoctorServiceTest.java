@@ -11,6 +11,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,29 +39,33 @@ public class DoctorServiceTest {
     }
 
     @Test
-    void getDoctors_NoDoctorExists_ListOfDoctorReturned() {
+    void getDoctors_NoDoctorExists_PageOfDoctorReturned() {
         // Given
+        Pageable pageable = PageRequest.of(0, 10);
         List<Doctor> doctors = new ArrayList<>();
-        when(doctorRepository.findAll()).thenReturn(doctors);
+        Page<Doctor> doctorPage = new PageImpl<>(doctors);
+        when(doctorRepository.findAll(pageable)).thenReturn(doctorPage);
         // When
-        var result = doctorService.getDoctors();
+        var result = doctorService.getDoctors(pageable);
         // Then
         Assertions.assertNotNull(result);
-        Assertions.assertEquals(Collections.EMPTY_LIST, result);
+        Assertions.assertEquals(Collections.EMPTY_LIST, result.getContent());
     }
 
     @Test
-    void getDoctors_DoctorsExists_ListOfDoctorReturned() {
+    void getDoctors_DoctorsExists_PageOfDoctorReturned() {
         // Given
-        List<Doctor> doctors = new ArrayList<>();
-        Doctor doctor = DoctorFactory.getDoctor();
-        doctors.add(doctor);
-        when(doctorRepository.findAll()).thenReturn(doctors);
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Doctor> doctors = List.of(DoctorFactory.getDoctor());
+        Page<Doctor> doctorPage = new PageImpl<>(doctors, pageable, 1);
+        when(doctorRepository.findAll(pageable)).thenReturn(doctorPage);
+
         // When
-        var result = doctorService.getDoctors();
+        Page<Doctor> result = doctorService.getDoctors(pageable);
+
         // Then
         Assertions.assertNotNull(result);
-        Assertions.assertTrue(doctors.contains(doctor));
+        Assertions.assertEquals(doctors, result.getContent());
     }
 
     @Test

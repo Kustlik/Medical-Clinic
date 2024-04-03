@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -48,10 +50,12 @@ public class DoctorControllerTest {
     void getDoctors_DoctorsExists_ListOfDoctorDTOReturned() throws Exception {
         // Given
         Doctor doctor = DoctorFactory.getDoctor();
-        List<Doctor> doctors = List.of(doctor);
-        when(doctorService.getDoctors()).thenReturn(doctors);
+        Page<Doctor> doctorPage = new PageImpl<>(List.of(doctor));
+        when(doctorService.getDoctors(any())).thenReturn(doctorPage);
         // Then
-        mockMvc.perform(get("/doctors"))
+        mockMvc.perform(get("/doctors")
+                        .param("page", "0")
+                        .param("size", "5"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].email").value("jankow@gmail.com"))

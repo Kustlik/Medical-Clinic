@@ -6,6 +6,7 @@ import com.kustlik.medicalclinic.model.entity.Doctor;
 import com.kustlik.medicalclinic.model.mapper.DoctorMapper;
 import com.kustlik.medicalclinic.service.DoctorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +20,8 @@ public class DoctorController {
     private final DoctorMapper doctorMapper;
 
     @GetMapping
-    public List<DoctorDTO> getDoctors() {
-        return doctorService.getDoctors().stream()
+    public List<DoctorDTO> getDoctors(Pageable pageable) {
+        return doctorService.getDoctors(pageable).stream()
                 .map(doctorMapper::toDto)
                 .toList();
     }

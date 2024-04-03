@@ -8,6 +8,7 @@ import com.kustlik.medicalclinic.model.entity.Visit;
 import com.kustlik.medicalclinic.model.mapper.VisitMapper;
 import com.kustlik.medicalclinic.service.VisitService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,15 +22,15 @@ public class VisitController {
     private final VisitMapper visitMapper;
 
     @GetMapping
-    public List<VisitDTO> getVisits(@RequestParam("status") VisitStatus status) {
+    public List<VisitDTO> getVisits(@RequestParam("status") VisitStatus status, Pageable pageable) {
         switch (status) {
             case ALL -> {
-                return visitService.getVisits().stream()
+                return visitService.getVisits(pageable).stream()
                         .map(visitMapper::toDto)
                         .toList();
             }
             case AVAILABLE -> {
-                return visitService.getFreeVisits().stream()
+                return visitService.getFreeVisits(pageable).stream()
                         .map(visitMapper::toDto)
                         .toList();
             }

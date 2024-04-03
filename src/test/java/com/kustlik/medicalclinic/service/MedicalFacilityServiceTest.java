@@ -12,6 +12,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,29 +42,33 @@ public class MedicalFacilityServiceTest {
     }
 
     @Test
-    void getMedicalFacilities_NoMedicalFacilityExists_ListOfMedicalFacilityReturned() {
+    void getMedicalFacilities_NoMedicalFacilityExists_PageOfMedicalFacilityReturned() {
         // Given
+        Pageable pageable = PageRequest.of(0, 10);
         List<MedicalFacility> medicalFacilities = new ArrayList<>();
-        when(medicalFacilityRepository.findAll()).thenReturn(medicalFacilities);
+        Page<MedicalFacility> medicalFacilityPage = new PageImpl<>(medicalFacilities);
+        when(medicalFacilityRepository.findAll(pageable)).thenReturn(medicalFacilityPage);
         // When
-        var result = medicalFacilityService.getMedicalFacilities();
+        var result = medicalFacilityService.getMedicalFacilities(pageable);
         // Then
         Assertions.assertNotNull(result);
-        Assertions.assertEquals(Collections.EMPTY_LIST, result);
+        Assertions.assertEquals(Collections.EMPTY_LIST, result.getContent());
     }
 
     @Test
-    void getMedicalFacilities_MedicalFacilitiesExists_ListOfMedicalFacilityReturned() {
+    void getMedicalFacilities_MedicalFacilitiesExists_PageOfMedicalFacilityReturned() {
         // Given
+        Pageable pageable = PageRequest.of(0, 10);
         List<MedicalFacility> medicalFacilities = new ArrayList<>();
         MedicalFacility medicalFacility = MedicalFacilityFactory.getMedicalFacility();
         medicalFacilities.add(medicalFacility);
-        when(medicalFacilityRepository.findAll()).thenReturn(medicalFacilities);
+        Page<MedicalFacility> medicalFacilityPage = new PageImpl<>(medicalFacilities);
+        when(medicalFacilityRepository.findAll(pageable)).thenReturn(medicalFacilityPage);
         // When
-        var result = medicalFacilityService.getMedicalFacilities();
+        var result = medicalFacilityService.getMedicalFacilities(pageable);
         // Then
         Assertions.assertNotNull(result);
-        Assertions.assertTrue(medicalFacilities.contains(medicalFacility));
+        Assertions.assertEquals(medicalFacilities, result.getContent());
     }
 
     @Test

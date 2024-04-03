@@ -1,13 +1,15 @@
 package com.kustlik.medicalclinic.service;
 
 import com.kustlik.medicalclinic.model.entity.Visit;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface VisitService {
-    List<Visit> getVisits();
+    Page<Visit> getVisits(Pageable pageable);
 
-    List<Visit> getFreeVisits();
+    Page<Visit> getFreeVisits(Pageable pageable);
 
     List<Visit> getVisitsByDoctor(Long doctorID);
 

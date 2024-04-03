@@ -1,6 +1,8 @@
 package com.kustlik.medicalclinic.repository;
 
 import com.kustlik.medicalclinic.model.entity.Visit;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,7 +18,7 @@ public interface VisitRepository extends JpaRepository<Visit, Long> {
 
     List<Visit> findByDoctorIdAndPatientIdIsNull(Long doctor);
 
-    List<Visit> findByPatientIdIsNull();
+    Page<Visit> findByPatientIdIsNull(Pageable pageable);
 
     List<Visit> findByPatientId(Long id);
 

@@ -5,9 +5,9 @@ import com.kustlik.medicalclinic.repository.PatientRepository;
 import com.kustlik.medicalclinic.service.validator.PatientValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -15,8 +15,8 @@ public class PatientServiceImpl implements PatientService {
     private final PatientRepository patientRepository;
     private final PatientValidator patientValidator;
 
-    public List<Patient> getPatients() {
-        return patientRepository.findAll();
+    public Page<Patient> getPatients(Pageable pageable) {
+        return patientRepository.findAll(pageable);
     }
 
     public Patient getPatient(String email) {

@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -44,11 +47,13 @@ public class VisitControllerTest {
     void getVisits_WithStatusAll_ListOfVisitDTOReturned() throws Exception {
         // When
         Visit visit = VisitFactory.getVisit();
-        List<Visit> visits = List.of(visit);
-        when(visitService.getVisits()).thenReturn(visits);
+        Page<Visit> visitPage = new PageImpl<>(List.of(visit));
+        when(visitService.getVisits(any(Pageable.class))).thenReturn(visitPage);
         // Then
         mockMvc.perform(get("/visits")
-                        .param("status", VisitStatus.ALL.toString()))
+                        .param("status", VisitStatus.ALL.toString())
+                        .param("page", "0")
+                        .param("size", "5"))
                 .andExpect(jsonPath("$[0].appointmentStart").value(
                         YEAR + "-01-01T12:00:00"))
                 .andExpect(jsonPath("$[0].appointmentEnd").value(
@@ -59,11 +64,13 @@ public class VisitControllerTest {
     void getFree_WithStatusAvailable_ListOfVisitDTOReturned() throws Exception {
         // Given
         Visit visit = VisitFactory.getVisit();
-        List<Visit> visits = List.of(visit);
-        when(visitService.getFreeVisits()).thenReturn(visits);
+        Page<Visit> visitPage = new PageImpl<>(List.of(visit));
+        when(visitService.getFreeVisits(any(Pageable.class))).thenReturn(visitPage);
         // Then
         mockMvc.perform(get("/visits")
-                        .param("status", VisitStatus.AVAILABLE.toString()))
+                        .param("status", VisitStatus.AVAILABLE.toString())
+                        .param("page", "0")
+                        .param("size", "5"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].appointmentStart").value(

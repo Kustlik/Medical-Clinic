@@ -9,6 +9,8 @@ import com.kustlik.medicalclinic.repository.VisitRepository;
 import com.kustlik.medicalclinic.service.validator.VisitValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,12 +23,12 @@ public class VisitServiceImpl implements VisitService {
     private final VisitRepository visitRepository;
     private final VisitValidator visitValidator;
 
-    public List<Visit> getVisits() {
-        return visitRepository.findAll();
+    public Page<Visit> getVisits(Pageable pageable) {
+        return visitRepository.findAll(pageable);
     }
 
-    public List<Visit> getFreeVisits() {
-        return visitRepository.findByPatientIdIsNull();
+    public Page<Visit> getFreeVisits(Pageable pageable) {
+        return visitRepository.findByPatientIdIsNull(pageable);
     }
 
     public List<Visit> getVisitsByDoctor(Long doctorID) {

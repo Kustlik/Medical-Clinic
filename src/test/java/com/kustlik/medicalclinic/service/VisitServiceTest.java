@@ -14,6 +14,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,29 +42,33 @@ public class VisitServiceTest {
     }
 
     @Test
-    void getVisits_ListOfVisitsExists_ListOfVisitReturned() {
+    void getVisits_ListOfVisitsExists_PageOfVisitReturned() {
         // Given
+        Pageable pageable = PageRequest.of(0, 10);
         Visit visit = VisitFactory.getVisit();
         List<Visit> visits = List.of(visit);
-        when(visitRepository.findAll()).thenReturn(visits);
+        Page<Visit> visitPage = new PageImpl<>(visits);
+        when(visitRepository.findAll(pageable)).thenReturn(visitPage);
         // When
-        var result = visitService.getVisits();
+        var result = visitService.getVisits(pageable);
         // Then
         Assertions.assertNotNull(result);
-        Assertions.assertEquals(visits, result);
+        Assertions.assertEquals(visits, result.getContent());
     }
 
     @Test
-    void getFreeVisits_ListOfFreeVisitsExists_ListOfVisitReturned() {
+    void getFreeVisits_ListOfFreeVisitsExists_PageOfVisitReturned() {
         // Given
+        Pageable pageable = PageRequest.of(0, 10);
         Visit visit = VisitFactory.getVisit();
         List<Visit> visits = List.of(visit);
-        when(visitRepository.findByPatientIdIsNull()).thenReturn(visits);
+        Page<Visit> visitPage = new PageImpl<>(visits);
+        when(visitRepository.findByPatientIdIsNull(pageable)).thenReturn(visitPage);
         // When
-        var result = visitService.getFreeVisits();
+        var result = visitService.getFreeVisits(pageable);
         // Then
         Assertions.assertNotNull(result);
-        Assertions.assertEquals(visits, result);
+        Assertions.assertEquals(visits, result.getContent());
     }
 
     @Test

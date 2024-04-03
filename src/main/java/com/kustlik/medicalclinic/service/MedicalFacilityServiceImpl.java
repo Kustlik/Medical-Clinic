@@ -8,9 +8,9 @@ import com.kustlik.medicalclinic.service.validator.DoctorValidator;
 import com.kustlik.medicalclinic.service.validator.MedicalFacilityValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,8 +20,8 @@ public class MedicalFacilityServiceImpl implements MedicalFacilityService {
     private final DoctorRepository doctorRepository;
     private final DoctorValidator doctorValidator;
 
-    public List<MedicalFacility> getMedicalFacilities() {
-        return medicalFacilityRepository.findAll();
+    public Page<MedicalFacility> getMedicalFacilities(Pageable pageable) {
+        return medicalFacilityRepository.findAll(pageable);
     }
 
     public MedicalFacility getMedicalFacility(Long id) {

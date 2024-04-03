@@ -1,8 +1,8 @@
 package com.kustlik.medicalclinic.service.validator;
 
+import com.kustlik.medicalclinic.exception.EmptyFieldException;
 import com.kustlik.medicalclinic.exception.MedicalFacilityDoesNotExistException;
 import com.kustlik.medicalclinic.exception.MedicalFacilityExistsException;
-import com.kustlik.medicalclinic.exception.EmptyFieldException;
 import com.kustlik.medicalclinic.factory.MedicalFacilityFactory;
 import com.kustlik.medicalclinic.model.entity.MedicalFacility;
 import com.kustlik.medicalclinic.repository.MedicalFacilityRepository;

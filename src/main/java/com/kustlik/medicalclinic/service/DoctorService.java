@@ -1,11 +1,11 @@
 package com.kustlik.medicalclinic.service;
 
 import com.kustlik.medicalclinic.model.entity.Doctor;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface DoctorService {
-    List<Doctor> getDoctors();
+    Page<Doctor> getDoctors(Pageable pageable);
 
     Doctor getDoctor(String email);
 
