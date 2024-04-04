@@ -1,7 +1,7 @@
 package com.kustlik.medicalclinic.remote.client;
 
-import com.kustlik.medicalclinic.remote.model.dto.ParentBillingReportDto;
-import com.kustlik.medicalclinic.remote.model.dto.SchoolBillingReportDto;
+import com.kustlik.medicalclinic.remote.model.dto.school.ParentBillingReportDto;
+import com.kustlik.medicalclinic.remote.model.dto.school.SchoolBillingReportDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

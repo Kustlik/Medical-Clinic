@@ -1,4 +1,4 @@
-package com.kustlik.medicalclinic.remote.model.dto;
+package com.kustlik.medicalclinic.remote.model.dto.school;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
