@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +55,48 @@ public class VisitServiceTest {
         // Then
         Assertions.assertNotNull(result);
         Assertions.assertEquals(visits, result.getContent());
+    }
+
+    @Test
+    public void getVisits_ListOfVisitsWithGivenVisitDateExists_PageOfVisitReturned() {
+        // Given
+        LocalDate searchDate = VisitFactory.getVisit().getAppointmentStart().toLocalDate();
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Visit> expectedVisits = List.of(VisitFactory.getVisit());
+        Page<Visit> expectedPage = new PageImpl<>(expectedVisits, pageable, 1);
+        when(visitRepository.findByPatientIdIsNotNullAndAppointmentStartGreaterThanEqualAndAppointmentStartLessThan(pageable,
+                searchDate.atStartOfDay(), searchDate.plusDays(1).atStartOfDay()))
+                .thenReturn(expectedPage);
+
+        // When
+        var result = visitService.getVisits(pageable, searchDate);
+
+        // Then
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(expectedPage.getContent(), result.getContent());
+        Assertions.assertEquals(1, result.getContent().size());
+        Visit actualVisit = result.getContent().get(0);
+        Assertions.assertEquals(searchDate, actualVisit.getAppointmentStart().toLocalDate());
+    }
+
+    @Test
+    public void getVisits_ListOfVisitsWithGivenVisitDateDoesNotExist_EmptyPageReturned() {
+        // Given
+        LocalDate searchDate = VisitFactory.getVisit().getAppointmentStart().toLocalDate();
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Visit> expectedVisits = List.of();
+        Page<Visit> expectedPage = new PageImpl<>(expectedVisits, pageable, 1);
+        when(visitRepository.findByPatientIdIsNotNullAndAppointmentStartGreaterThanEqualAndAppointmentStartLessThan(pageable,
+                searchDate.atStartOfDay(), searchDate.plusDays(1).atStartOfDay()))
+                .thenReturn(Page.empty());
+
+        // When
+        var result = visitService.getVisits(pageable, searchDate);
+
+        // Then
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(expectedPage.getContent(), result.getContent());
+        Assertions.assertEquals(0, result.getContent().size());
     }
 
     @Test

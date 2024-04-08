@@ -20,6 +20,9 @@ public interface VisitRepository extends JpaRepository<Visit, Long> {
 
     Page<Visit> findByPatientIdIsNull(Pageable pageable);
 
+    Page<Visit> findByPatientIdIsNotNullAndAppointmentStartGreaterThanEqualAndAppointmentStartLessThan
+            (Pageable pageable, LocalDateTime startDate, LocalDateTime endDate);
+
     List<Visit> findByPatientId(Long id);
 
     @Query("SELECT v " +

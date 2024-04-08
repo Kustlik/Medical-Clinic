@@ -64,12 +64,24 @@ public class PatientServiceTest {
     }
 
     @Test
-    void getPatient_PatientExists_PatientReturned() {
+    void getPatient_PatientWithGivenEmailExists_PatientReturned() {
         // Given
         Patient patient = PatientFactory.getPatient();
         when(patientValidator.patientExists(patient.getEmail())).thenReturn(patient);
         // When
         var result = patientService.getPatient(patient.getEmail());
+        // Then
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(patient, result);
+    }
+
+    @Test
+    void getPatient_PatientWithGivenIdExists_PatientReturned() {
+        // Given
+        Patient patient = PatientFactory.getPatient();
+        when(patientValidator.patientExists(patient.getId())).thenReturn(patient);
+        // When
+        var result = patientService.getPatient(patient.getId());
         // Then
         Assertions.assertNotNull(result);
         Assertions.assertEquals(patient, result);

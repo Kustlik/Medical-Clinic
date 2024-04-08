@@ -10,6 +10,7 @@ import com.kustlik.medicalclinic.model.dto.patient.PatientDTO;
 import com.kustlik.medicalclinic.model.dto.patient.PatientPasswordDTO;
 import com.kustlik.medicalclinic.model.entity.Patient;
 import com.kustlik.medicalclinic.model.mapper.PatientMapper;
+import com.kustlik.medicalclinic.service.VisitService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +32,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Sql(scripts = {"file:src/test/resources/sql/doctor_clear_data.sql"},
+        config = @SqlConfig(encoding = "utf-8", transactionMode = SqlConfig.TransactionMode.ISOLATED),
+        executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@Sql(scripts = {"file:src/test/resources/sql/doctor_insert_data.sql"},
+        config = @SqlConfig(encoding = "utf-8", transactionMode = SqlConfig.TransactionMode.ISOLATED),
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(scripts = {"file:src/test/resources/sql/patient_clear_data.sql"},
         config = @SqlConfig(encoding = "utf-8", transactionMode = SqlConfig.TransactionMode.ISOLATED),
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @Sql(scripts = {"file:src/test/resources/sql/patient_insert_data.sql"},
+        config = @SqlConfig(encoding = "utf-8", transactionMode = SqlConfig.TransactionMode.ISOLATED),
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = {"file:src/test/resources/sql/visit_clear_data.sql"},
+        config = @SqlConfig(encoding = "utf-8", transactionMode = SqlConfig.TransactionMode.ISOLATED),
+        executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@Sql(scripts = {"file:src/test/resources/sql/visit_insert_data.sql"},
         config = @SqlConfig(encoding = "utf-8", transactionMode = SqlConfig.TransactionMode.ISOLATED),
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class PatientIntegrationTest {
@@ -43,6 +56,9 @@ class PatientIntegrationTest {
 
     @Autowired
     private PatientMapper patientMapper;
+
+    @Autowired
+    private VisitService visitService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -63,6 +79,20 @@ class PatientIntegrationTest {
                 .andExpect(jsonPath("$[1].lastName").value("Wojczyk"))
                 .andExpect(jsonPath("$[1].birthday",
                         Matchers.is(LocalDate.of(1990, 6, 12).toString())));
+    }
+
+    @Test
+    void getPatients_PatientsWithGivenVisitDataExists_ListOfPatientDTOReturned() throws Exception {
+        // Then
+        mockMvc.perform(get("/patients")
+                        .param("visitDate", "2029-12-01"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].email").value("boczek@gmail.com"))
+                .andExpect(jsonPath("$[0].firstName").value("Jerzy"))
+                .andExpect(jsonPath("$[0].lastName").value("Bolek"))
+                .andExpect(jsonPath("$[0].birthday",
+                        Matchers.is(LocalDate.of(1980, 2, 2).toString())));
     }
 
     @Test

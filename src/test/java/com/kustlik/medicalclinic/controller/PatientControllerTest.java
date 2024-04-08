@@ -5,12 +5,15 @@ import com.kustlik.medicalclinic.exception.EmptyFieldException;
 import com.kustlik.medicalclinic.exception.PatientDoesNotExistException;
 import com.kustlik.medicalclinic.exception.PatientExistsException;
 import com.kustlik.medicalclinic.factory.PatientFactory;
+import com.kustlik.medicalclinic.factory.VisitFactory;
 import com.kustlik.medicalclinic.model.dto.patient.PatientCreationDTO;
 import com.kustlik.medicalclinic.model.dto.patient.PatientDTO;
 import com.kustlik.medicalclinic.model.dto.patient.PatientPasswordDTO;
 import com.kustlik.medicalclinic.model.entity.Patient;
+import com.kustlik.medicalclinic.model.entity.Visit;
 import com.kustlik.medicalclinic.model.mapper.PatientMapper;
 import com.kustlik.medicalclinic.service.PatientService;
+import com.kustlik.medicalclinic.service.VisitService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,6 +23,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -46,6 +51,9 @@ public class PatientControllerTest {
     @MockBean
     private PatientService patientService;
 
+    @MockBean
+    private VisitService visitService;
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -69,7 +77,29 @@ public class PatientControllerTest {
     }
 
     @Test
-    void getPatient_PatientDoesNotExist_ThenIsNotFound() throws Exception {
+    void getPatients_PatientsWithGivenVisitDataExists_ListOfPatientDTOReturned() throws Exception {
+        // Given
+        Patient patient = PatientFactory.getPatient();
+        Visit visit = VisitFactory.getVisit();
+        visit.setPatient(patient);
+        Page<Visit> visitPage = new PageImpl<>(List.of(visit));
+        when(visitService.getVisits(any(Pageable.class), any(LocalDate.class))).thenReturn(visitPage);
+        // Then
+        mockMvc.perform(get("/patients")
+                        .param("visitDate", "2029-12-12")
+                        .param("page", "0")
+                        .param("size", "5"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].email").value("jankow@gmail.com"))
+                .andExpect(jsonPath("$[0].firstName").value("Jan"))
+                .andExpect(jsonPath("$[0].lastName").value("Kowalski"))
+                .andExpect(jsonPath("$[0].birthday",
+                        Matchers.is(LocalDate.of(2000, 1, 1).toString())));
+    }
+
+    @Test
+    void getPatient_PatientWithGivenEmailDoesNotExist_ThenIsNotFound() throws Exception {
         // Given
         String exceptionMsg = "Patient does not exist.";
         String email = PatientFactory.getPatient().getEmail();
@@ -83,13 +113,44 @@ public class PatientControllerTest {
     }
 
     @Test
-    void getPatient_PatientExists_PatientDTOReturned() throws Exception {
+    void getPatient_PatientWithGivenEmailExists_PatientDTOReturned() throws Exception {
         // Given
         Patient patient = PatientFactory.getPatient();
         String email = patient.getEmail();
         when(patientService.getPatient(email)).thenReturn(patient);
         // Then
         mockMvc.perform(get("/patients/{email}", email))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value("jankow@gmail.com"))
+                .andExpect(jsonPath("$.firstName").value("Jan"))
+                .andExpect(jsonPath("$.lastName").value("Kowalski"))
+                .andExpect(jsonPath("$.birthday",
+                        Matchers.is(LocalDate.of(2000, 1, 1).toString())));
+    }
+
+    @Test
+    void getPatient_PatientWithGivenIdDoesNotExist_ThenIsNotFound() throws Exception {
+        // Given
+        String exceptionMsg = "Patient does not exist.";
+        Long id = PatientFactory.getPatient().getId();
+        when(patientService.getPatient(id)).thenThrow(new PatientDoesNotExistException(exceptionMsg));
+        // Then
+        mockMvc.perform(get("/patients/id/{id}", id))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertInstanceOf(PatientDoesNotExistException.class, result.getResolvedException()))
+                .andExpect(result -> assertEquals(exceptionMsg, result.getResponse().getContentAsString()));
+    }
+
+    @Test
+    void getPatient_PatientWithGivenIdExists_PatientDTOReturned() throws Exception {
+        // Given
+        Patient patient = PatientFactory.getPatient();
+        Long id = patient.getId();
+        when(patientService.getPatient(id)).thenReturn(patient);
+        // Then
+        mockMvc.perform(get("/patients/id/{id}", id))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value("jankow@gmail.com"))
