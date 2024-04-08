@@ -57,6 +57,11 @@ public class PatientValidator {
                 .orElseThrow(() -> new PatientDoesNotExistException("Patient with given email does not exist."));
     }
 
+    public Patient patientExists(Long id) {
+        return patientRepository.findById(id)
+                .orElseThrow(() -> new PatientDoesNotExistException("Patient with given ID does not exist."));
+    }
+
     private void patientPasswordIsNotNullNorBlank(Patient newPatientData) {
         if (newPatientData == null || newPatientData.getPassword() == null || newPatientData.getPassword().isBlank()) {
             throw new EmptyFieldException("Password is empty.");

@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,6 +27,13 @@ public class VisitServiceImpl implements VisitService {
 
     public Page<Visit> getVisits(Pageable pageable) {
         return visitRepository.findAll(pageable);
+    }
+
+    public Page<Visit> getVisits(Pageable pageable, LocalDate visitDate) {
+        LocalDateTime startDate = visitDate.atStartOfDay();
+        LocalDateTime endDate = visitDate.plusDays(1).atStartOfDay();
+        return visitRepository.findByPatientIdIsNotNullAndAppointmentStartGreaterThanEqualAndAppointmentStartLessThan
+                (pageable, startDate, endDate);
     }
 
     public Page<Visit> getFreeVisits(Pageable pageable) {

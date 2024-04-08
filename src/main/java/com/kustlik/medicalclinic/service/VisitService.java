@@ -4,10 +4,13 @@ import com.kustlik.medicalclinic.model.entity.Visit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface VisitService {
     Page<Visit> getVisits(Pageable pageable);
+
+    Page<Visit> getVisits(Pageable pageable, LocalDate localDate);
 
     Page<Visit> getFreeVisits(Pageable pageable);
 
