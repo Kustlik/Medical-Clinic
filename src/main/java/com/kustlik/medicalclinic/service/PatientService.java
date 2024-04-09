@@ -9,6 +9,8 @@ public interface PatientService {
 
     Patient getPatient(String email);
 
+    Patient getPatient(Long id);
+
     Patient createPatient(Patient patient);
 
     void deletePatient(String email);

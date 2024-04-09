@@ -23,6 +23,10 @@ public class PatientServiceImpl implements PatientService {
         return patientValidator.patientExists(email);
     }
 
+    public Patient getPatient(Long id) {
+        return patientValidator.patientExists(id);
+    }
+
     @Transactional
     public Patient createPatient(Patient patient) {
         patientValidator.validatePatientCreation(patient);

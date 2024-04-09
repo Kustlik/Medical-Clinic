@@ -15,9 +15,9 @@ public class RetreiveMessageErrorDecoder implements ErrorDecoder {
         String message = feignException.getMessage();
         return switch (response.status()) {
             case 500 -> new InternalServerErrorException(message != null ? message :
-                "The server has encountered a situation it does not know how to handle.");
+                    "The server has encountered a situation it does not know how to handle.");
             case 503 -> new ServiceUnavailableException(message != null ? message :
-                "The request method is not supported by the server and cannot be handled.");
+                    "The request method is not supported by the server and cannot be handled.");
             default -> errorDecoder.decode(methodKey, response);
         };
     }
